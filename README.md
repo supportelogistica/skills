@@ -58,24 +58,28 @@ Se o prompt falhar, cada skill tem um zip pronto na release
 
 ## Modo avançado — Claude Code
 
-Este repositório é um **plugin marketplace** do Claude Code. Instalação:
+Este repositório é um **plugin marketplace** do Claude Code. Instale pelo **terminal**:
 
 ```bash
-claude
+claude plugin marketplace add supportelogistica/skills
 ```
 
-Dentro do Claude Code:
-
-```text
-/plugin marketplace add supportelogistica/skills
-/plugin install supplog-skills@supplog
+```bash
+claude plugin install supplog-skills@supplog
 ```
 
 Para **atualizar** quando o repo mudar:
 
-```text
-/plugin marketplace update supplog
+```bash
+claude plugin marketplace update supplog
 ```
+
+> Dentro de uma sessão interativa do CLI, os equivalentes são
+> `/plugin marketplace add supportelogistica/skills` e
+> `/plugin install supplog-skills@supplog`. O comando `/plugin` **só existe no CLI de
+> terminal** — no app desktop e no claude.ai/code ele responde "isn't available in this
+> environment"; nesses casos use os comandos de terminal acima ou o navegador de
+> plugins do app.
 
 <details>
 <summary>Alternativa manual (cópia direta, sem marketplace)</summary>
