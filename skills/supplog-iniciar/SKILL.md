@@ -1,6 +1,6 @@
 ---
 name: supplog-iniciar
-description: Entrevista guiada pelos Padrões de Desenvolvimento Vibe Coding da Supplog para planejar um novo projeto ANTES de codar. Ao final, classifica a stack/porte automaticamente e gera PLANEJAMENTO.md e um esqueleto de README.md. Use quando o usuário quiser criar, iniciar ou começar do zero uma nova aplicação, app, automação, site, sistema ou projeto.
+description: Entrevista guiada pelos padrões Supplog para planejar um projeto ANTES de codar. Gera PLANEJAMENTO.md e README.md iniciais. Use ao criar ou começar do zero um app, automação, site ou sistema.
 ---
 
 # /supplog-iniciar — Entrevista de início de projeto (Padrão Supplog)
@@ -12,7 +12,20 @@ humana, tudo o que os Padrões de Desenvolvimento exigem — e traduzir isso em 
 técnicas padronizadas, sem que eles precisem entender jargão.
 
 > Esta skill cobre **apenas o planejamento** (a "Entrevista"). Ela **não** monta o
-> esqueleto de pastas nem constrói o app. Ela termina escrevendo dois arquivos e para.
+> esqueleto de pastas nem constrói o app. Ela termina entregando dois arquivos e para.
+
+---
+
+## Detecção de ambiente (chat × Claude Code)
+
+Antes de começar, identifique onde você está rodando:
+
+- **Claude Code** — você tem ferramentas de arquivo (Read/Write/Edit) e um diretório de
+  trabalho do projeto.
+- **Chat (claude.ai)** — você não tem acesso ao filesystem do usuário.
+
+A entrevista é idêntica nos dois ambientes. Só muda o passo final ("Entregáveis") —
+veja as instruções específicas lá.
 
 ---
 
@@ -117,8 +130,14 @@ aproximado de telas, cadastros, relatórios) até conseguir enquadrar.
 
 ## Entregáveis (ao final da entrevista)
 
-Depois de cobrir todos os blocos e classificar, **escreva dois arquivos na raiz do
-projeto** e então **pare**:
+Depois de cobrir todos os blocos e classificar, produza os dois entregáveis abaixo e
+então **pare**. A forma de entrega depende do ambiente:
+
+- **No Claude Code:** escreva os dois arquivos na **raiz do projeto**.
+- **No chat (claude.ai):** entregue os dois como **arquivos para download** (não como
+  texto solto na conversa) e finalize orientando o viber: para construir o app do jeito
+  certo, ele deve abrir o **Claude Code**, colocar `PLANEJAMENTO.md` e `README.md` na
+  pasta do projeto e continuar o desenvolvimento por lá.
 
 ### 1. `PLANEJAMENTO.md`
 
@@ -233,9 +252,11 @@ Em desenvolvimento
 <!-- TODO: preencher conforme o projeto evolui -->
 ```
 
-Ao terminar de escrever os dois arquivos, avise o viber em linguagem simples: o que foi
+Ao terminar de entregar os dois arquivos, avise o viber em linguagem simples: o que foi
 decidido (tipo/stack/porte), quais regras do padrão ele precisa respeitar ao construir, e
-que o próximo passo é começar a desenvolver seguindo o `PLANEJAMENTO.md`.
+que o próximo passo é começar a desenvolver seguindo o `PLANEJAMENTO.md`. No chat,
+reforce que o desenvolvimento em si acontece no **Claude Code**, com os dois arquivos na
+pasta do projeto.
 
 ---
 
