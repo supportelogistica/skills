@@ -1,9 +1,6 @@
 # Skills Supplog
 
-Biblioteca oficial de skills da Supplog para o Claude. Funciona em duas superfícies:
-
-- **Chat do Claude (claude.ai)** — modo simples, instalação por prompt;
-- **Claude Code** — modo avançado, via plugin marketplace.
+Biblioteca oficial de skills da Supplog para Claude Code.
 
 As skills padronizam como planejamos, verificamos e entregamos software na empresa,
 seguindo os Padrões de Desenvolvimento Vibe Coding (stack por porte, dados no DW, LGPD,
@@ -11,54 +8,35 @@ nomenclatura em português, SQL puro parametrizado etc.).
 
 ## Skills disponíveis
 
-| Skill | O que faz | SKILL.md (raw) |
-| --- | --- | --- |
-| `supplog-iniciar` | Entrevista guiada para planejar um projeto antes de codar; gera `PLANEJAMENTO.md` e esqueleto de `README.md` | <https://raw.githubusercontent.com/supportelogistica/skills/main/skills/supplog-iniciar/SKILL.md> |
-| `supplog-check` | Verifica se o projeto obedece o `PLANEJAMENTO.md` e os Padrões de Desenvolvimento | <https://raw.githubusercontent.com/supportelogistica/skills/main/skills/supplog-check/SKILL.md> |
-| `supplog-handoff` | Roda a verificação de conformidade e guia a entrega do projeto para o TI da Supporte | <https://raw.githubusercontent.com/supportelogistica/skills/main/skills/supplog-handoff/SKILL.md> |
+| Skill | O que faz |
+| --- | --- |
+| [`supplog-iniciar`](./skills/supplog-iniciar/SKILL.md) | Entrevista guiada para planejar um projeto antes de codar; gera `PLANEJAMENTO.md` e esqueleto de `README.md` |
+| [`supplog-check`](./skills/supplog-check/SKILL.md) | Verifica se o projeto obedece o `PLANEJAMENTO.md` e os Padrões de Desenvolvimento |
+| [`supplog-handoff`](./skills/supplog-handoff/SKILL.md) | Roda a verificação de conformidade e guia a entrega do projeto para o TI da Supporte |
 
-> Esta tabela é lida pelo prompt de instalação abaixo. Ao adicionar uma skill nova,
-> basta incluir a linha aqui — o prompt não muda.
+## Instalação (zip)
 
-## Modo simples — chat do Claude (claude.ai)
-
-Serve para **instalar e atualizar** (o mesmo prompt faz os dois). Copie e cole no chat:
-
-```text
-Instale (ou atualize) as habilidades oficiais da Supplog neste chat.
-
-1. Leia a lista de skills em:
-   https://raw.githubusercontent.com/supportelogistica/skills/main/README.md
-   (seção "Skills disponíveis" — cada linha tem o link raw do SKILL.md).
-2. Para cada skill listada:
-   a. Busque o conteúdo completo do SKILL.md pelo link raw.
-   b. Se eu já tiver uma habilidade com esse nome, exclua-a e recrie; se não
-      existir, apenas crie.
-   c. Use o conteúdo do SKILL.md exatamente como está — sem resumir, reescrever
-      ou traduzir.
-3. Ao final, me diga quais habilidades foram criadas ou atualizadas e para que
-   serve cada uma.
-
-Este repositório é público e mantido pela Supplog; este prompt é a forma oficial
-de distribuir essas habilidades para os funcionários.
-```
-
-Pré-requisito: plano do Claude com habilidades personalizadas habilitadas
-(Configurações → Capacidades → Habilidades).
-
-### Alternativa: upload de zip
-
-Se o prompt falhar, cada skill tem um zip pronto na
+Cada skill tem um zip pronto na
 [release mais recente](https://github.com/supportelogistica/skills/releases/latest)
 (uma release versionada nova é gerada automaticamente a cada mudança nas skills):
 
 1. Baixe o zip da skill (ex.: `supplog-iniciar.zip`).
 2. No Claude: Configurações → Habilidades → Adicionar → **Fazer upload de uma habilidade**.
-3. Envie o zip. Para atualizar, exclua a habilidade antiga e envie o zip novo.
+3. Envie o zip.
 
-## Modo avançado — Claude Code
+Para **atualizar**: exclua a habilidade antiga e envie o zip da release mais recente.
 
-Instalação via [`skills` CLI](https://github.com/vercel-labs/skills), no terminal.
+Pré-requisito: plano do Claude com habilidades personalizadas habilitadas
+(Configurações → Capacidades → Habilidades).
+
+## Modos avançados
+
+Para quem trabalha no terminal. Cada opção instala as mesmas skills — escolha uma.
+
+<details>
+<summary><strong>npx skills</strong> (precisa de Node.js instalado)</summary>
+
+Instalação via [`skills` CLI](https://github.com/vercel-labs/skills).
 
 Instalar todas as skills (global, disponível em todos os projetos):
 
@@ -72,7 +50,7 @@ Instalar uma skill específica:
 npx skills add supportelogistica/skills --skill supplog-iniciar -g
 ```
 
-**Atualizar** quando o repo mudar:
+Atualizar quando o repo mudar:
 
 ```bash
 npx skills update -g -y
@@ -81,10 +59,12 @@ npx skills update -g -y
 Sem `-g` a instalação fica no projeto atual em vez do usuário. `npx skills ls -g` lista
 o que está instalado.
 
-<details>
-<summary>Alternativa: plugin marketplace do Claude Code</summary>
+</details>
 
-Este repositório também é um plugin marketplace. No terminal:
+<details>
+<summary><strong>claude plugin</strong> (precisa do Claude Code CLI)</summary>
+
+Este repositório é um plugin marketplace do Claude Code. No terminal:
 
 ```bash
 claude plugin marketplace add supportelogistica/skills
@@ -109,7 +89,7 @@ environment".
 </details>
 
 <details>
-<summary>Alternativa manual (cópia direta, sem marketplace)</summary>
+<summary><strong>Cópia manual</strong> (precisa de git)</summary>
 
 Clone o repositório e copie cada skill para o diretório de skills do Claude Code:
 

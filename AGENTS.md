@@ -1,6 +1,6 @@
 # Instruções para agentes
 
-Biblioteca de skills da Supplog para Claude (chat do claude.ai) e Claude Code.
+Biblioteca de skills da Supplog para Claude Code.
 
 ## Propósito do repositório
 
@@ -8,18 +8,17 @@ Repositório da Supplog para skills reutilizáveis e autocontidas. Uma skill = u
 diretório + `SKILL.md`. Não são prompts soltos nem scripts genéricos — são capacidades
 invocáveis pelo modelo, com condições de gatilho explícitas.
 
-## Distribuição (dois modos)
+## Distribuição
 
-- **Modo simples (chat do claude.ai):** prompt único no `README.md` que lê a tabela
-  "Skills disponíveis" e cria/atualiza as habilidades a partir dos links raw de cada
-  `SKILL.md`. Fallback: zips por skill na release mais recente
+- **Instalação padrão (zip):** zips por skill na release mais recente
   (`releases/latest`), gerados automaticamente pela action
-  `.github/workflows/release-skills.yml`.
-- **Modo avançado (Claude Code):** instalação via `skills` CLI
-  (`npx skills add supportelogistica/skills`) e atualização via `npx skills update`.
-  Alternativa: o repositório também é um plugin marketplace
-  (`.claude-plugin/marketplace.json` + `plugin.json`), instalável com
-  `claude plugin marketplace add supportelogistica/skills`.
+  `.github/workflows/release-skills.yml`, para upload em
+  Configurações → Habilidades.
+- **Modos avançados (terminal):** `skills` CLI
+  (`npx skills add supportelogistica/skills`, atualiza com `npx skills update`);
+  plugin marketplace (`.claude-plugin/marketplace.json` + `plugin.json`,
+  instalável com `claude plugin marketplace add supportelogistica/skills`);
+  ou cópia manual para `~/.claude/skills/`.
 
 ## Estrutura
 
@@ -42,15 +41,11 @@ markdown. Sem arquivos de configuração separados.
 
 **`description` = gatilho, não vitrine.** É ela que decide se o Claude invoca a skill
 automaticamente — escreva como condições de uso ("use quando X, Y, Z"), não como texto
-de marketing. **Máximo de 200 caracteres** (limite do claude.ai para habilidades
-personalizadas).
+de marketing. **Máximo de 200 caracteres** (limite da tela de Habilidades do Claude).
 
-**Toda skill funciona nas duas superfícies.** O corpo deve incluir uma seção de
-detecção de ambiente (chat × Claude Code) sempre que o comportamento depender de acesso
-a arquivos: no Claude Code a skill lê/escreve arquivos do projeto; no chat ela pede os
-arquivos ao usuário e entrega resultados como arquivos para download. Não dependa de
-scripts empacotados, `allowed-tools` ou `context: fork` — esses recursos só existem no
-Claude Code.
+**Skills são para Claude Code.** Escreva assumindo acesso a arquivos e ao diretório de
+trabalho do projeto (Read/Write/Edit, terminal). Não inclua lógica de detecção de
+ambiente nem variações para o chat do claude.ai.
 
 **Nome = o que as pessoas procuram.** Kebab-case, rico em palavras-chave, alinhado ao
 que alguém digitaria ao buscar ou invocar a skill no time — não um nome "de marca". O
@@ -65,9 +60,9 @@ português.
 
 1. `mkdir skills/<nome>` — nome em kebab-case, rico em palavras-chave.
 2. Escreva o `SKILL.md`: frontmatter (`name`, `description` ≤ 200 caracteres com
-   condições de gatilho) + corpo (workflow, regras, exemplos, detecção de ambiente).
-3. **Adicione a linha na tabela "Skills disponíveis" do `README.md`** com o link raw do
-   `SKILL.md` — é essa tabela que o prompt de instalação do chat lê.
+   condições de gatilho) + corpo (workflow, regras, exemplos).
+3. **Adicione a linha na tabela "Skills disponíveis" do `README.md`** com o link para o
+   `SKILL.md`.
 4. Teste localmente em `~/.claude/skills/<nome>` antes de mergear.
 5. Commit: `feat: add <nome> skill`. O push na `main` publica automaticamente uma
    release versionada nova com os zips.
