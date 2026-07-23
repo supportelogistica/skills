@@ -15,8 +15,8 @@ lá sem pendências óbvias.
 
 ## Fluxo
 
-1. **Verifique antes de entregar.** Execute o fluxo da skill `supplog-check` (no Claude
-   Code, invoque `/supplog-check`; no chat, conduza a mesma verificação manualmente).
+1. **Verifique antes de entregar.** Invoque `/supplog-check` e execute a verificação
+   completa.
    - Há pendências ✖ → liste, oriente a corrigir e **pare aqui**. Entrega só sem
      pendências.
    - Tudo ✔ → siga para o checklist de entrega.
@@ -35,11 +35,5 @@ lá sem pendências óbvias.
 4. **Acione o TI:** oriente como formalizar a entrega.
    <!-- TODO: canal/contato oficial do TI da Supporte e formato da solicitação -->
 
----
-
-## Detecção de ambiente (chat × Claude Code)
-
-- **Claude Code:** confira e ajuste os itens do checklist nos arquivos reais do projeto
-  (ex.: atualizar o status no README).
-- **Chat (claude.ai):** conduza como checklist guiado, pedindo confirmação do viber item
-  a item, e entregue ao final um resumo do que ele ainda precisa fazer manualmente.
+Confira e ajuste os itens do checklist nos arquivos reais do projeto (ex.: atualizar o
+status no README).

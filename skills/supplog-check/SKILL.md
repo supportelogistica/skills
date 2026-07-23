@@ -13,15 +13,9 @@ planejado (`PLANEJAMENTO.md`) e os Padrões de Desenvolvimento Vibe Coding. Post
 **consultiva, não fiscal**: sinalize problemas com clareza, mas quem aprova ou reprova
 é o TI.
 
----
-
-## Detecção de ambiente (chat × Claude Code)
-
-- **Claude Code:** leia os arquivos do projeto diretamente (`PLANEJAMENTO.md`,
-  `README.md`, código-fonte, `database/`, `.gitignore`, `.env.example`).
-- **Chat (claude.ai):** peça ao usuário para enviar ou colar os arquivos relevantes —
-  no mínimo `PLANEJAMENTO.md` e `README.md`. **Não invente conclusões** sobre arquivos
-  que você não viu: marque como "não verificável".
+Leia os arquivos do projeto diretamente (`PLANEJAMENTO.md`, `README.md`, código-fonte,
+`database/`, `.gitignore`, `.env.example`). **Não invente conclusões** sobre arquivos
+que não existem ou que você não conseguiu ler: marque como "não verificável".
 
 ---
 
