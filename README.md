@@ -48,9 +48,9 @@ Pré-requisito: plano do Claude com habilidades personalizadas habilitadas
 
 ### Alternativa: upload de zip
 
-Se o prompt falhar, cada skill tem um zip pronto na release
-[`skills-latest`](https://github.com/supportelogistica/skills/releases/tag/skills-latest)
-(gerada automaticamente a cada mudança):
+Se o prompt falhar, cada skill tem um zip pronto na
+[release mais recente](https://github.com/supportelogistica/skills/releases/latest)
+(uma release versionada nova é gerada automaticamente a cada mudança nas skills):
 
 1. Baixe o zip da skill (ex.: `supplog-iniciar.zip`).
 2. No Claude: Configurações → Habilidades → Adicionar → **Fazer upload de uma habilidade**.
@@ -144,7 +144,7 @@ skills/
 │   ├── marketplace.json      # marketplace do Claude Code
 │   └── plugin.json           # plugin supplog-skills
 ├── .github/workflows/
-│   └── release-skills.yml    # gera os zips da release skills-latest
+│   └── release-skills.yml    # gera os zips e a release versionada (vAAAA.MM.DD-rN)
 ├── skills/
 │   └── <nome>/
 │       └── SKILL.md          # skill completa (frontmatter + corpo)

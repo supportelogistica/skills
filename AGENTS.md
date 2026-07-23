@@ -12,8 +12,9 @@ invocáveis pelo modelo, com condições de gatilho explícitas.
 
 - **Modo simples (chat do claude.ai):** prompt único no `README.md` que lê a tabela
   "Skills disponíveis" e cria/atualiza as habilidades a partir dos links raw de cada
-  `SKILL.md`. Fallback: zips por skill na release `skills-latest`, gerados
-  automaticamente pela action `.github/workflows/release-skills.yml`.
+  `SKILL.md`. Fallback: zips por skill na release mais recente
+  (`releases/latest`), gerados automaticamente pela action
+  `.github/workflows/release-skills.yml`.
 - **Modo avançado (Claude Code):** instalação via `skills` CLI
   (`npx skills add supportelogistica/skills`) e atualização via `npx skills update`.
   Alternativa: o repositório também é um plugin marketplace
@@ -26,7 +27,9 @@ invocáveis pelo modelo, com condições de gatilho explícitas.
 - `skills/<nome>/` pode conter arquivos de apoio (scripts, referências) ao lado do
   `SKILL.md`, caso a skill precise.
 - `.claude-plugin/` — manifests do marketplace do Claude Code.
-- `.github/workflows/release-skills.yml` — gera os zips da release `skills-latest`.
+- `.github/workflows/release-skills.yml` — gera os zips e publica uma release
+  versionada (`vAAAA.MM.DD-rN`) a cada mudança em `skills/`; a mais recente fica em
+  `releases/latest`.
 
 ## Filosofia
 
@@ -66,8 +69,8 @@ português.
 3. **Adicione a linha na tabela "Skills disponíveis" do `README.md`** com o link raw do
    `SKILL.md` — é essa tabela que o prompt de instalação do chat lê.
 4. Teste localmente em `~/.claude/skills/<nome>` antes de mergear.
-5. Commit: `feat: add <nome> skill`. O push na `main` regenera os zips da release
-   `skills-latest` automaticamente.
+5. Commit: `feat: add <nome> skill`. O push na `main` publica automaticamente uma
+   release versionada nova com os zips.
 
 ## Convenções
 
