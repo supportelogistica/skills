@@ -58,7 +58,33 @@ Se o prompt falhar, cada skill tem um zip pronto na release
 
 ## Modo avançado — Claude Code
 
-Este repositório é um **plugin marketplace** do Claude Code. Instale pelo **terminal**:
+Instalação via [`skills` CLI](https://github.com/vercel-labs/skills), no terminal.
+
+Instalar todas as skills (global, disponível em todos os projetos):
+
+```bash
+npx skills add supportelogistica/skills --all -g -y
+```
+
+Instalar uma skill específica:
+
+```bash
+npx skills add supportelogistica/skills --skill supplog-iniciar -g
+```
+
+**Atualizar** quando o repo mudar:
+
+```bash
+npx skills update -g -y
+```
+
+Sem `-g` a instalação fica no projeto atual em vez do usuário. `npx skills ls -g` lista
+o que está instalado.
+
+<details>
+<summary>Alternativa: plugin marketplace do Claude Code</summary>
+
+Este repositório também é um plugin marketplace. No terminal:
 
 ```bash
 claude plugin marketplace add supportelogistica/skills
@@ -68,18 +94,19 @@ claude plugin marketplace add supportelogistica/skills
 claude plugin install supplog-skills@supplog
 ```
 
-Para **atualizar** quando o repo mudar:
+Atualizar:
 
 ```bash
 claude plugin marketplace update supplog
 ```
 
-> Dentro de uma sessão interativa do CLI, os equivalentes são
-> `/plugin marketplace add supportelogistica/skills` e
-> `/plugin install supplog-skills@supplog`. O comando `/plugin` **só existe no CLI de
-> terminal** — no app desktop e no claude.ai/code ele responde "isn't available in this
-> environment"; nesses casos use os comandos de terminal acima ou o navegador de
-> plugins do app.
+Dentro de uma sessão interativa do CLI, os equivalentes são
+`/plugin marketplace add supportelogistica/skills` e
+`/plugin install supplog-skills@supplog`. O comando `/plugin` **só existe no CLI de
+terminal** — no app desktop e no claude.ai/code ele responde "isn't available in this
+environment".
+
+</details>
 
 <details>
 <summary>Alternativa manual (cópia direta, sem marketplace)</summary>

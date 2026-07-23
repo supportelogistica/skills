@@ -14,10 +14,11 @@ invocáveis pelo modelo, com condições de gatilho explícitas.
   "Skills disponíveis" e cria/atualiza as habilidades a partir dos links raw de cada
   `SKILL.md`. Fallback: zips por skill na release `skills-latest`, gerados
   automaticamente pela action `.github/workflows/release-skills.yml`.
-- **Modo avançado (Claude Code):** o repositório é um plugin marketplace
-  (`.claude-plugin/marketplace.json` + `plugin.json`). Instalação via
-  `/plugin marketplace add supportelogistica/skills` e atualização via
-  `/plugin marketplace update supplog`.
+- **Modo avançado (Claude Code):** instalação via `skills` CLI
+  (`npx skills add supportelogistica/skills`) e atualização via `npx skills update`.
+  Alternativa: o repositório também é um plugin marketplace
+  (`.claude-plugin/marketplace.json` + `plugin.json`), instalável com
+  `claude plugin marketplace add supportelogistica/skills`.
 
 ## Estrutura
 
