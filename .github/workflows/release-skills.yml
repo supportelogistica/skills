@@ -1,0 +1,42 @@
+# Gera um zip por skill e publica/atualiza a release "skills-latest".
+# Os zips servem para upload manual no claude.ai
+# (Configurações → Habilidades → Adicionar → Fazer upload de uma habilidade).
+name: Publicar release das skills
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "skills/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Gerar zips (um por skill)
+        run: |
+          mkdir -p dist
+          for dir in skills/*/; do
+            name=$(basename "$dir")
+            (cd skills && zip -r "../dist/${name}.zip" "$name")
+          done
+          ls -la dist/
+
+      - name: Publicar/atualizar release skills-latest
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: skills-latest
+          name: Skills Supplog (última versão)
+          body: |
+            Zips das skills para upload manual no claude.ai:
+            Configurações → Habilidades → Adicionar → **Fazer upload de uma habilidade**.
+
+            Gerado automaticamente a cada mudança em `skills/` na branch `main`.
+          files: dist/*.zip
