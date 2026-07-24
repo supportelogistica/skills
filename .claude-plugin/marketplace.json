@@ -1,0 +1,17 @@
+{
+  "name": "supplog",
+  "owner": {
+    "name": "Supplog"
+  },
+  "metadata": {
+    "description": "Skills internas da Supplog para Claude Code e claude.ai",
+    "version": "1.0.0"
+  },
+  "plugins": [
+    {
+      "name": "supplog-skills",
+      "source": "./",
+      "description": "Skills dos Padrões de Desenvolvimento Vibe Coding da Supplog: iniciar (planejamento), check (conformidade) e handoff (entrega ao TI)."
+    }
+  ]
+}

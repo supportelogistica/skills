@@ -1,6 +1,6 @@
 ---
 name: supplog-check
-description: Auditoria read-only de conformidade com os Padrões de Desenvolvimento Vibe Coding da Supplog — stack/porte, estrutura de pastas, arquitetura, nomenclatura, dados, segurança e higiene LGPD. Não altera nenhum arquivo do projeto; gera um relatório com sugestões de correção prontas para aplicar com o Claude. Use quando o usuário quiser checar, validar, auditar ou conferir se um projeto (novo ou já existente) está conforme os padrões, ou quiser preparar o projeto para subir para produção (antes do handoff ao TI).
+description: Auditoria read-only de conformidade com os Padrões Vibe Coding da Supplog. Gera RELATORIO-CHECK.md com correções prontas. Use ao checar, validar ou auditar um projeto, ou antes do handoff ao TI.
 ---
 
 # /supplog-check — Auditoria de conformidade (Padrão Supplog)

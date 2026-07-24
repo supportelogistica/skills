@@ -1,0 +1,50 @@
+# Gera um zip por skill e publica uma release versionada (vAAAA.MM.DD-rN).
+# A release mais recente fica sempre acessível em /releases/latest.
+# Os zips servem para upload manual no claude.ai
+# (Configurações → Habilidades → Adicionar → Fazer upload de uma habilidade).
+name: Publicar release das skills
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "skills/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Definir versão (data + número da execução)
+        id: versao
+        run: echo "tag=v$(date -u +%Y.%m.%d)-r${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+
+      - name: Gerar zips (um por skill)
+        run: |
+          mkdir -p dist
+          for dir in skills/*/; do
+            name=$(basename "$dir")
+            (cd skills && zip -r "../dist/${name}.zip" "$name")
+          done
+          ls -la dist/
+
+      - name: Publicar release versionada
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.versao.outputs.tag }}
+          name: Skills Supplog ${{ steps.versao.outputs.tag }}
+          generate_release_notes: true
+          make_latest: true
+          body: |
+            Zips das skills para upload manual no claude.ai:
+            Configurações → Habilidades → Adicionar → **Fazer upload de uma habilidade**.
+
+            A versão mais recente está sempre em:
+            https://github.com/supportelogistica/skills/releases/latest
+          files: dist/*.zip

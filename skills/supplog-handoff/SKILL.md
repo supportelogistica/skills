@@ -1,6 +1,6 @@
 ---
 name: supplog-handoff
-description: Prepara a entrega do projeto para avaliação do TI (subida para produção) conforme os Padrões de Desenvolvimento Vibe Coding da Supplog. Confere pendências (relatório da /supplog-check, README, segredos fora do pacote), gera o ZIP do projeto e escreve o GUIA-HANDOFF.md — guia prático com onde enviar, mensagem de solicitação pronta e o que esperar do SLA. Use quando o usuário quiser entregar, enviar ou submeter o projeto ao TI, solicitar avaliação ou subida para produção, fazer o handoff ou empacotar/zipar o projeto para entrega.
+description: Prepara a entrega do projeto ao TI conforme os padrões Supplog: confere pendências, gera zip sem segredos e o GUIA-HANDOFF.md. Use ao entregar, submeter ou empacotar o projeto para produção.
 ---
 
 # /supplog-handoff — Entrega do projeto ao TI (Padrão Supplog)

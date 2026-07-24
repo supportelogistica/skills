@@ -1,0 +1,8 @@
+{
+  "name": "supplog-skills",
+  "description": "Skills dos Padrões de Desenvolvimento Vibe Coding da Supplog: iniciar (planejamento), check (conformidade) e handoff (entrega ao TI).",
+  "version": "1.0.0",
+  "author": {
+    "name": "Supplog"
+  }
+}
