@@ -30,8 +30,8 @@ de skills da Supplog. **Audite contra ela, item a item** — não de memória.
    aprovar/reprovar é do TI (crivo fora desta skill). Seu papel é dar visibilidade
    e caminho de correção.
 4. **Higiene LGPD, não conformidade legal.** Ao reportar a seção LGPD, deixe
-   explícito que a verificação é de **higiene técnica** (seção 4.4 do padrão), não
-   um parecer jurídico de conformidade com a lei.
+   explícito que a verificação é de **higiene técnica** (seção **4.6** do padrão),
+   não um parecer jurídico de conformidade com a lei.
 5. **Todo apontamento tem endereço.** Cada item cita a **seção do padrão** que o
    fundamenta e, quando possível, o **arquivo (e linha)** onde o problema está.
 6. **Sugestão pronta para colar.** Cada não-conformidade vem com uma instrução de
@@ -75,10 +75,13 @@ interface não audita XSS). Cobertura por área:
 | Arquitetura            | 2.6              | rotas finas; regra de negócio em services; componentes React funcionais; custom hooks; chamadas de API em services/; middleware para auth/validação             |
 | Nomenclatura de código | 2.4              | snake_case/PascalCase/camelCase conforme a stack; comentários em português                                                                                      |
 | README                 | 2.7              | todas as seções obrigatórias presentes e preenchidas                                                                                                            |
+| Identidade visual      | 2.8              | apps com UI: tokens/fontes/logo/favicon do [brand](https://github.com/supportelogistica/brand); cores chumbo/laranja/branco; Lucide; zero emojis (automações sem tela: ➖) |
 | Dados                  | 3.1–3.7          | nomenclatura de tabelas/colunas; PK; CriadoEm/AtualizadoEm; booleanos; sem ORM; SQL puro parametrizado; scripts_criacao.sql; UTF-8; seed                        |
-| Segurança              | 4.1, 4.2         | validação no back-end; sem SQL concatenado; escape de output; erros/logs; upload; .env no .gitignore; .env.example; sem segredo hardcoded                       |
-| Autenticação           | 4.3              | hash bcrypt/argon2; política de senha (mín. 14 caracteres, 3 de 4 categorias, histórico, rotação); bloqueio após 5 tentativas; expiração de sessão; logout real |
-| Higiene LGPD           | 4.4              | as 8 regras: inventário, back-end obrigatório, acesso restrito, seed fictício, nada em URL, logs, minimização, fonte DW                                         |
+| Segurança              | 4.1, 4.2, 4.5    | validação rigorosa no back-end; OWASP Top 10 (sem injeção/XSS/BOLA); SQL param.; escape; erros sem stack; logs/auditoria; upload; certificados fora de público; .env; .env.example; sem hardcode; deps de IA conferidas; criptografia trânsito/repouso; anonimização (fonte: PO-SI-0015) |
+| Controle de acessos    | 4.3              | contas nominais (sem genéricas); RBAC quando dado sensível; conexão DB com privilégio mínimo                                                                                                                                    |
+| Autenticação / senhas  | 4.4              | hash bcrypt/argon2; senha mín. 14 com 4 categorias; bloqueio dicionário/padrões/termos da org; histórico das últimas 5; checagem de vazamento quando viável; rotação 90d (elevados) / NIST (padrão); bloqueio ≥ 15 min após 5 tentativas; msgs genéricas; recuperação por token; logout real; timeout 15–30 min (ou 2–5 alto risco) |
+| Higiene LGPD           | 4.6              | as 8 regras: inventário, back-end obrigatório, acesso restrito, seed fictício, nada em URL, logs, minimização, fonte DW                                                                                                         |
+| App externo            | 4.7              | MFA/2FA; TLS 1.2+; rate limiting; CSP/HSTS/X-Frame-Options; CSRF; cert AC confiável; sem admin/debug públicos; herança 4.3–4.4 (apps internos: ➖)                                                                              |
 | Ambiente               | 5.1–5.2          | SQLite em homologação; seed existe (e lembrete: não pode ir para produção)                                                                                      |
 
 ### Passo 3 — Verificar item a item
@@ -227,6 +230,16 @@ request, response, erros); Estrutura de dados (tabelas e finalidade); Fontes do 
 consumidas; Dependências externas; Status (Em desenvolvimento / Em teste /
 Aguardando aprovação / Em produção); Histórico de alterações.
 
+### 2.8 Identidade visual (marca / brand)
+
+Apps **com interface** devem seguir
+[supportelogistica/brand](https://github.com/supportelogistica/brand)
+(`README.md` → `AGENTS.md` → `DESIGN.md`). Verificar: tokens oficiais
+(`tokens/supporte.css` ou Tailwind do brand); fontes Titillium Web / Fira Sans /
+Fira Code; logo e favicon oficiais (não redesenhados); cores base chumbo
+`#58595B`, laranja `#F37021`, branco; ícones Lucide; **zero emojis**. Automações
+sem tela: não se aplica.
+
 ### 3.1–3.7 Dados
 
 - **3.1 Convenções:** tabelas e colunas em português; tabelas
@@ -252,38 +265,61 @@ Aguardando aprovação / Em produção); Histórico de alterações.
 
 ### 4.1 Segurança em desenvolvimento
 
-- Validar/sanitizar **toda** entrada no back-end (formulário, query string,
-  upload), nunca só no front.
-- SQL Injection: queries parametrizadas/prepared statements obrigatórias.
+- Validar rigorosamente **toda** entrada no back-end (tamanho, tipo, sintaxe,
+  regras de negócio) — formulário, query string, upload; nunca só no front.
+- Mitigar OWASP Top 10; proibido publicar com injeção (SQL/NoSQL/comandos), XSS
+  ou BOLA.
+- SQL: queries parametrizadas/prepared statements obrigatórias (sem concatenação).
 - XSS: escapar output em templates/HTML (não desativar o padrão do Jinja2/React).
-- Erros/logs: nunca expor stack trace ou erro interno ao usuário; não logar dado
-  sensível em texto puro.
+- Erros: nunca expor stack trace ou erro interno ao usuário.
+- Logs/auditoria: registrar eventos de segurança e ações sensíveis (login
+  sucesso/falha, mudanças de privilégios); não logar confidencial/senha em texto
+  claro.
 - Upload: validar o **tipo real** do arquivo (não só a extensão) e limitar
   tamanho.
+- Certificados (`.pfx`, `.pem`, `.crt`, `.enc`) fora de diretórios públicos.
 
 ### 4.2 Variáveis de ambiente e segredos
 
 - `.env` nunca commitado (consta no `.gitignore`).
-- `.env.example` obrigatório e versionado (todas as chaves, valores
-  fictícios/vazios).
-- Nenhum segredo hardcoded; carregar via `python-dotenv` (Flask) ou `process.env`
-  (Node).
+- `.env.example` obrigatório e versionado (valores fictícios/didáticos/vazios).
+- Nenhum segredo hardcoded; remover chaves geradas incorretamente por IA.
+- Carregar via `python-dotenv` (Flask) ou `process.env` (Node).
 - Nenhum segredo real em README, comentário ou mensagem de commit.
+- Dependências sugeridas por IA: confirmar existência, autoria e reputação;
+  proibido pacote obsoleto, rastreador não homologado ou lib sem manutenção.
 
-### 4.3 Autenticação — login básico
+### 4.3 Autenticação e controle de acessos
+
+- Contas nominais por usuário — proibidas contas genéricas/compartilhadas.
+- RBAC (grupos/perfis) quando houver dados pessoais, sensíveis ou confidenciais.
+- Conexão com banco sob privilégio mínimo — proibido admin/root.
+
+### 4.4 Autenticação e senhas (login)
 
 Enquanto não há SSO, aplicação promovida para produção implementa login próprio:
 
 - Senha nunca em texto puro — hash **bcrypt** ou **argon2**.
-- Bloqueio temporário após **5** tentativas erradas.
-- Sessão com expiração por inatividade; logout invalida a sessão de fato.
-- **Formato de senha (padrão corporativo):** mínimo **14 caracteres**; não conter
-  o nome da conta nem mais de 4 caracteres consecutivos do nome completo do
-  usuário; caracteres de **3 destas 4 categorias** — maiúsculos (A-Z), minúsculos
-  (a-z), dígitos (0-9), não alfabéticos (`!`, `$`, `#`, `%`); não estar no
-  histórico de **6** senhas; rotação a cada **90 dias**.
+- Mínimo **14 caracteres** com maiúsculas, minúsculas, números **e** especiais.
+- Rejeitar dicionário, sequências óbvias, dados do usuário e termos da org
+  (ex.: `Supporte`).
+- Histórico: impedir reuso das **últimas 5** senhas; checagem contra listas de
+  vazamento quando viável.
+- Rotação: privilégios **elevados** → máx. **90 dias**; privilégios **padrão** →
+  sem expiração fixa, com checagem periódica de vazamento (mín. mensal).
+- Bloqueio ≥ **15 minutos** após **5** tentativas inválidas consecutivas.
+- Mensagens de login genéricas; recuperação não revela se a conta existe.
+- Recuperação só via link com token de uso único e expiração 15–30 min — proibido
+  enviar senha em texto claro por e-mail/SMS.
+- Logout invalida a sessão no servidor; timeout por inatividade 15–30 min (ou
+  2–5 min em alto risco).
 
-### 4.4 Dados pessoais — higiene LGPD
+### 4.5 Proteção de dados
+
+- Criptografia adequada em trânsito e em repouso para dados confidenciais/sensíveis.
+- Massas reais de produção em dev/homolog só com anonimização/mascaramento.
+
+### 4.6 Dados pessoais — higiene LGPD
 
 Higiene **técnica** (não é parecer jurídico):
 
@@ -292,12 +328,25 @@ Higiene **técnica** (não é parecer jurídico):
 2. **Exige back-end:** proibido dado pessoal em aplicação estática; front recebe
    só o necessário para exibição.
 3. **Acesso restrito:** dado pessoal exige login — obrigatório em produção,
-   recomendado em homologação.
-4. **Seed 100% fictício:** proibido dado pessoal real em seed.
+   recomendado em homologação; RBAC (4.3) quando sensível/confidencial.
+4. **Seed 100% fictício:** proibido dado pessoal real em seed (alinhar a 4.5).
 5. **Nunca em URL:** dado pessoal não trafega em query string/parâmetros.
 6. **Logs:** não registrar dado pessoal em texto puro.
 7. **Minimização:** só coletar/armazenar o que os fluxos documentados justificam.
 8. **Fonte:** dado pessoal da empresa só via **DW** (única fonte permitida).
+
+### 4.7 Aplicações de uso externo
+
+Além de 4.1–4.6, quando o app é externo:
+
+- MFA/2FA para acesso humano; M2M via OAuth client credentials, mTLS ou API keys
+  rotacionáveis.
+- HTTPS TLS 1.2+ (HTTP claro proibido).
+- Rate limiting e proteção a credential stuffing.
+- Headers CSP, HSTS, X-Frame-Options; CSRF com tokens.
+- Certificados de AC confiável (sem autoassinado em prod).
+- Sem painéis admin/debug públicos; só portas necessárias.
+- Herda contas nominais, timeout e privilégio mínimo no DB (4.3–4.4).
 
 ### 5.1–5.2 Ambiente (o que a auditoria estática cobre)
 

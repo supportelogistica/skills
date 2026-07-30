@@ -1,6 +1,6 @@
 ---
 name: supplog-iniciar
-description: Da ideia ao app construído seguindo os Padrões Vibe Coding da Supplog: entrevista guiada, stack/porte, PLANEJAMENTO.md, README.md e construção do app. Use ao criar do zero um app, site ou sistema.
+description: Construção, seguindo os Padrões de Desenvolvimento Vibe Coding da Supplog. Conduz entrevista guiada em linguagem humana, classifica stack/porte automaticamente, gera PLANEJAMENTO.md e README.md e constrói a aplicação completa conforme o padrão (estrutura de pastas, arquitetura, banco com scripts e seed, segurança, LGPD). Use quando o usuário quiser criar, iniciar ou começar do zero uma nova aplicação, app, automação, site, sistema ou projeto.
 ---
 
 # /supplog-iniciar — Da ideia ao app rodando (Padrão Supplog)
@@ -36,7 +36,8 @@ A **fonte de verdade** técnica são os **Padrões de Desenvolvimento Vibe Codin
 3. **Planejamento** — escreve `PLANEJAMENTO.md` + `README.md` e apresenta o plano
    em linguagem simples; o viber confirma antes da construção começar.
 4. **Construção** — estrutura de pastas, banco, código e telas, tudo conforme o
-   padrão, fluxo a fluxo.
+   padrão, fluxo a fluxo. Telas e UI seguem a marca oficial
+   ([supportelogistica/brand](https://github.com/supportelogistica/brand)).
 5. **Entrega para teste** — app rodando + roteiro de teste em linguagem simples.
    O "pronto" funcional é o viber quem dá; depois do OK dele, o próximo passo é a
    `/supplog-check`.
@@ -93,7 +94,7 @@ se a conversa pedir, mas **não pule** nenhum bloco.
 - **Toca em dado de pessoa** (nome, CPF, e-mail, telefone, endereço)? Se sim,
   quais? → Se sim, registre como **dado pessoal/LGPD** e explique que exige
   back-end, armazenamento cuidadoso e nada de expor no front (regras de higiene
-  LGPD, seção 4.4 do padrão).
+  LGPD, seção 4.6 do padrão).
 - **De onde vêm os dados?** Lembre a regra: a **única fonte permitida** de dados
   da empresa é o **DW**. Registre quais fontes do DW serão consumidas.
 
@@ -109,14 +110,20 @@ se a conversa pedir, mas **não pule** nenhum bloco.
 
 ### Bloco 6 — Segurança (em linguagem de intenção)
 
+- O app é **só interno** (rede/colaboradores) ou também **externo** (fora da rede
+  ou usuários que não são colaboradores)? → Ambos seguem a **PO-SI-0015** e as
+  seções 4.1–4.6. Se **externo**, registre também a seção **4.7** (MFA, TLS,
+  headers, rate limit, CSRF etc.).
 - Qualquer pessoa pode ver/usar, ou **só gente autorizada**? → Se exige login,
   explique que **em homologação o login é livre**, mas **em produção vira
-  obrigatório** (SSO; enquanto não há SSO, login próprio com as regras básicas —
-  senha com hash, mín. 14 caracteres, bloqueio após 5 tentativas, expiração de
-  sessão — política completa na seção 4.3 do padrão).
+  obrigatório** (SSO; enquanto não há SSO, login próprio — contas nominais, sem
+  conta compartilhada; senha com hash, mín. 14 caracteres, bloqueio após 5
+  tentativas com pausa ≥ 15 min, timeout de sessão — política completa nas seções
+  4.3 e 4.4 do padrão). Se houver dado pessoal/sensível, registre necessidade de
+  **perfis/RBAC** (seção 4.3).
 - Vai **receber informação digitada** pelo usuário (formulários, uploads)? →
   Registre que toda entrada será **validada no back-end** e que upload valida tipo
-  e tamanho.
+  real e tamanho (seção 4.1).
 
 ### Bloco 7 — Identidade
 
@@ -195,7 +202,9 @@ roteiro de teste>
 
 ## Segurança
 
+- Escopo: <interno | externo (seção 4.7)>
 - Acesso: <público / restrito por login>
+- Perfis/RBAC: <sim / não — quando houver dado pessoal/sensível>
 - Entradas de usuário: <formulários, uploads — ou "nenhuma">
 
 ## Classificação automática
@@ -208,9 +217,10 @@ roteiro de teste>
 
 <liste apenas as seções relevantes ao caso — ex.: se tem banco, cite 3.1–3.7
 (scripts_criacao.sql, seed, SQL puro parametrizado, CriadoEm/AtualizadoEm) e 5.1
-(SQLite em homologação); se tem login, cite 4.3; se tem dado pessoal, cite 4.4;
-sempre cite 2.4 (nomenclatura), 2.5 (pastas) e 2.6 (arquitetura) da stack
-escolhida>
+(SQLite em homologação); se tem login, cite 4.3–4.4; se tem dado pessoal, cite
+4.5–4.6; se for uso externo, cite 4.7; sempre cite 2.4 (nomenclatura), 2.5
+(pastas) e 2.6 (arquitetura) da stack escolhida; se houver interface, cite 2.8
+(marca / brand)>
 
 ## Pontos de atenção / conflitos com o padrão
 
@@ -316,20 +326,37 @@ Com o plano confirmado, **construa a aplicação completa**. Regras da construç
    chamadas de API em `services/`; middleware para autenticação/validação quando
    houver API.
 5. **Nomenclatura** (seção 2.4) em tudo; comentários de código em português.
-6. **Segurança desde o início** (seções 4.1–4.2): validação de toda entrada no
-   back-end; escape de output; erros tratados sem stack trace para o usuário;
-   nenhum segredo hardcoded; `.env.example` versionado.
-7. **Login** (seção 4.3): em homologação o acesso é livre — só implemente login se
-   o projeto exigir acesso restrito desde já; se implementar, siga a política
-   completa (hash bcrypt/argon2, senha mín. 14 caracteres, 3 de 4 categorias,
-   bloqueio após 5 tentativas, expiração de sessão, logout real).
-8. **Higiene LGPD** (seção 4.4) quando houver dado pessoal: nada de dado pessoal
+6. **Segurança desde o início** (seções 4.1–4.2 e 4.5; fonte PO-SI-0015):
+   validação rigorosa de toda entrada no back-end; mitigação OWASP Top 10 (sem
+   injeção, XSS, BOLA); SQL parametrizado; escape de output; erros sem stack
+   trace; logs/auditoria de ações sensíveis; upload com tipo real e tamanho;
+   certificados fora de pastas públicas; nenhum segredo hardcoded;
+   `.env.example` versionado; deps sugeridas por IA conferidas; dados sensíveis
+   criptografados em trânsito/repouso; massa de produção anonimizada em
+   homologação. App **externo** → seção **4.7** também.
+7. **Acesso e login** (seções 4.3–4.4): em homologação o acesso é livre — só
+   implemente login se o projeto exigir acesso restrito desde já; se implementar:
+   contas nominais (sem genéricas/compartilhadas), RBAC quando houver dado
+   sensível, DB com privilégio mínimo, hash bcrypt/argon2, senha mín. 14 com as
+   4 categorias (sem dicionário/padrões/termos da org), histórico das últimas 5,
+   checagem de senhas vazadas quando viável, rotação 90 dias em privilégios
+   elevados, bloqueio ≥ 15 min após 5 tentativas, mensagens genéricas,
+   recuperação só por token de uso único, logout que invalida sessão no servidor,
+   timeout 15–30 min (ou 2–5 min se alto risco).
+8. **Higiene LGPD** (seção 4.6) quando houver dado pessoal: nada de dado pessoal
    em app estático, em URL, em log ou no seed; colete só o que os fluxos
    justificam; fonte de dado da empresa é só o DW.
-9. **Escopo fechado.** Não invente fluxos que não foram levantados. Se a
-   construção exigir uma decisão técnica nova (ex.: tabela extra), **decida você**
-   conforme o padrão e registre em "Adendos da construção" no `PLANEJAMENTO.md`.
-10. **README de verdade.** Ao final, resolva **todos** os TODOs do README:
+9. **Marca / interface (obrigatório quando houver tela)** — seção 2.8. **Antes**
+   de construir qualquer UI, consulte o repositório oficial
+   [supportelogistica/brand](https://github.com/supportelogistica/brand). Leia
+   nesta ordem: `README.md` → `AGENTS.md` → `DESIGN.md`. Use somente assets e
+   tokens oficiais (logo, favicon, fontes, grafismos, `tokens/`). Não redesenhe
+   a marca nem invente cores/tipografia fora do que o brand define. Automações
+   sem interface estão isentas.
+10. **Escopo fechado.** Não invente fluxos que não foram levantados. Se a
+    construção exigir uma decisão técnica nova (ex.: tabela extra), **decida você**
+    conforme o padrão e registre em "Adendos da construção" no `PLANEJAMENTO.md`.
+11. **README de verdade.** Ao final, resolva **todos** os TODOs do README:
     versão exata da stack, como rodar (incluindo o comando do seed), endpoints
     com método/rota/tabelas/request/response/erros, estrutura de dados. Histórico
     ganha a entrada inicial. Status permanece **Em desenvolvimento**.
@@ -341,6 +368,11 @@ A construção só está concluída quando **tudo** abaixo for verdade:
 - [ ] Todos os fluxos do `PLANEJAMENTO.md` implementados.
 - [ ] Estrutura de pastas e arquitetura conforme seções 2.5 e 2.6 (faça uma
       auto-revisão rápida antes de entregar).
+- [ ] Interface (quando houver) alinhada à seção 2.8: brand consultado
+      (`AGENTS.md` + `DESIGN.md`), tokens/fontes/logo/favicon oficiais, zero
+      emojis, ícones Lucide.
+- [ ] Se app **externo**: controles da seção 4.7 (MFA, TLS 1.2+, rate limit,
+      headers, CSRF, sem painéis/debug públicos).
 - [ ] Banco criado **pelos scripts** (`scripts_criacao.sql`) e seed executando sem
       erro (quando houver banco).
 - [ ] App sobe localmente seguindo **exatamente** as instruções do README (teste
@@ -393,6 +425,15 @@ ciclo construir → testar → ajustar continua até ele dar o OK funcional.
 3. **Nova seção 2.6 — Padrões de Arquitetura de Código** (a seção "README
    Obrigatório" foi renumerada de 2.6 para 2.7).
 4. **Nova seção 4.4 — Dados Pessoais (Higiene LGPD).**
+5. **Nova seção 2.8 — Identidade visual (marca Supporte / brand):** interfaces
+   devem consultar e aplicar
+   [supportelogistica/brand](https://github.com/supportelogistica/brand).
+6. **Seção 4 reestruturada (segurança vigente, 29/07/2026):** 4.1–4.5 alinhadas
+   à política atual (OWASP/BOLA, RBAC, login/senha, criptografia/anonimização);
+   higiene LGPD renumerada de 4.4 para **4.6**.
+7. **PO-SI-0015 mínimo útil (30/07/2026):** reframe (política vale para todos);
+   senhas com bloqueio de dicionário/padrões e rotação NIST/90d; nova seção
+   **4.7** com controles obrigatórios para apps externos.
 
 ---
 
@@ -577,6 +618,7 @@ A estrutura de pastas (2.5) define **onde** o código vive; as regras abaixo def
   (seção 3.5). Rota não acessa banco diretamente.
 - **Templates** (Jinja2) apenas exibem dados; proibido regra de negócio em
   template.
+- Visual e tokens (Tailwind): seção **2.8** (brand).
 
 **Node / Nitro (back-end):**
 
@@ -598,11 +640,13 @@ A estrutura de pastas (2.5) define **onde** o código vive; as regras abaixo def
 - **Páginas** (`client/src/pages/`) compõem **componentes reutilizáveis**
   (`client/src/components/`).
 - O front exibe e coleta dados; regra de negócio fica no back-end.
+- Visual e tokens: seção **2.8** (brand).
 
 **Estático:**
 
 - JS puro, sem framework e sem etapa de build; separação de HTML, CSS e JS
   conforme 2.5.3.
+- Visual e tokens: seção **2.8** (brand).
 
 #### 2.7 README Obrigatório
 
@@ -622,6 +666,38 @@ obrigatoriamente:
 - Dependências externas
 - Status (Em desenvolvimento / Em teste / Aguardando aprovação / Em produção)
 - Histórico de alterações
+
+#### 2.8 Identidade visual (marca Supporte / brand)
+
+Toda aplicação **com interface** (estática, Flask+Tailwind ou Node/Nitro+React)
+deve seguir a identidade visual oficial da Supporte. A fonte de verdade é o
+repositório:
+
+**https://github.com/supportelogistica/brand**
+
+**Obrigatório na construção de telas:**
+
+1. **Antes de desenhar ou codificar UI**, leia neste repositório, nesta ordem:
+   - `README.md` — mapa de assets e por onde começar
+   - `AGENTS.md` — regras de uso de logo, favicon, grafismos, ícones e checklist
+   - `DESIGN.md` — tokens, cores, tipografia, componentes e diretrizes de UI
+2. **Importe os tokens e fontes oficiais** do brand (não invente valores):
+   - CSS: `tokens/supporte.css` + `fontes/fontes.css`
+   - Tailwind v4: `tokens/tailwind.css`; Tailwind v3: `tokens/tailwind.preset.js`
+3. **Use assets oficiais** de `logo/`, `favicon/`, `simbolo/` e `grafismos/` —
+   copie do repositório brand para o projeto. **Proibido** redesenhar, recortar,
+   recolorir ou reconstruir a marca.
+4. **Regras rápidas (detalhe completo no brand):**
+   - Cores base: Chumbo `#58595B`, Laranja `#F37021`, Branco `#FFFFFF` (laranja
+     só como destaque)
+   - Tipografia: Titillium Web (títulos), Fira Sans (texto/UI), Fira Code (só
+     código)
+   - Ícones: família [Lucide](https://lucide.dev/); logos de terceiros via
+     Iconify/Simple Icons
+   - **Emojis proibidos** em qualquer interface ou documento da marca
+   - Favicon: regra comum vs. kit por ambiente (produção / homolog / localhost)
+     conforme `AGENTS.md`
+5. **Automações sem tela** (Python puro) estão **isentas** desta seção.
 
 ---
 
@@ -698,61 +774,131 @@ permitindo teste imediato sem depender de dado real.
 
 ### 4. Segurança
 
-Os itens abaixo cobrem cuidados básicos de segurança na camada de aplicação. Não
-abrangem infraestrutura ou rede, que são de responsabilidade de outra área.
+Os requisitos das seções **4.1 a 4.6** são a tradução operacional, para vibe
+coding, da **PO-SI-0015 – Política de Desenvolvimento Seguro** (GED/FLUIG) e são
+obrigatórios para **todas** as aplicações (uso interno e externo). Aplicações de
+uso **externo** devem cumprir, além disso, a seção **4.7**. Estes itens cobrem a
+camada de aplicação; infraestrutura e rede são de outra área.
+
+A PO-SI-0015 completa (governança, sanções, ferramentas homologadas, ROPA/RIPD
+detalhado etc.) permanece a fonte normativa no FLUIG — aqui ficam só os
+requisitos acionáveis na construção do app.
 
 #### 4.1 Segurança em Desenvolvimento
 
-- **Validação e sanitização de entrada:** toda entrada do usuário (formulário,
-  query string, upload) deve ser validada no back-end, nunca somente no front-end.
-- **Prevenção de SQL Injection:** uso obrigatório de queries
-  parametrizadas/prepared statements, sem concatenação direta de valores de input
-  na string SQL.
+- **Validação de entradas:** toda entrada de dados (formulário, query string,
+  upload) deve ter tamanho, tipo, sintaxe e regras de negócio validados
+  rigorosamente no back-end antes de ser processada ou armazenada — nunca somente
+  no front-end.
+- **Prevenção de vulnerabilidades (OWASP Top 10):** o desenvolvimento deve
+  mitigar as vulnerabilidades do OWASP Top 10; é expressamente proibida a
+  publicação de códigos com falhas de injeção (SQL, NoSQL, comandos), XSS
+  (Cross-Site Scripting) e BOLA (Broken Object Level Authorization).
+- **Consultas a banco de dados:** uso obrigatório de consultas
+  parametrizadas/prepared statements. É estritamente proibida a construção de
+  consultas com concatenação direta de variáveis na instrução SQL.
 - **Prevenção de XSS:** todo output renderizado em templates/HTML deve ser
-  escapado corretamente (padrão do Jinja2 e do React já ajuda, mas não deve ser
+  escapado corretamente (o padrão do Jinja2 e do React já ajuda, mas não deve ser
   desativado).
-- **Tratamento de erros e logs:** nunca expor stack trace ou mensagem interna de
-  erro de banco para o usuário final; logs não devem registrar dado sensível em
-  texto puro.
-- **Upload de arquivos** (quando aplicável): validar o tipo real do arquivo (não
-  somente a extensão do nome) e limitar o tamanho aceito.
+- **Tratamento de erros:** garantir o tratamento adequado de erros e exceções. É
+  terminantemente proibida a exibição de mensagens de erro detalhadas (stack
+  traces) ao usuário final.
+- **Logs e auditoria:** implementar o registro contínuo de eventos de segurança e
+  trilhas de auditoria para ações sensíveis (sucesso/falha de login, mudanças de
+  privilégios). Não é permitido gravar dados confidenciais ou senhas em texto
+  claro nos arquivos de log.
+- **Upload de arquivos:** quando aplicável, validar o tipo real do arquivo (não
+  confiar apenas na extensão do nome) e limitar rigorosamente o tamanho máximo
+  aceito.
+- **Certificados digitais:** arquivos de certificados (`.pfx`, `.pem`, `.crt`,
+  `.enc`) não devem ser armazenados em diretórios públicos da aplicação.
 
 #### 4.2 Variáveis de Ambiente e Segredos
 
-- Nunca commitar o arquivo `.env` (deve constar no `.gitignore`).
-- `.env.example` obrigatório e versionado, com todas as chaves necessárias
-  (valores fictícios/vazios).
-- Nenhum segredo hardcoded no código.
-- Carregamento via biblioteca padrão do ecossistema (`python-dotenv` no Flask;
-  `process.env` no Node).
-- Nenhum segredo real em README, comentário de código ou mensagem de commit.
+- **Proteção do `.env`:** arquivos com variáveis de ambiente e credenciais são
+  estritamente confidenciais, nunca devem ser commitados e devem constar
+  obrigatoriamente no `.gitignore`.
+- **Arquivo de exemplo:** criar e versionar um arquivo de modelo (`.env.example`)
+  preenchido exclusivamente com valores fictícios, didáticos ou vazios.
+- **Sem hardcode:** é terminantemente proibida a inserção de senhas, chaves de
+  API ou tokens embutidos diretamente no código-fonte. O autor da aplicação deve
+  remover chaves geradas incorretamente por IA.
+- **Carregamento dinâmico:** credenciais e variáveis devem ser carregadas
+  dinamicamente em tempo de execução (`python-dotenv` no Flask; `process.env` no
+  Node).
+- **Segredos fora de artefatos:** nenhum segredo real em README, comentário de
+  código ou mensagem de commit.
+- **Validação de IA:** dependências sugeridas por IA devem ter sua existência,
+  autoria e reputação confirmadas manualmente. É proibido o uso de pacotes
+  obsoletos, rastreadores não homologados ou bibliotecas sem manutenção.
 
-#### 4.3 Autenticação — Login Básico _(política de senha atualizada na v1.1)_
+#### 4.3 Autenticação e Controle de Acessos
+
+- **Autenticação individual:** implementar controle de acesso por usuário e
+  senhas nominais. É expressamente proibida a utilização de contas genéricas ou
+  compartilhadas.
+- **Segregação (RBAC):** implementar segregação de acessos baseada em grupos ou
+  perfis, garantindo que funcionalidades sensíveis sejam operáveis exclusivamente
+  por pessoas autorizadas quando houver uso de dados pessoais, sensíveis e
+  confidenciais.
+- **Privilégio mínimo (banco de dados):** as conexões do sistema com o banco de
+  dados devem operar estritamente com os privilégios mínimos necessários, sendo
+  proibido o uso de credenciais de administrador ou root.
+
+#### 4.4 Autenticação e Senhas (Login)
 
 Enquanto o SSO (ver seção 5.4) não está disponível, toda aplicação promovida para
-produção deve implementar seu próprio sistema de login, seguindo as regras básicas
-abaixo.
+produção deve implementar seu próprio sistema de login, seguindo as regras abaixo.
 
-- Senha nunca armazenada em texto puro — obrigatório uso de hash (**bcrypt** ou
-  **argon2**).
-- Limite de tentativas de login, com **bloqueio temporário após 5 tentativas**
-  erradas.
-- Sessão com **expiração por inatividade**.
-- **Logout deve invalidar a sessão de fato**, não apenas ocultar a tela no
+- **Armazenamento seguro:** a senha do usuário nunca deve ser armazenada em texto
+  puro — é obrigatória a aplicação de funções de hash seguras e modernas
+  (**bcrypt** ou **argon2**).
+- **Complexidade no back-end:** o sistema deve validar e forçar um comprimento
+  mínimo de **14 caracteres**, incluindo combinação de letras maiúsculas,
+  minúsculas, números **e** caracteres especiais.
+- **Bloqueio de dicionário e padrões:** rejeitar senhas com palavras de
+  dicionário genéricas, sequências óbvias (ex.: `123456`, `qwerty`), dados do
+  próprio usuário (nome, e-mail, data de nascimento) ou termos da organização
+  (ex.: `Supporte`, `Supp123`, `Logística`).
+- **Histórico e senhas comprometidas:** impedir o reuso das **últimas 5** senhas.
+  Quando viável, validar a nova credencial contra listas de senhas conhecidamente
+  vazadas (sem expor a senha/hash completa — ex.: modelo k-anonymity).
+- **Rotação (alinhada à PO-SI-0015 / NIST SP 800-63B):**
+  - **Privilégios elevados** (admin, root, DBA, contas de serviço, automações,
+    acesso a dados sensíveis/confidenciais): expiração obrigatória em no máximo
+    **90 dias**, com aviso prévio e bloqueio até nova senha.
+  - **Privilégios padrão** (usuário final sem acesso admin/sensível): dispensada
+    a expiração fixa; em troca, checagem contra listas de vazamento na
+    criação/alteração e de forma periódica (mínimo mensal). Indício de
+    comprometimento → bloquear e forçar troca imediata.
+- **Bloqueio por força bruta:** suspender temporariamente o acesso (por no mínimo
+  **15 minutos**) após o limite máximo de **5** tentativas de autenticação
+  inválidas consecutivas.
+- **Mensagens de erro genéricas:** mensagens de login devem ser genéricas (ex.:
+  "Usuário ou senha incorretos"). O processo de recuperação não deve confirmar,
+  na interface, se a conta existe ou não.
+- **Recuperação de credenciais:** deve ser feita exclusivamente via links com
+  tokens criptográficos de uso único e tempo de expiração curto (**15 a 30
+  minutos**). É expressamente proibido o envio de senhas em texto claro por
+  e-mail ou SMS.
+- **Gestão de sessão:** a ação de logout deve invalidar a sessão de forma
+  definitiva no servidor (back-end), não se limitando a redirecionar a tela no
   front-end.
+- **Timeout de sessão:** aplicações internas devem possuir expiração automática
+  por inatividade — entre **15 e 30 minutos** (risco baixo/moderado) ou entre
+  **2 e 5 minutos** (aplicações de alto risco com dados sensíveis e
+  confidenciais).
 
-**Formato de senha (padrão corporativo):**
+#### 4.5 Proteção de Dados
 
-- Ter ao menos **14 caracteres**.
-- Não conter o nome da conta nem mais de 4 caracteres consecutivos de partes do
-  nome completo do usuário.
-- Conter caracteres de **três destas quatro categorias**: maiúsculos (A-Z),
-  minúsculos (a-z), dígitos de base 10 (0-9), não alfabéticos (ex.: `!`, `$`,
-  `#`, `%`).
-- Não estar no histórico de senhas (**6** senhas memorizadas).
-- Rotação a cada **90 dias** (expiração).
+- **Criptografia:** o código-fonte deve garantir que dados confidenciais ou
+  sensíveis recebam tratamento restrito, implementando criptografia adequada em
+  trânsito e em repouso.
+- **Anonimização:** massas de dados reais de produção não podem ser usadas em
+  ambientes de desenvolvimento ou homologação sem a devida anonimização ou
+  mascaramento.
 
-#### 4.4 Dados Pessoais — Higiene LGPD _(novo na v1.1)_
+#### 4.6 Dados Pessoais — Higiene LGPD
 
 Regras de **higiene técnica** no trato de dados pessoais (nome, CPF, e-mail,
 telefone, endereço etc.). Elas **não substituem avaliação jurídica** de
@@ -764,14 +910,39 @@ esperada de qualquer aplicação que toque dado de pessoa.
 2. **Exige back-end:** proibido tratar dado pessoal em aplicação estática; o
    front-end recebe apenas o necessário para exibição.
 3. **Acesso restrito:** aplicação que trata dado pessoal exige login —
-   obrigatório em produção, recomendado já em homologação.
-4. **Seed 100% fictício:** proibido dado pessoal real em scripts de seed.
+   obrigatório em produção, recomendado já em homologação; aplicar RBAC (seção
+   4.3) quando houver dado sensível/confidencial.
+4. **Seed 100% fictício:** proibido dado pessoal real em scripts de seed
+   (alinhar com anonimização da seção 4.5).
 5. **Nunca em URL:** dado pessoal não trafega em query string/parâmetros de URL.
 6. **Logs:** não registrar dado pessoal em texto puro (reforço da seção 4.1).
 7. **Minimização:** coletar/armazenar apenas os dados que os fluxos documentados
    justificam.
 8. **Fonte:** dado pessoal da empresa é consumido exclusivamente via DW (única
    fonte permitida).
+
+#### 4.7 Aplicações de uso externo
+
+Aplica-se quando a aplicação é acessível **fora da rede corporativa** ou por
+usuários que **não** são colaboradores. Além de 4.1–4.6, é obrigatório:
+
+- **MFA/2FA** para todo acesso humano. Acessos machine-to-machine (APIs,
+  integrações, automações): OAuth 2.0 client credentials, certificados mTLS ou
+  chaves de API **rotacionáveis**.
+- **HTTPS com TLS 1.2+** em todas as rotas e APIs — HTTP em texto claro proibido.
+- **Rate limiting** e proteção contra credential stuffing nos endpoints expostos.
+- **Cabeçalhos de segurança HTTP:** no mínimo CSP, HSTS e X-Frame-Options.
+- **CSRF:** defesas ativas com tokens criptográficos únicos e transitórios.
+- **Certificados** emitidos por AC confiável — autoassinados proibidos em
+  produção.
+- **Superfície mínima:** só portas necessárias (ex.: 443); sem SSH, RDP ou banco
+  expostos à internet; sem painéis administrativos, de infraestrutura ou de
+  debug públicos.
+- **Herança do interno:** contas nominais (4.3), timeout de sessão (4.4) e
+  privilégio mínimo no banco (4.3) continuam obrigatórios.
+
+> Detalhes normativos, sanções e fluxo formal de aprovação: **PO-SI-0015** e
+> **PGP-SI-0015** no GED (FLUIG).
 
 ---
 
@@ -801,9 +972,9 @@ regras passam a valer quando a aplicação é promovida para produção.
 - **Produção:** obrigatório uso de **SSO** (autenticação centralizada).
 
 > O SSO ainda não está implementado. Enquanto isso, cada aplicação promovida para
-> produção deve seguir as regras básicas de login descritas na seção 4.3. Quando o
-> SSO estiver disponível, as aplicações já em produção passarão por uma modificação
-> futura para integração.
+> produção deve seguir as regras de autenticação e senhas descritas nas seções
+> **4.3 e 4.4**. Quando o SSO estiver disponível, as aplicações já em produção
+> passarão por uma modificação futura para integração.
 
 #### 5.5 Responsabilidade de Manutenção
 
@@ -869,6 +1040,11 @@ da empresa. A decisão é registrada com justificativa e é final.
 - **XSS (Cross-Site Scripting):** vulnerabilidade que permite a injeção de scripts
   maliciosos em páginas visualizadas por outros usuários, geralmente por falta de
   escape de conteúdo dinâmico.
+- **BOLA (Broken Object Level Authorization):** falha em que o sistema não
+  verifica se o usuário autenticado tem permissão sobre o objeto/recurso
+  solicitado (ex.: acessar registro de outro usuário só mudando o id na URL).
+- **RBAC (Role-Based Access Control):** controle de acesso por grupos ou perfis,
+  restringindo funcionalidades sensíveis a quem está autorizado.
 - **SSO (Single Sign-On):** modelo de autenticação centralizada em que o usuário
   faz login uma única vez e passa a ter acesso às aplicações permitidas, sem
   precisar autenticar novamente em cada uma.
@@ -880,5 +1056,10 @@ da empresa. A decisão é registrada com justificativa e é final.
 - **SLA (Service Level Agreement):** prazo/acordo de nível de serviço, usado neste
   documento para definir o tempo de resposta do TI na avaliação de aplicações.
 - **LGPD (Lei Geral de Proteção de Dados):** lei brasileira que disciplina o
-  tratamento de dados pessoais. Neste padrão, a seção 4.4 define a **higiene
+  tratamento de dados pessoais. Neste padrão, a seção **4.6** define a **higiene
   técnica** mínima — a conformidade jurídica é avaliada fora do escopo das skills.
+- **PO-SI-0015:** Política de Desenvolvimento Seguro da empresa (GED/FLUIG). As
+  seções **4.1–4.7** deste padrão são a tradução operacional para vibe coding;
+  a política completa no FLUIG permanece a fonte normativa.
+- **MFA / 2FA:** autenticação multifator — obrigatória para acesso humano em
+  aplicações de uso externo (seção 4.7).
