@@ -190,10 +190,12 @@ Aguardando aprovação / Em produção); Histórico de alterações.
 
 - `.env` nunca commitado (consta no `.gitignore`) — e **nunca entra no pacote de
   entrega**.
-- `.env.example` obrigatório e versionado (todas as chaves, valores
-  fictícios/vazios) — **vai no pacote**.
+- `.env.example` obrigatório e versionado (valores fictícios/didáticos/vazios) —
+  **vai no pacote**.
 - Nenhum segredo hardcoded; nenhum segredo real em README, comentário ou mensagem
-  de commit.
+  de commit; remover chaves geradas incorretamente por IA.
+- Dependências sugeridas por IA devem ter existência, autoria e reputação
+  confirmadas.
 
 ### 5. Ambiente (Homologação x Produção)
 
@@ -204,8 +206,11 @@ Aguardando aprovação / Em produção); Histórico de alterações.
 - **5.3 Env:** homologação usa valores fictícios; na subida, o dev repassa os
   valores reais para o TI aplicar.
 - **5.4 Autenticação:** homologação livre; produção exige SSO (enquanto não há
-  SSO, login próprio: hash bcrypt/argon2, senha mín. 14 caracteres, bloqueio após
-  5 tentativas, expiração de sessão, logout que invalida a sessão de fato).
+  SSO, login próprio conforme 4.3–4.4: contas nominais; hash bcrypt/argon2;
+  senha mín. 14; bloqueio de dicionário/padrões; histórico das últimas 5;
+  rotação 90d em privilégios elevados; bloqueio ≥ 15 min após 5 tentativas;
+  logout real; timeout 15–30 min ou 2–5 alto risco). App **externo:** também
+  seção **4.7** (MFA, TLS 1.2+, rate limit, headers, CSRF).
 - **5.5 Manutenção:** homologação é do dev/área; produção passa a ser do TI.
 - **5.6 Deploy:** homologação é solicitação simples (permanência de até 10 dias
   úteis); produção segue o SLA abaixo.
