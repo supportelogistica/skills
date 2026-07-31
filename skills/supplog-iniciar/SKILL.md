@@ -1,67 +1,69 @@
 ---
 name: supplog-iniciar
-description: Construção, seguindo os Padrões de Desenvolvimento Vibe Coding da Supplog. Conduz entrevista guiada em linguagem humana, classifica stack/porte automaticamente, gera PLANEJAMENTO.md e README.md e constrói a aplicação completa conforme o padrão (estrutura de pastas, arquitetura, banco com scripts e seed, segurança, LGPD). Use quando o usuário quiser criar, iniciar ou começar do zero uma nova aplicação, app, automação, site, sistema ou projeto.
+description: Construção, seguindo os Padrões de Desenvolvimento Vibe Coding da Supplog. Conduz entrevista guiada em linguagem clara, classifica stack/porte automaticamente, gera PLANEJAMENTO.md e README.md e constrói a aplicação completa conforme o padrão (estrutura de pastas, arquitetura, banco com scripts e seed, segurança, LGPD). Use quando o usuário quiser criar, iniciar ou começar do zero uma nova aplicação, app, automação, site, sistema ou projeto.
 ---
 
 # /supplog-iniciar — Da ideia ao app rodando (Padrão Supplog)
 
-Você recebe um **vibe coder** da Supplog que quer construir uma aplicação. O
-público **não é técnico**: muitos "se sentem dev" mas nunca escreveram uma linha
-de código. Sua missão tem duas metades inseparáveis:
+Você atende um **solicitante** da Supplog que deseja construir uma aplicação com
+apoio de IA. Em geral o solicitante conhece o problema de negócio, mas **não
+precisa dominar engenharia de software**: a skill traduz a necessidade em
+decisões técnicas alinhadas ao padrão. Sua missão tem duas metades inseparáveis:
 
-1. **Entrevistar** em linguagem humana, arrancando tudo o que os Padrões de
+1. **Entrevistar** em linguagem clara, levantando tudo o que os Padrões de
    Desenvolvimento exigem — e traduzir isso em decisões técnicas padronizadas,
-   sem que o viber precise entender jargão. **O viber decide o "o quê"; você
-   decide todo o "como".**
+   sem exigir jargão do solicitante. **O solicitante define o "o quê"; você
+   define todo o "como".**
 2. **Construir a aplicação inteira** conforme o padrão. A entrevista vira a
    checklist de implementação; a skill só termina com o app rodando localmente,
-   pronto para o viber testar.
+   pronto para o solicitante validar.
 
 A **fonte de verdade** técnica são os **Padrões de Desenvolvimento Vibe Coding
 (v1.2) no final deste arquivo** — os padrões moram aqui, neste `SKILL.md`.
 
 > **Divisão de papéis no ciclo Supplog:** esta skill vai da ideia ao app
-> construído. O **teste funcional é do usuário** (ele testa cada fluxo na mão e
-> dá o OK). A auditoria formal de conformidade é da `/supplog-check`, e a
-> promoção para produção passa pelo crivo do TI (handoff — via
-> `/supplog-handoff`).
+> construído. O **teste funcional é do solicitante** (ele valida cada fluxo
+> manualmente e dá o aceite). A auditoria formal de conformidade é da
+> `/supplog-check`, e a promoção para produção passa pelo crivo do TI (handoff —
+> via `/supplog-handoff`).
 
 ---
 
 ## Visão geral do fluxo
 
-1. **Entrevista** — uma pergunta por vez, linguagem humana.
-2. **Classificação automática** — você deriva stack e porte; o viber não calcula
-   nada.
+1. **Entrevista** — uma pergunta por vez, linguagem clara.
+2. **Classificação automática** — você deriva stack e porte; o solicitante não
+   calcula nada.
 3. **Planejamento** — escreve `PLANEJAMENTO.md` + `README.md` e apresenta o plano
-   em linguagem simples; o viber confirma antes da construção começar.
+   em linguagem acessível; o solicitante confirma antes da construção começar.
 4. **Construção** — estrutura de pastas, banco, código e telas, tudo conforme o
    padrão, fluxo a fluxo. Telas e UI seguem a marca oficial
    ([supportelogistica/brand](https://github.com/supportelogistica/brand)).
-5. **Entrega para teste** — app rodando + roteiro de teste em linguagem simples.
-   O "pronto" funcional é o viber quem dá; depois do OK dele, o próximo passo é a
-   `/supplog-check`.
+5. **Entrega para teste** — app rodando + roteiro de teste em linguagem
+   acessível. O aceite funcional é do solicitante; depois do OK dele, o próximo
+   passo é a `/supplog-check`.
 
 ---
 
 ## Regras de condução da entrevista
 
 1. **Uma pergunta por vez.** Faça a pergunta, **espere a resposta**, só então
-   avance. Jogar várias perguntas de uma vez confunde e faz o viber desistir.
-2. **Linguagem humana, zero jargão.** Nunca pergunte "vai acessar o banco pelo
+   avance. Evite várias perguntas no mesmo turno — isso prejudica o ritmo da
+   entrevista.
+2. **Linguagem clara, sem jargão.** Nunca pergunte "vai acessar o banco pelo
    front?". Pergunte a **intenção** ("Seu app precisa guardar informações entre um
-   acesso e outro? Tipo um cadastro que fica salvo?"). **Você** traduz a resposta
-   em decisão técnica — o viber não decide nada técnico.
-3. **Ensine o porquê em 1-2 frases.** Quando um tema tiver regra do padrão,
-   explique rapidinho antes/depois de perguntar ("Toda vez que um app guarda dado
-   de pessoa — nome, CPF, e-mail — a LGPD entra. Por isso preciso saber...").
-4. **Recomende uma resposta** em cada pergunta quando fizer sentido, mas a decisão
-   é do viber.
+   acesso e outro? Por exemplo, um cadastro que permanece salvo?"). **Você**
+   traduz a resposta em decisão técnica — o solicitante não decide nada técnico.
+3. **Explique o porquê em 1-2 frases.** Quando um tema tiver regra do padrão,
+   contextualize antes/depois de perguntar ("Toda vez que um app guarda dado de
+   pessoa — nome, CPF, e-mail — a LGPD entra. Por isso preciso saber...").
+4. **Recomende uma resposta** em cada pergunta quando fizer sentido, mas a
+   decisão final é do solicitante.
 5. **Postura consultiva, não fiscal.** Documente e **sinalize** conflitos com o
-   padrão ("olha, isso aqui não vai ser aceito na hora de subir pra produção
+   padrão ("este ponto tende a ser recusado na promoção para produção
    porque..."), mas **não reprove nem bloqueie** o projeto. Aprovar/reprovar é do
    TI (etapa de crivo, fora desta skill).
-6. **Nunca peça o viber calcular stack ou porte.** Isso é **derivado
+6. **Nunca peça ao solicitante calcular stack ou porte.** Isso é **derivado
    automaticamente** por você a partir das respostas (ver "Classificação
    automática").
 
@@ -76,8 +78,8 @@ se a conversa pedir, mas **não pule** nenhum bloco.
 
 - Qual problema essa aplicação resolve? (o "porquê" antes do "como")
 - Quem vai usar? (área/setor, perfil de usuário)
-- **Já existe algo parecido na empresa?** (só para o viber pensar — o TI pode
-  recusar por redundância em qualquer etapa; não é você quem decide isso.)
+- **Já existe algo parecido na empresa?** (só para o solicitante refletir — o TI
+  pode recusar por redundância em qualquer etapa; não é você quem decide isso.)
 
 ### Bloco 2 — Fluxos e funcionalidades
 
@@ -111,11 +113,11 @@ se a conversa pedir, mas **não pule** nenhum bloco.
 ### Bloco 6 — Segurança (em linguagem de intenção)
 
 - O app é **só interno** (rede/colaboradores) ou também **externo** (fora da rede
-  ou usuários que não são colaboradores)? → Ambos seguem a **PO-SI-0015** e as
+  ou usuários que não são colaboradores)? → Ambos seguem a **PO-SI-0016** e as
   seções 4.1–4.6. Se **externo**, registre também a seção **4.7** (MFA, TLS,
   headers, rate limit, CSRF etc.).
-- Qualquer pessoa pode ver/usar, ou **só gente autorizada**? → Se tem back-end
-  e tela, explique que o login é pelo **Login Único da Supporte** (SSO): a pessoa
+- Acesso aberto a qualquer pessoa, ou **somente usuários autorizados**? → Se tem
+  back-end e tela, explique que o login é pelo **Login Único da Supporte** (SSO): a pessoa
   entra com a conta Microsoft da empresa uma vez e o app já a reconhece — o app
   **não tem tela de senha própria**, não guarda senha nem cadastra usuário (seção
   4.4 do padrão). Isso vale desde a homologação. Automação sem tela e página
@@ -140,10 +142,10 @@ se a conversa pedir, mas **não pule** nenhum bloco.
 
 ---
 
-## Fase 2 — Classificação automática (você calcula, o viber não)
+## Fase 2 — Classificação automática (você calcula, o solicitante não)
 
-A partir das respostas, **derive a stack e o porte** e informe ao viber em
-linguagem simples.
+A partir das respostas, **derive a stack e o porte** e informe ao solicitante em
+linguagem acessível.
 
 **Regra de stack (seção 2.2 do padrão):**
 
@@ -239,8 +241,8 @@ dado pessoal, cite 4.5–4.6; se for uso externo, cite 4.7; sempre cite 2.4 (nom
 
 ## Pontos de atenção / conflitos com o padrão
 
-<qualquer coisa que o viber quer fazer mas colide com o padrão — sinalizado, não
-bloqueado>
+<qualquer coisa que o solicitante quer fazer mas colide com o padrão — sinalizado,
+não bloqueado>
 
 ## Adendos da construção
 
@@ -317,10 +319,10 @@ Em desenvolvimento
 
 ### Confirmação antes de construir
 
-Apresente ao viber, **em linguagem simples**, o resumo do plano: o que vai ser
-construído, em qual stack (e por quê, em uma frase), quais regras do padrão vão
-valer, e quais pontos de atenção existem. Faça **uma única pergunta**: se ele
-confirma o plano para a construção começar. Ajustes que ele pedir aqui são
+Apresente ao solicitante, **em linguagem acessível**, o resumo do plano: o que
+vai ser construído, em qual stack (e por quê, em uma frase), quais regras do
+padrão vão valer, e quais pontos de atenção existem. Faça **uma única pergunta**:
+se ele confirma o plano para a construção começar. Ajustes que ele pedir aqui são
 bem-vindos — atualize os arquivos e reconfirme.
 
 ---
@@ -339,16 +341,16 @@ Com o plano confirmado, **construa a aplicação completa**. Regras da construç
    seção 3.5–3.6) e o seed com dados 100% fictícios (seção 3.7). Banco local:
    **SQLite** (seção 5.1).
 3. **Fluxo a fluxo.** Implemente **todos** os fluxos do `PLANEJAMENTO.md`, um por
-   vez. A cada fluxo concluído, conte ao viber em linguagem simples o que ficou
-   pronto ("o cadastro de ocorrências já salva e lista — faltam o relatório e a
-   tela de busca"). Nada de jargão nos updates.
+   vez. A cada fluxo concluído, informe ao solicitante, em linguagem acessível, o
+   que ficou pronto ("o cadastro de ocorrências já salva e lista — faltam o
+   relatório e a tela de busca"). Evite jargão nos status.
 4. **Arquitetura obrigatória** (seção 2.6): rotas finas; regra de negócio em
    services; acesso a banco isolado e **sempre em SQL puro parametrizado** (sem
    ORM, sem query builder); em React, componentes funcionais, custom hooks e
    chamadas de API em `services/`; middleware para autenticação/validação quando
    houver API.
 5. **Nomenclatura** (seção 2.4) em tudo; comentários de código em português.
-6. **Segurança desde o início** (seções 4.1–4.2 e 4.5; fonte PO-SI-0015):
+6. **Segurança desde o início** (seções 4.1–4.2 e 4.5; fonte PO-SI-0016):
    validação rigorosa de toda entrada no back-end; mitigação OWASP Top 10 (sem
    injeção, XSS, BOLA); SQL parametrizado; escape de output; erros sem stack
    trace; logs/auditoria de ações sensíveis; upload com tipo real e tamanho;
@@ -360,7 +362,7 @@ Com o plano confirmado, **construa a aplicação completa**. Regras da construç
    com back-end e tela nasce integrada ao SSO da Supporte, já na homologação.
    **Nunca construa tela de login com senha, tabela de senhas nem cadastro de
    usuário próprio** (login próprio só como exceção autorizada, 4.4.1).
-   - **Peça ao viber o cadastro no SSO** (só ele pode fazer, leva 2 minutos, sem
+   - **Peça ao solicitante o cadastro no SSO** (só ele pode fazer, leva 2 minutos, sem
      chamado): supplog.com → menu do usuário → **Minhas aplicações** → **Nova
      aplicação**. Entregue a ele, prontos para copiar: nome; `client_id`
      sugerido (minúsculas, números e hífen); tipo de cliente **confidencial**;
@@ -437,11 +439,11 @@ A construção só está concluída quando **tudo** abaixo for verdade:
 
 ## Fase 5 — Entrega para o teste do usuário
 
-O "pronto" funcional **é do viber, não seu**. Ao entregar:
+O aceite funcional **é do solicitante, não seu**. Ao entregar:
 
-1. **Explique o que foi construído** em linguagem simples, fluxo a fluxo.
-2. **Ensine a rodar**: passo a passo literal (que comando digitar, que endereço
-   abrir no navegador), assumindo zero conhecimento técnico.
+1. **Explique o que foi construído** em linguagem acessível, fluxo a fluxo.
+2. **Oriente a execução local**: passo a passo literal (quais comandos usar, qual
+   endereço abrir no navegador), sem pressupor conhecimento técnico.
 3. **Entregue um roteiro de teste**: para cada fluxo do `PLANEJAMENTO.md`, o que
    testar e o que deve acontecer ("cadastre uma ocorrência de teste; ela deve
    aparecer na lista; tente salvar sem preencher o campo X — deve dar aviso").
@@ -450,14 +452,14 @@ O "pronto" funcional **é do viber, não seu**. Ao entregar:
    encerrar a sessão também no SSO. Lembre que esse teste **só funciona depois
    que o administrador do SSO aprovar a aplicação** — até lá, o SSO recusa o
    login (`invalid_client`); acompanhe o status em "Minhas aplicações".
-4. **Diga o caminho à frente**: quando todos os fluxos estiverem OK para ele, o
+4. **Indique o próximo passo**: quando todos os fluxos estiverem OK para ele, o
    próximo passo é rodar a `/supplog-check` (auditoria de conformidade); depois do
    relatório limpo, o handoff ao TI com a `/supplog-handoff`.
 5. **Relembre os pontos de atenção** registrados no `PLANEJAMENTO.md` (conflitos
    com o padrão sinalizados na entrevista) — eles vão pesar no crivo do TI.
 
-Se o viber encontrar problema no teste, corrija dentro desta mesma missão: o
-ciclo construir → testar → ajustar continua até ele dar o OK funcional.
+Se o solicitante encontrar problema no teste, corrija dentro desta mesma missão:
+o ciclo construir → testar → ajustar continua até o aceite funcional.
 
 ---
 
@@ -507,7 +509,7 @@ ciclo construir → testar → ajustar continua até ele dar o OK funcional.
 6. **Seção 4 reestruturada (segurança vigente, 29/07/2026):** 4.1–4.5 alinhadas
    à política atual (OWASP/BOLA, RBAC, login/senha, criptografia/anonimização);
    higiene LGPD renumerada de 4.4 para **4.6**.
-7. **PO-SI-0015 mínimo útil (30/07/2026):** reframe (política vale para todos);
+7. **PO-SI-0016 mínimo útil (30/07/2026):** reframe (política vale para todos);
    senhas com bloqueio de dicionário/padrões e rotação NIST/90d; nova seção
    **4.7** com controles obrigatórios para apps externos.
 
@@ -854,13 +856,14 @@ permitindo teste imediato sem depender de dado real.
 
 ### 4. Segurança
 
-Os requisitos das seções **4.1 a 4.6** são a tradução operacional, para vibe
-coding, da **PO-SI-0015 – Política de Desenvolvimento Seguro** (GED/FLUIG) e são
+Os requisitos das seções **4.1 a 4.6** são a tradução operacional, para o
+desenvolvimento assistido por IA (Vibe Coding), da **PO-SI-0016 – Política de
+Desenvolvimento Seguro** (GED/FLUIG) e são
 obrigatórios para **todas** as aplicações (uso interno e externo). Aplicações de
 uso **externo** devem cumprir, além disso, a seção **4.7**. Estes itens cobrem a
 camada de aplicação; infraestrutura e rede são de outra área.
 
-A PO-SI-0015 completa (governança, sanções, ferramentas homologadas, ROPA/RIPD
+A PO-SI-0016 completa (governança, sanções, ferramentas homologadas, ROPA/RIPD
 detalhado etc.) permanece a fonte normativa no FLUIG — aqui ficam só os
 requisitos acionáveis na construção do app.
 
@@ -1129,7 +1132,7 @@ integralmente as regras abaixo, além de 4.3:
 - **Histórico e senhas comprometidas:** impedir o reuso das **últimas 5** senhas.
   Quando viável, validar a nova credencial contra listas de senhas conhecidamente
   vazadas (sem expor a senha/hash completa — ex.: modelo k-anonymity).
-- **Rotação (alinhada à PO-SI-0015 / NIST SP 800-63B):**
+- **Rotação (alinhada à PO-SI-0016 / NIST SP 800-63B):**
   - **Privilégios elevados** (admin, root, DBA, contas de serviço, automações,
     acesso a dados sensíveis/confidenciais): expiração obrigatória em no máximo
     **90 dias**, com aviso prévio e bloqueio até nova senha.
@@ -1204,7 +1207,7 @@ usuários que **não** são colaboradores. Além de 4.1–4.6, é obrigatório:
   `tipo` no servidor (4.4), timeout de sessão (4.1) e privilégio mínimo no banco
   (4.3) continuam obrigatórios.
 
-> Detalhes normativos, sanções e fluxo formal de aprovação: **PO-SI-0015** e
+> Detalhes normativos, sanções e fluxo formal de aprovação: **PO-SI-0016** e
 > **PGP-SI-0015** no GED (FLUIG).
 
 ---
@@ -1226,8 +1229,8 @@ regras passam a valer quando a aplicação é promovida para produção.
 
 #### 5.3 Variáveis de Ambiente e Configuração
 
-- **Homologação:** valores fictícios/de teste, sob responsabilidade do dev.
-- **Produção:** o dev repassa os valores reais para o TI aplicar.
+- **Homologação:** valores fictícios/de teste, sob responsabilidade do solicitante.
+- **Produção:** o solicitante repassa os valores reais para o TI aplicar.
 
 #### 5.4 Autenticação
 
@@ -1248,7 +1251,7 @@ regras passam a valer quando a aplicação é promovida para produção.
 
 #### 5.5 Responsabilidade de Manutenção
 
-- **Homologação:** responsabilidade do dev/área que criou a aplicação.
+- **Homologação:** responsabilidade do solicitante/área que criou a aplicação.
 - **Produção:** responsabilidade passa a ser do TI.
 
 #### 5.6 Processo de Deploy/Subida
@@ -1259,17 +1262,18 @@ regras passam a valer quando a aplicação é promovida para produção.
 #### 5.7 SLA de Avaliação e Subida para Produção
 
 1. A aplicação permanece em homologação por até **10 dias úteis**.
-2. Dentro desse prazo (ou ao final dele), o dev pode solicitar a subida para
+2. Dentro desse prazo (ou ao final dele), o solicitante pode pedir a subida para
    produção.
 3. O TI tem SLA de **10 dias úteis** para avaliar desenvolvimento e segurança, e
    realizar os ajustes necessários.
 
 - **Se aprovado:** a aplicação sobe para produção.
-- **Se reprovado:** a aplicação sai da homologação; o dev corrige localmente e
-  solicita nova homologação.
+- **Se reprovado:** a aplicação sai da homologação; o solicitante corrige
+  localmente e solicita nova homologação.
 - **Se os 10 dias de homologação terminarem sem solicitação de produção:** o TI
-  contata o dev para decidir entre avaliar ou remover. Se em até **2 dias úteis**
-  não houver resposta do dev ou de seu gestor, a aplicação é **removida
+  contata o solicitante para decidir entre avaliar ou remover. Se em até **2 dias
+  úteis** não houver resposta do solicitante ou de seu gestor, a aplicação é
+  **removida
   automaticamente**.
 
 #### 5.8 Restrição de Ambiente de Produção
@@ -1344,8 +1348,9 @@ da empresa. A decisão é registrada com justificativa e é final.
 - **LGPD (Lei Geral de Proteção de Dados):** lei brasileira que disciplina o
   tratamento de dados pessoais. Neste padrão, a seção **4.6** define a **higiene
   técnica** mínima — a conformidade jurídica é avaliada fora do escopo das skills.
-- **PO-SI-0015:** Política de Desenvolvimento Seguro da empresa (GED/FLUIG). As
-  seções **4.1–4.7** deste padrão são a tradução operacional para vibe coding;
+- **PO-SI-0016:** Política de Desenvolvimento Seguro da empresa (GED/FLUIG). As
+  seções **4.1–4.7** deste padrão são a tradução operacional para o
+  desenvolvimento assistido por IA (Vibe Coding);
   a política completa no FLUIG permanece a fonte normativa.
 - **MFA / 2FA:** autenticação multifator — obrigatória para acesso humano em
   aplicações de uso externo (seção 4.7); com o Login Único, é provida pelo
