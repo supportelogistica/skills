@@ -5,10 +5,11 @@ description: Prepara a entrega do projeto ao TI conforme os padrões Supplog: co
 
 # /supplog-handoff — Entrega do projeto ao TI (Padrão Supplog)
 
-Você prepara a entrega de um projeto vibe-coded para o **crivo do TI** — a etapa
-em que o dev solicita a avaliação para subir para produção. O usuário é um **vibe
-coder não técnico**: ele precisa sair desta skill sabendo exatamente **o que
-enviar, para onde enviar e o que vai acontecer depois**, em português simples.
+Você prepara a entrega de um projeto alinhado ao padrão Vibe Coding para o
+**crivo do TI** — a etapa em que o solicitante pede a avaliação para promoção à
+produção. O **solicitante** conhece o negócio, mas **não precisa dominar
+engenharia de software**: ele precisa sair desta skill sabendo exatamente **o que
+enviar, para onde enviar e o que vai acontecer depois**, em português claro.
 
 > **Escopo desta versão (v1 — básico):** o entregável final é o **projeto zipado**
 > mais um **guia prático de solicitação** (`GUIA-HANDOFF.md`). Evoluções futuras
@@ -32,9 +33,9 @@ Supplog).
    seguro — nunca e-mail aberto ou chat público — é desta skill).
 3. **Sinaliza, não bloqueia.** Pendências (check não rodado, itens ❌ no
    relatório, README incompleto) são mostradas com clareza e a recomendação é
-   resolver antes de enviar — mas a decisão de enviar mesmo assim é do usuário.
-   Aprovar/reprovar é do TI.
-4. **Linguagem simples.** Nada de jargão sem explicação de uma frase.
+   resolver antes de enviar — mas a decisão de enviar mesmo assim é do
+   solicitante. Aprovar/reprovar é do TI.
+4. **Linguagem acessível.** Evite jargão sem explicação em uma frase.
 
 ---
 
@@ -42,11 +43,11 @@ Supplog).
 
 ### Passo 1 — Pré-checagem (não bloqueante)
 
-Verifique e **relate em linguagem simples**:
+Verifique e **relate em linguagem acessível**:
 
 - **`RELATORIO-CHECK.md` existe?** Se não: recomende rodar a `/supplog-check`
   antes do handoff (é ela que aponta o que o TI vai olhar). Se existe: resuma o
-  placar (✅/❌/⚠️) e destaque os itens críticos ainda abertos.
+  resultado (✅/❌/⚠️) e destaque os itens críticos ainda abertos.
 - **`README.md` completo?** (seções obrigatórias da 2.7 — lista na referência
   embutida; sem TODOs pendentes; status coerente — para solicitar produção o
   esperado é **"Em teste"** (app em homologação); "Em desenvolvimento" entra como
@@ -68,8 +69,8 @@ consumidas. **Pergunte apenas o que faltar**, um item por vez.
 
 **Canal de envio ao TI:** _a definir pela Supplog — quando o canal oficial
 existir (e-mail, Teams, sistema de chamados), edite esta linha para fixá-lo._
-Enquanto esta linha não for preenchida, **pergunte ao usuário** por qual canal a
-área dele aciona o TI hoje e use esse canal no guia.
+Enquanto esta linha não for preenchida, **pergunte ao solicitante** por qual canal
+a área dele aciona o TI hoje e use esse canal no guia.
 
 ### Passo 3 — Gerar o ZIP
 
@@ -165,10 +166,10 @@ configuração de produção (seção 5.3 do padrão).
 
 ### Passo 5 — Encerrar
 
-No chat, em linguagem simples: confirme o que foi gerado (zip + guia), diga o
+No chat, em linguagem acessível: confirme o que foi gerado (zip + guia), diga o
 passo único que falta ("envie o zip pelo canal X com a mensagem modelo do guia")
-e relembre: valores reais de env ficam com você até o TI pedir, e o prazo de
-resposta esperado é o SLA de 10 dias úteis.
+e relembre: valores reais de env ficam com o solicitante até o TI pedir, e o prazo
+de resposta esperado é o SLA de 10 dias úteis.
 
 ---
 
@@ -203,22 +204,23 @@ Aguardando aprovação / Em produção); Histórico de alterações.
   após aprovação do projeto).
 - **5.2 Seed:** existe e roda em homologação; em produção o script **não pode
   continuar existindo** no projeto.
-- **5.3 Env:** homologação usa valores fictícios; na subida, o dev repassa os
-  valores reais para o TI aplicar.
+- **5.3 Env:** homologação usa valores fictícios; na subida, o solicitante
+  repassa os valores reais para o TI aplicar.
 - **5.4 Autenticação:** homologação livre; produção exige SSO (enquanto não há
   SSO, login próprio conforme 4.3–4.4: contas nominais; hash bcrypt/argon2;
   senha mín. 14; bloqueio de dicionário/padrões; histórico das últimas 5;
   rotação 90d em privilégios elevados; bloqueio ≥ 15 min após 5 tentativas;
   logout real; timeout 15–30 min ou 2–5 alto risco). App **externo:** também
   seção **4.7** (MFA, TLS 1.2+, rate limit, headers, CSRF).
-- **5.5 Manutenção:** homologação é do dev/área; produção passa a ser do TI.
+- **5.5 Manutenção:** homologação é do solicitante/área; produção passa a ser do
+  TI.
 - **5.6 Deploy:** homologação é solicitação simples (permanência de até 10 dias
   úteis); produção segue o SLA abaixo.
-- **5.7 SLA:** o dev solicita a subida dentro dos 10 dias úteis de homologação; o
-  TI tem 10 dias úteis para avaliar. Aprovado → sobe. Reprovado → sai da
-  homologação, o dev corrige e solicita nova homologação. Sem solicitação no
-  prazo, o TI contata o dev; sem resposta do dev ou gestor em 2 dias úteis, a
-  aplicação é removida automaticamente.
+- **5.7 SLA:** o solicitante pede a subida dentro dos 10 dias úteis de
+  homologação; o TI tem 10 dias úteis para avaliar. Aprovado → sobe. Reprovado →
+  sai da homologação, o solicitante corrige e solicita nova homologação. Sem
+  solicitação no prazo, o TI contata o solicitante; sem resposta do solicitante
+  ou gestor em 2 dias úteis, a aplicação é removida automaticamente.
 - **5.8 Restrição:** proibido publicar app que consome dados do DW em produção
   externa/de terceiros — só o ambiente de produção interno.
 - **5.9 Redundância:** o TI pode recusar em qualquer etapa se já existir solução
