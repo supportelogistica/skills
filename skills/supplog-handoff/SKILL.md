@@ -5,18 +5,17 @@ description: Prepara a entrega do projeto ao TI conforme os padrões Supplog: co
 
 # /supplog-handoff — Entrega do projeto ao TI (Padrão Supplog)
 
-Você prepara a entrega de um projeto alinhado ao padrão Vibe Coding para o
-**crivo do TI** — a etapa em que o solicitante pede a avaliação para promoção à
-produção. O **solicitante** conhece o negócio, mas **não precisa dominar
-engenharia de software**: ele precisa sair desta skill sabendo exatamente **o que
-enviar, para onde enviar e o que vai acontecer depois**, em português claro.
+Você prepara a entrega de um projeto vibe-coded para o **crivo do TI** — a etapa
+em que o dev solicita a avaliação para subir para produção. O usuário é um **vibe
+coder não técnico**: ele precisa sair desta skill sabendo exatamente **o que
+enviar, para onde enviar e o que vai acontecer depois**, em português simples.
 
 > **Escopo desta versão (v1 — básico):** o entregável final é o **projeto zipado**
 > mais um **guia prático de solicitação** (`GUIA-HANDOFF.md`). Evoluções futuras
 > poderão automatizar o envio e integrar com o processo do TI.
 
 A **fonte de verdade** é a referência embutida no final deste arquivo (Padrões de
-Desenvolvimento Vibe Coding v1.1, derivada do documento canônico
+Desenvolvimento Vibe Coding v1.2, derivada do documento canônico
 `skills/supplog-iniciar/SKILL.md` do repositório de skills da
 Supplog).
 
@@ -27,15 +26,16 @@ Supplog).
 1. **Não altera o código do projeto.** Esta skill escreve apenas dois artefatos: o
    arquivo `.zip` do pacote e o `GUIA-HANDOFF.md`.
 2. **Segredo nunca entra no pacote.** `.env` e qualquer valor real de
-   configuração ficam **fora do zip** — isso é inegociável (seção 4.2). Os valores
-   reais são repassados ao TI separadamente, quando ele for aplicar a
-   configuração (repasse previsto na seção 5.3; a recomendação de usar canal
-   seguro — nunca e-mail aberto ou chat público — é desta skill).
-3. **Sinaliza, não bloqueia.** Pendências (check não rodado, itens ❌ no
+   configuração ficam **fora do zip** — isso é inegociável (seção 4.2). Isso
+   inclui o `SSO_CLIENT_SECRET` do Login Único. Os valores reais são repassados
+   ao TI separadamente, quando ele for aplicar a configuração (repasse previsto
+   na seção 5.3; a recomendação de usar canal seguro — nunca e-mail aberto ou
+   chat público — é desta skill).
+3. **Sinaliza, não bloqueia.** Pendências (check não rodado, itens "Não conforme" no
    relatório, README incompleto) são mostradas com clareza e a recomendação é
-   resolver antes de enviar — mas a decisão de enviar mesmo assim é do
-   solicitante. Aprovar/reprovar é do TI.
-4. **Linguagem acessível.** Evite jargão sem explicação em uma frase.
+   resolver antes de enviar — mas a decisão de enviar mesmo assim é do usuário.
+   Aprovar/reprovar é do TI.
+4. **Linguagem simples.** Nada de jargão sem explicação de uma frase.
 
 ---
 
@@ -43,17 +43,29 @@ Supplog).
 
 ### Passo 1 — Pré-checagem (não bloqueante)
 
-Verifique e **relate em linguagem acessível**:
+Verifique e **relate em linguagem simples**:
 
 - **`RELATORIO-CHECK.md` existe?** Se não: recomende rodar a `/supplog-check`
   antes do handoff (é ela que aponta o que o TI vai olhar). Se existe: resuma o
-  resultado (✅/❌/⚠️) e destaque os itens críticos ainda abertos.
+  placar (Conforme / Não conforme / Parcial) e destaque os itens críticos ainda
+  abertos.
 - **`README.md` completo?** (seções obrigatórias da 2.7 — lista na referência
   embutida; sem TODOs pendentes; status coerente — para solicitar produção o
   esperado é **"Em teste"** (app em homologação); "Em desenvolvimento" entra como
   pendência a sinalizar).
 - **Segredos:** `.env` está no `.gitignore` e fora do projeto versionado?
-  `.env.example` existe com todas as chaves?
+  `.env.example` existe com todas as chaves (inclusive `SSO_ISSUER`,
+  `SSO_CLIENT_ID`, `SSO_CLIENT_SECRET`, `SSO_APP_URL` quando há login)?
+- **Login Único (quando há login, seção 4.4/5.4):** o README traz a seção
+  "Autenticação (Login Único)" com modo, quem pode entrar, `client_id` e
+  Redirect URIs (sem secret)? Não há tela/tabela de senha própria? **Pergunte ao
+  usuário** (não dá para ver no código): a aplicação está **Aprovada** em
+  supplog.com → Minhas aplicações? As **Redirect URIs de produção**
+  (`https://<endereço-de-produção>/entrar/callback` e `https://<endereço>/`)
+  já estão cadastradas? Se o endereço de produção ainda não foi definido pelo
+  TI, registre no guia que o cadastro das URIs de produção (que reenvia a
+  aplicação para aprovação do administrador do SSO) precisa acontecer **antes**
+  da subida, assim que o TI informar o endereço.
 - **Seed e banco:** `database/scripts_criacao.sql` e seed presentes (o TI recria
   o banco com eles na avaliação).
 
@@ -65,12 +77,14 @@ ou prosseguir mesmo assim? Se prosseguir, as pendências entram registradas no
 
 Puxe do `README.md` (e `PLANEJAMENTO.md`, se existir): nome da aplicação,
 descrição em uma frase, responsável (área, contato), stack/porte, fontes do DW
-consumidas. **Pergunte apenas o que faltar**, um item por vez.
+consumidas e, quando há login, os dados do Login Único (`client_id`, modo, quem
+pode entrar, Redirect URIs cadastradas — **nunca** o secret). **Pergunte apenas
+o que faltar**, um item por vez.
 
 **Canal de envio ao TI:** _a definir pela Supplog — quando o canal oficial
 existir (e-mail, Teams, sistema de chamados), edite esta linha para fixá-lo._
-Enquanto esta linha não for preenchida, **pergunte ao solicitante** por qual canal
-a área dele aciona o TI hoje e use esse canal no guia.
+Enquanto esta linha não for preenchida, **pergunte ao usuário** por qual canal a
+área dele aciona o TI hoje e use esse canal no guia.
 
 ### Passo 3 — Gerar o ZIP
 
@@ -97,7 +111,7 @@ anterior, sobrescreva):
 # Guia de Handoff — <Nome da Aplicação>
 
 > Gerado por /supplog-handoff em <data>. Base: Padrões de Desenvolvimento Vibe
-> Coding (v1.1). Este guia orienta a solicitação de avaliação ao TI — quem
+> Coding (v1.2). Este guia orienta a solicitação de avaliação ao TI — quem
 > aprova ou reprova é o TI (SLA na seção "Depois do envio").
 
 ## O pacote
@@ -110,8 +124,23 @@ anterior, sobrescreva):
 
 ## Situação do projeto
 
-- Relatório da /supplog-check: <✅ n · ❌ n · ⚠️ n — ou "não foi rodado">
+- Relatório da /supplog-check: <Conforme n · Não conforme n · Parcial n — ou
+  "não foi rodado">
 - Pendências levadas junto (se houver): <lista ou "nenhuma">
+
+## Login Único (SSO)
+
+<se não há login: "Não se aplica — <motivo>". Se há:>
+
+- **client_id:** `<client_id>` — modo <bloqueio total / botão>; quem pode entrar:
+  <internos / externos / ambos>
+- **Status no SSO (Minhas aplicações):** <Aprovada / Aguardando aprovação>
+- **Redirect URIs de produção:** <cadastradas: `https://.../entrar/callback` e
+  `https://.../` — ou "pendente: cadastrar assim que o TI informar o endereço de
+  produção; o cadastro reenvia a aplicação para aprovação do administrador do
+  SSO">
+- O `SSO_CLIENT_SECRET` **não está no pacote** — segue com as demais variáveis
+  reais, por canal seguro.
 
 ## Onde e como enviar
 
@@ -128,6 +157,9 @@ anterior, sobrescreva):
 > - **Responsável:** <nome/área/contato>
 > - **Stack e porte:** <stack> (<classificação>)
 > - **Fontes do DW consumidas:** <lista ou "nenhuma">
+> - **Login Único (SSO):** client_id `<client_id>`, <aprovada / aguardando
+>   aprovação>; Redirect URIs de produção <cadastradas / a cadastrar quando o
+>   endereço for definido> _(omita esta linha se não há login)_
 > - **Status atual:** Em teste (app em homologação), solicitando subida para
 >   produção
 > - **Pacote:** em anexo (projeto zipado, sem segredos; o banco se recria com
@@ -144,7 +176,10 @@ anterior, sobrescreva):
 
 Os valores reais **não vão no zip**. Deixe-os anotados em local seguro (nunca em
 e-mail aberto ou chat público) para repassar ao TI quando ele for aplicar a
-configuração de produção (seção 5.3 do padrão).
+configuração de produção (seção 5.3 do padrão). Com Login Único, isso inclui
+`SSO_CLIENT_SECRET` e o `SSO_APP_URL` de produção (que precisa bater com a
+Redirect URI cadastrada). Se suspeitar que o secret vazou, gere um novo em
+"Minhas aplicações" antes de repassar — o antigo para de funcionar na hora.
 
 ## Depois do envio — o que esperar
 
@@ -152,7 +187,8 @@ configuração de produção (seção 5.3 do padrão).
   (seção 5.7).
 - **Aprovado:** a aplicação sobe para produção — o banco definitivo (PostgreSQL)
   é criado somente após a aprovação (5.1), o seed não segue para produção (5.2),
-  a manutenção passa a ser do TI (5.5) e o login segue as regras de produção
+  a manutenção passa a ser do TI (5.5) e o login em produção é pelo Login Único
+  com a aplicação aprovada no SSO e as Redirect URIs de produção cadastradas
   (5.4).
 - **Reprovado:** a aplicação sai da homologação; você corrige com o Claude e
   solicita nova homologação (5.7).
@@ -166,14 +202,16 @@ configuração de produção (seção 5.3 do padrão).
 
 ### Passo 5 — Encerrar
 
-No chat, em linguagem acessível: confirme o que foi gerado (zip + guia), diga o
+No chat, em linguagem simples: confirme o que foi gerado (zip + guia), diga o
 passo único que falta ("envie o zip pelo canal X com a mensagem modelo do guia")
-e relembre: valores reais de env ficam com o solicitante até o TI pedir, e o prazo
-de resposta esperado é o SLA de 10 dias úteis.
+e relembre: valores reais de env (inclusive o secret do SSO) ficam com você até
+o TI pedir; se há login, as Redirect URIs de produção precisam estar cadastradas
+e aprovadas no SSO antes da subida; e o prazo de resposta esperado é o SLA de
+10 dias úteis.
 
 ---
 
-## Padrões de Desenvolvimento Vibe Coding (v1.1) — referência embutida
+## Padrões de Desenvolvimento Vibe Coding (v1.2) — referência embutida
 
 _(Trechos relevantes ao handoff. Numeração idêntica à do documento canônico
 `skills/supplog-iniciar/SKILL.md`.)_
@@ -182,17 +220,21 @@ _(Trechos relevantes ao handoff. Numeração idêntica à do documento canônico
 
 Descrição; Contexto/Motivação; Responsável (área, contato, data de criação);
 Stack + versão exata + classificação de porte; Como rodar localmente (com comando
-do seed); Fluxos principais e endpoints (método, rota, tabelas lidas/escritas,
-request, response, erros); Estrutura de dados (tabelas e finalidade); Fontes do DW
-consumidas; Dependências externas; Status (Em desenvolvimento / Em teste /
-Aguardando aprovação / Em produção); Histórico de alterações.
+do seed); Autenticação (Login Único) — modo, quem pode entrar, `client_id`,
+Redirect URIs por ambiente, variáveis `SSO_*`, **nunca o secret** (ou "Não se
+aplica" com motivo); Fluxos principais e endpoints (método, rota, tabelas
+lidas/escritas, request, response, erros); Estrutura de dados (tabelas e
+finalidade); Fontes do DW consumidas; Dependências externas; Status (Em
+desenvolvimento / Em teste / Aguardando aprovação / Em produção); Histórico de
+alterações.
 
 ### 4.2 Variáveis de ambiente e segredos
 
 - `.env` nunca commitado (consta no `.gitignore`) — e **nunca entra no pacote de
-  entrega**.
-- `.env.example` obrigatório e versionado (valores fictícios/didáticos/vazios) —
-  **vai no pacote**.
+  entrega**. Inclui o `SSO_CLIENT_SECRET` do Login Único.
+- `.env.example` obrigatório e versionado (valores fictícios/didáticos/vazios;
+  com as chaves `SSO_ISSUER`, `SSO_CLIENT_ID`, `SSO_CLIENT_SECRET`, `SSO_APP_URL`
+  quando há login) — **vai no pacote**.
 - Nenhum segredo hardcoded; nenhum segredo real em README, comentário ou mensagem
   de commit; remover chaves geradas incorretamente por IA.
 - Dependências sugeridas por IA devem ter existência, autoria e reputação
@@ -204,23 +246,26 @@ Aguardando aprovação / Em produção); Histórico de alterações.
   após aprovação do projeto).
 - **5.2 Seed:** existe e roda em homologação; em produção o script **não pode
   continuar existindo** no projeto.
-- **5.3 Env:** homologação usa valores fictícios; na subida, o solicitante
-  repassa os valores reais para o TI aplicar.
-- **5.4 Autenticação:** homologação livre; produção exige SSO (enquanto não há
-  SSO, login próprio conforme 4.3–4.4: contas nominais; hash bcrypt/argon2;
-  senha mín. 14; bloqueio de dicionário/padrões; histórico das últimas 5;
-  rotação 90d em privilégios elevados; bloqueio ≥ 15 min após 5 tentativas;
-  logout real; timeout 15–30 min ou 2–5 alto risco). App **externo:** também
-  seção **4.7** (MFA, TLS 1.2+, rate limit, headers, CSRF).
-- **5.5 Manutenção:** homologação é do solicitante/área; produção passa a ser do
-  TI.
+- **5.3 Env:** homologação usa valores fictícios; na subida, o dev repassa os
+  valores reais para o TI aplicar.
+- **5.4 Autenticação:** toda aplicação com login usa o **Login Único** da
+  Supporte (SSO, OpenID Connect em `https://supplog.com` — seção 4.4) desde a
+  homologação; sem tela, tabela ou coluna de senha própria (login próprio só
+  como exceção autorizada, 4.4.1). Para produção: aplicação **Aprovada** em
+  supplog.com → Minhas aplicações, com as Redirect URIs de produção
+  (`https://<app>/entrar/callback` e `https://<app>/`) cadastradas byte a byte —
+  cadastrar URI nova reenvia a aplicação para aprovação, então faça isso antes
+  de solicitar a subida. `SSO_APP_URL` e `SSO_CLIENT_SECRET` reais vão com as
+  demais variáveis (5.3). App **externo:** também seção **4.7** (TLS 1.2+, rate
+  limit, headers, CSRF; MFA é do SSO).
+- **5.5 Manutenção:** homologação é do dev/área; produção passa a ser do TI.
 - **5.6 Deploy:** homologação é solicitação simples (permanência de até 10 dias
   úteis); produção segue o SLA abaixo.
-- **5.7 SLA:** o solicitante pede a subida dentro dos 10 dias úteis de
-  homologação; o TI tem 10 dias úteis para avaliar. Aprovado → sobe. Reprovado →
-  sai da homologação, o solicitante corrige e solicita nova homologação. Sem
-  solicitação no prazo, o TI contata o solicitante; sem resposta do solicitante
-  ou gestor em 2 dias úteis, a aplicação é removida automaticamente.
+- **5.7 SLA:** o dev solicita a subida dentro dos 10 dias úteis de homologação; o
+  TI tem 10 dias úteis para avaliar. Aprovado → sobe. Reprovado → sai da
+  homologação, o dev corrige e solicita nova homologação. Sem solicitação no
+  prazo, o TI contata o dev; sem resposta do dev ou gestor em 2 dias úteis, a
+  aplicação é removida automaticamente.
 - **5.8 Restrição:** proibido publicar app que consome dados do DW em produção
   externa/de terceiros — só o ambiente de produção interno.
 - **5.9 Redundância:** o TI pode recusar em qualquer etapa se já existir solução

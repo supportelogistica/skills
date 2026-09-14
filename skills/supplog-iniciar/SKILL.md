@@ -1,69 +1,67 @@
 ---
 name: supplog-iniciar
-description: Construção, seguindo os Padrões de Desenvolvimento Vibe Coding da Supplog. Conduz entrevista guiada em linguagem clara, classifica stack/porte automaticamente, gera PLANEJAMENTO.md e README.md e constrói a aplicação completa conforme o padrão (estrutura de pastas, arquitetura, banco com scripts e seed, segurança, LGPD). Use quando o usuário quiser criar, iniciar ou começar do zero uma nova aplicação, app, automação, site, sistema ou projeto.
+description: Construção, seguindo os Padrões de Desenvolvimento Vibe Coding da Supplog. Conduz entrevista guiada em linguagem humana, classifica stack/porte automaticamente, gera PLANEJAMENTO.md e README.md e constrói a aplicação completa conforme o padrão (estrutura de pastas, arquitetura, banco com scripts e seed, segurança, LGPD). Use quando o usuário quiser criar, iniciar ou começar do zero uma nova aplicação, app, automação, site, sistema ou projeto.
 ---
 
 # /supplog-iniciar — Da ideia ao app rodando (Padrão Supplog)
 
-Você atende um **solicitante** da Supplog que deseja construir uma aplicação com
-apoio de IA. Em geral o solicitante conhece o problema de negócio, mas **não
-precisa dominar engenharia de software**: a skill traduz a necessidade em
-decisões técnicas alinhadas ao padrão. Sua missão tem duas metades inseparáveis:
+Você recebe um **vibe coder** da Supplog que quer construir uma aplicação. O
+público **não é técnico**: muitos "se sentem dev" mas nunca escreveram uma linha
+de código. Sua missão tem duas metades inseparáveis:
 
-1. **Entrevistar** em linguagem clara, levantando tudo o que os Padrões de
+1. **Entrevistar** em linguagem humana, arrancando tudo o que os Padrões de
    Desenvolvimento exigem — e traduzir isso em decisões técnicas padronizadas,
-   sem exigir jargão do solicitante. **O solicitante define o "o quê"; você
-   define todo o "como".**
+   sem que o viber precise entender jargão. **O viber decide o "o quê"; você
+   decide todo o "como".**
 2. **Construir a aplicação inteira** conforme o padrão. A entrevista vira a
    checklist de implementação; a skill só termina com o app rodando localmente,
-   pronto para o solicitante validar.
+   pronto para o viber testar.
 
 A **fonte de verdade** técnica são os **Padrões de Desenvolvimento Vibe Coding
-(v1.1) no final deste arquivo** — os padrões moram aqui, neste `SKILL.md`.
+(v1.2) no final deste arquivo** — os padrões moram aqui, neste `SKILL.md`.
 
 > **Divisão de papéis no ciclo Supplog:** esta skill vai da ideia ao app
-> construído. O **teste funcional é do solicitante** (ele valida cada fluxo
-> manualmente e dá o aceite). A auditoria formal de conformidade é da
-> `/supplog-check`, e a promoção para produção passa pelo crivo do TI (handoff —
-> via `/supplog-handoff`).
+> construído. O **teste funcional é do usuário** (ele testa cada fluxo na mão e
+> dá o OK). A auditoria formal de conformidade é da `/supplog-check`, e a
+> promoção para produção passa pelo crivo do TI (handoff — via
+> `/supplog-handoff`).
 
 ---
 
 ## Visão geral do fluxo
 
-1. **Entrevista** — uma pergunta por vez, linguagem clara.
-2. **Classificação automática** — você deriva stack e porte; o solicitante não
-   calcula nada.
+1. **Entrevista** — uma pergunta por vez, linguagem humana.
+2. **Classificação automática** — você deriva stack e porte; o viber não calcula
+   nada.
 3. **Planejamento** — escreve `PLANEJAMENTO.md` + `README.md` e apresenta o plano
-   em linguagem acessível; o solicitante confirma antes da construção começar.
+   em linguagem simples; o viber confirma antes da construção começar.
 4. **Construção** — estrutura de pastas, banco, código e telas, tudo conforme o
    padrão, fluxo a fluxo. Telas e UI seguem a marca oficial
    ([supportelogistica/brand](https://github.com/supportelogistica/brand)).
-5. **Entrega para teste** — app rodando + roteiro de teste em linguagem
-   acessível. O aceite funcional é do solicitante; depois do OK dele, o próximo
-   passo é a `/supplog-check`.
+5. **Entrega para teste** — app rodando + roteiro de teste em linguagem simples.
+   O "pronto" funcional é o viber quem dá; depois do OK dele, o próximo passo é a
+   `/supplog-check`.
 
 ---
 
 ## Regras de condução da entrevista
 
 1. **Uma pergunta por vez.** Faça a pergunta, **espere a resposta**, só então
-   avance. Evite várias perguntas no mesmo turno — isso prejudica o ritmo da
-   entrevista.
-2. **Linguagem clara, sem jargão.** Nunca pergunte "vai acessar o banco pelo
+   avance. Jogar várias perguntas de uma vez confunde e faz o viber desistir.
+2. **Linguagem humana, zero jargão.** Nunca pergunte "vai acessar o banco pelo
    front?". Pergunte a **intenção** ("Seu app precisa guardar informações entre um
-   acesso e outro? Por exemplo, um cadastro que permanece salvo?"). **Você**
-   traduz a resposta em decisão técnica — o solicitante não decide nada técnico.
-3. **Explique o porquê em 1-2 frases.** Quando um tema tiver regra do padrão,
-   contextualize antes/depois de perguntar ("Toda vez que um app guarda dado de
-   pessoa — nome, CPF, e-mail — a LGPD entra. Por isso preciso saber...").
-4. **Recomende uma resposta** em cada pergunta quando fizer sentido, mas a
-   decisão final é do solicitante.
+   acesso e outro? Tipo um cadastro que fica salvo?"). **Você** traduz a resposta
+   em decisão técnica — o viber não decide nada técnico.
+3. **Ensine o porquê em 1-2 frases.** Quando um tema tiver regra do padrão,
+   explique rapidinho antes/depois de perguntar ("Toda vez que um app guarda dado
+   de pessoa — nome, CPF, e-mail — a LGPD entra. Por isso preciso saber...").
+4. **Recomende uma resposta** em cada pergunta quando fizer sentido, mas a decisão
+   é do viber.
 5. **Postura consultiva, não fiscal.** Documente e **sinalize** conflitos com o
-   padrão ("este ponto tende a ser recusado na promoção para produção
+   padrão ("olha, isso aqui não vai ser aceito na hora de subir pra produção
    porque..."), mas **não reprove nem bloqueie** o projeto. Aprovar/reprovar é do
    TI (etapa de crivo, fora desta skill).
-6. **Nunca peça ao solicitante calcular stack ou porte.** Isso é **derivado
+6. **Nunca peça o viber calcular stack ou porte.** Isso é **derivado
    automaticamente** por você a partir das respostas (ver "Classificação
    automática").
 
@@ -78,8 +76,8 @@ se a conversa pedir, mas **não pule** nenhum bloco.
 
 - Qual problema essa aplicação resolve? (o "porquê" antes do "como")
 - Quem vai usar? (área/setor, perfil de usuário)
-- **Já existe algo parecido na empresa?** (só para o solicitante refletir — o TI
-  pode recusar por redundância em qualquer etapa; não é você quem decide isso.)
+- **Já existe algo parecido na empresa?** (só para o viber pensar — o TI pode
+  recusar por redundância em qualquer etapa; não é você quem decide isso.)
 
 ### Bloco 2 — Fluxos e funcionalidades
 
@@ -113,16 +111,25 @@ se a conversa pedir, mas **não pule** nenhum bloco.
 ### Bloco 6 — Segurança (em linguagem de intenção)
 
 - O app é **só interno** (rede/colaboradores) ou também **externo** (fora da rede
-  ou usuários que não são colaboradores)? → Ambos seguem a **PO-SI-0016** e as
+  ou usuários que não são colaboradores)? → Ambos seguem a **PO-SI-0015** e as
   seções 4.1–4.6. Se **externo**, registre também a seção **4.7** (MFA, TLS,
   headers, rate limit, CSRF etc.).
-- Acesso aberto a qualquer pessoa, ou **somente usuários autorizados**? → Se exige login,
-  explique que **em homologação o login é livre**, mas **em produção vira
-  obrigatório** (SSO; enquanto não há SSO, login próprio — contas nominais, sem
-  conta compartilhada; senha com hash, mín. 14 caracteres, bloqueio após 5
-  tentativas com pausa ≥ 15 min, timeout de sessão — política completa nas seções
-  4.3 e 4.4 do padrão). Se houver dado pessoal/sensível, registre necessidade de
-  **perfis/RBAC** (seção 4.3).
+- Qualquer pessoa pode ver/usar, ou **só gente autorizada**? → Se tem back-end
+  e tela, explique que o login é pelo **Login Único da Supporte** (SSO): a pessoa
+  entra com a conta Microsoft da empresa uma vez e o app já a reconhece — o app
+  **não tem tela de senha própria**, não guarda senha nem cadastra usuário (seção
+  4.4 do padrão). Isso vale desde a homologação. Automação sem tela e página
+  estática pública não têm login.
+- **Quem pode entrar:** só colaboradores da Supporte, só pessoas de fora
+  (clientes, parceiros) ou ambos? → Registre; esse valor vai no cadastro da
+  aplicação no SSO ("Quem pode entrar") e define o modo de proteção.
+- **Tem alguma parte aberta** (uma página inicial que qualquer um vê antes de
+  entrar) ou **tudo exige login**? → Tudo exige → modo **bloqueio total**; tem
+  parte aberta → modo **botão** "Entrar com Supplog SSO" (seção 4.4).
+- **Todo mundo pode fazer tudo**, ou existem papéis diferentes (ex.: quem
+  cadastra × quem só consulta × administrador)? → Se houver papéis **ou** dado
+  pessoal/sensível, registre necessidade de **perfis/RBAC** (seção 4.3) — o SSO
+  decide quem entra; o que cada um pode fazer é do app.
 - Vai **receber informação digitada** pelo usuário (formulários, uploads)? →
   Registre que toda entrada será **validada no back-end** e que upload valida tipo
   real e tamanho (seção 4.1).
@@ -133,10 +140,10 @@ se a conversa pedir, mas **não pule** nenhum bloco.
 
 ---
 
-## Fase 2 — Classificação automática (você calcula, o solicitante não)
+## Fase 2 — Classificação automática (você calcula, o viber não)
 
-A partir das respostas, **derive a stack e o porte** e informe ao solicitante em
-linguagem acessível.
+A partir das respostas, **derive a stack e o porte** e informe ao viber em
+linguagem simples.
 
 **Regra de stack (seção 2.2 do padrão):**
 
@@ -173,7 +180,7 @@ projeto**:
 # Planejamento — <Nome da Aplicação>
 
 > Gerado pela entrevista /supplog-iniciar. Base: Padrões de Desenvolvimento Vibe
-> Coding (v1.1).
+> Coding (v1.2).
 
 ## Problema
 
@@ -206,7 +213,13 @@ roteiro de teste>
 
 - Escopo: <interno | externo (seção 4.7)>
 - Acesso: <público / restrito por login>
-- Perfis/RBAC: <sim / não — quando houver dado pessoal/sensível>
+- Login Único (SSO, seção 4.4): <bloqueio total | botão (tem área pública) | não
+  se aplica (automação / estático sem login)>
+- Quem pode entrar (cadastro no SSO): <internos | externos | ambos>
+- Cadastro da aplicação no SSO: <client_id sugerido; status: a cadastrar /
+  aguardando aprovação / aprovada>
+- Perfis/RBAC: <sim (quais papéis) / não — obrigatório quando houver papéis
+  distintos ou dado pessoal/sensível>
 - Entradas de usuário: <formulários, uploads — ou "nenhuma">
 
 ## Classificação automática
@@ -219,15 +232,15 @@ roteiro de teste>
 
 <liste apenas as seções relevantes ao caso — ex.: se tem banco, cite 3.1–3.7
 (scripts_criacao.sql, seed, SQL puro parametrizado, CriadoEm/AtualizadoEm) e 5.1
-(SQLite em homologação); se tem login, cite 4.3–4.4; se tem dado pessoal, cite
-4.5–4.6; se for uso externo, cite 4.7; sempre cite 2.4 (nomenclatura), 2.5
+(SQLite em homologação); se tem login, cite 4.3–4.4 (Login Único) e 5.4; se tem
+dado pessoal, cite 4.5–4.6; se for uso externo, cite 4.7; sempre cite 2.4 (nomenclatura), 2.5
 (pastas) e 2.6 (arquitetura) da stack escolhida; se houver interface, cite 2.8
 (marca / brand)>
 
 ## Pontos de atenção / conflitos com o padrão
 
-<qualquer coisa que o solicitante quer fazer mas colide com o padrão — sinalizado,
-não bloqueado>
+<qualquer coisa que o viber quer fazer mas colide com o padrão — sinalizado, não
+bloqueado>
 
 ## Adendos da construção
 
@@ -268,6 +281,13 @@ que ganha a entrada inicial).
 
 <!-- TODO: preencher durante o desenvolvimento (incluir comando de execução do seed) -->
 
+## Autenticação (Login Único)
+
+<!-- TODO: preencher se houver login — modo (bloqueio total / botão), quem pode
+entrar, client_id (NUNCA o client_secret), Redirect URIs cadastradas por
+ambiente, variáveis SSO_* esperadas no .env. Se não houver login, escrever
+"Não se aplica" e o motivo. -->
+
 ## Fluxos principais e endpoints
 
 <fluxos em alto nível preenchidos>
@@ -297,10 +317,10 @@ Em desenvolvimento
 
 ### Confirmação antes de construir
 
-Apresente ao solicitante, **em linguagem acessível**, o resumo do plano: o que
-vai ser construído, em qual stack (e por quê, em uma frase), quais regras do
-padrão vão valer, e quais pontos de atenção existem. Faça **uma única pergunta**:
-se ele confirma o plano para a construção começar. Ajustes que ele pedir aqui são
+Apresente ao viber, **em linguagem simples**, o resumo do plano: o que vai ser
+construído, em qual stack (e por quê, em uma frase), quais regras do padrão vão
+valer, e quais pontos de atenção existem. Faça **uma única pergunta**: se ele
+confirma o plano para a construção começar. Ajustes que ele pedir aqui são
 bem-vindos — atualize os arquivos e reconfirme.
 
 ---
@@ -319,16 +339,16 @@ Com o plano confirmado, **construa a aplicação completa**. Regras da construç
    seção 3.5–3.6) e o seed com dados 100% fictícios (seção 3.7). Banco local:
    **SQLite** (seção 5.1).
 3. **Fluxo a fluxo.** Implemente **todos** os fluxos do `PLANEJAMENTO.md`, um por
-   vez. A cada fluxo concluído, informe ao solicitante, em linguagem acessível, o
-   que ficou pronto ("o cadastro de ocorrências já salva e lista — faltam o
-   relatório e a tela de busca"). Evite jargão nos status.
+   vez. A cada fluxo concluído, conte ao viber em linguagem simples o que ficou
+   pronto ("o cadastro de ocorrências já salva e lista — faltam o relatório e a
+   tela de busca"). Nada de jargão nos updates.
 4. **Arquitetura obrigatória** (seção 2.6): rotas finas; regra de negócio em
    services; acesso a banco isolado e **sempre em SQL puro parametrizado** (sem
    ORM, sem query builder); em React, componentes funcionais, custom hooks e
    chamadas de API em `services/`; middleware para autenticação/validação quando
    houver API.
 5. **Nomenclatura** (seção 2.4) em tudo; comentários de código em português.
-6. **Segurança desde o início** (seções 4.1–4.2 e 4.5; fonte PO-SI-0016):
+6. **Segurança desde o início** (seções 4.1–4.2 e 4.5; fonte PO-SI-0015):
    validação rigorosa de toda entrada no back-end; mitigação OWASP Top 10 (sem
    injeção, XSS, BOLA); SQL parametrizado; escape de output; erros sem stack
    trace; logs/auditoria de ações sensíveis; upload com tipo real e tamanho;
@@ -336,15 +356,41 @@ Com o plano confirmado, **construa a aplicação completa**. Regras da construç
    `.env.example` versionado; deps sugeridas por IA conferidas; dados sensíveis
    criptografados em trânsito/repouso; massa de produção anonimizada em
    homologação. App **externo** → seção **4.7** também.
-7. **Acesso e login** (seções 4.3–4.4): em homologação o acesso é livre — só
-   implemente login se o projeto exigir acesso restrito desde já; se implementar:
-   contas nominais (sem genéricas/compartilhadas), RBAC quando houver dado
-   sensível, DB com privilégio mínimo, hash bcrypt/argon2, senha mín. 14 com as
-   4 categorias (sem dicionário/padrões/termos da org), histórico das últimas 5,
-   checagem de senhas vazadas quando viável, rotação 90 dias em privilégios
-   elevados, bloqueio ≥ 15 min após 5 tentativas, mensagens genéricas,
-   recuperação só por token de uso único, logout que invalida sessão no servidor,
-   timeout 15–30 min (ou 2–5 min se alto risco).
+7. **Acesso e login pelo Login Único** (seções 4.3–4.4 e 5.4) — toda aplicação
+   com back-end e tela nasce integrada ao SSO da Supporte, já na homologação.
+   **Nunca construa tela de login com senha, tabela de senhas nem cadastro de
+   usuário próprio** (login próprio só como exceção autorizada, 4.4.1).
+   - **Peça ao viber o cadastro no SSO** (só ele pode fazer, leva 2 minutos, sem
+     chamado): supplog.com → menu do usuário → **Minhas aplicações** → **Nova
+     aplicação**. Entregue a ele, prontos para copiar: nome; `client_id`
+     sugerido (minúsculas, números e hífen); tipo de cliente **confidencial**;
+     "Quem pode entrar" conforme a entrevista; e as **Redirect URIs** exatas de
+     desenvolvimento — `http://localhost:<porta>/entrar/callback` e
+     `http://localhost:<porta>/`. Avise: o `client_secret` aparece **uma única
+     vez** e deve ir **direto para o `.env`** — **nunca colar no chat**, em
+     print ou no README. A aplicação fica **Aguardando aprovação**; o
+     desenvolvimento continua e o teste do login depende da aprovação.
+   - **Implemente com biblioteca OIDC da stack**, nunca protocolo/criptografia à
+     mão: Flask → **Authlib** (OAuth client com `server_metadata_url` do
+     discovery, `code_challenge_method='S256'`, `client_secret_basic`);
+     Node/Nitro → **`openid-client`** ou porte da implementação de referência
+     (`supportelogistica/docs`: `server/routes/entrar/`, `server/utils/sso/`,
+     `server/middleware/somente-interno.ts`) validando JWT com **`jose`**.
+   - Rotas `/entrar`, `/entrar/callback` e `/entrar/sair`; middleware de
+     **bloqueio total** (ou **botão oficial** "Entrar com Supplog SSO" quando há
+     área pública); sessão em cookie `httpOnly`/`SameSite=Lax`/`Secure` em
+     produção; renovação com refresh token e `invalid_grant` → volta a `/entrar`;
+     `sub` como chave do usuário (nunca e-mail); `tipo == INTERNO` validado no
+     servidor quando só internos entram; logout que encerra a sessão **no SSO**.
+     Detalhes e checklist completos na seção **4.4**.
+   - Variáveis `SSO_ISSUER`, `SSO_CLIENT_ID`, `SSO_CLIENT_SECRET`, `SSO_APP_URL`
+     (+ chave da sessão) no `.env`, com as mesmas chaves **sem valor** no
+     `.env.example`.
+   - **Autorização é do app** (4.3): tabela `USUARIO` chaveada por `SsoSub`,
+     perfis/RBAC em tabelas próprias quando houver papéis ou dado sensível,
+     conexão com o banco sob privilégio mínimo. Contas nominais são garantidas
+     pelo SSO — proibido criar usuário genérico/compartilhado no app.
+   - Preencha a seção **Autenticação (Login Único)** do README (sem o secret).
 8. **Higiene LGPD** (seção 4.6) quando houver dado pessoal: nada de dado pessoal
    em app estático, em URL, em log ou no seed; colete só o que os fluxos
    justificam; fonte de dado da empresa é só o DW.
@@ -373,7 +419,13 @@ A construção só está concluída quando **tudo** abaixo for verdade:
 - [ ] Interface (quando houver) alinhada à seção 2.8: brand consultado
       (`AGENTS.md` + `DESIGN.md`), tokens/fontes/logo/favicon oficiais, zero
       emojis, ícones Lucide.
-- [ ] Se app **externo**: controles da seção 4.7 (MFA, TLS 1.2+, rate limit,
+- [ ] Se há login: **Login Único** conforme 4.4 — rotas `/entrar`,
+      `/entrar/callback`, `/entrar/sair`; PKCE S256; `state`+`nonce`; `id_token`
+      validado via JWKS (`iss`, `aud`, `exp`, `nonce`); middleware de bloqueio
+      total ou botão oficial; `sub` como chave; logout no SSO; `SSO_*` no
+      `.env.example`; **nenhuma** tela/tabela de senha própria; README com a
+      seção Autenticação preenchida (sem secret).
+- [ ] Se app **externo**: controles da seção 4.7 (TLS 1.2+, rate limit,
       headers, CSRF, sem painéis/debug públicos).
 - [ ] Banco criado **pelos scripts** (`scripts_criacao.sql`) e seed executando sem
       erro (quando houver banco).
@@ -385,26 +437,31 @@ A construção só está concluída quando **tudo** abaixo for verdade:
 
 ## Fase 5 — Entrega para o teste do usuário
 
-O aceite funcional **é do solicitante, não seu**. Ao entregar:
+O "pronto" funcional **é do viber, não seu**. Ao entregar:
 
-1. **Explique o que foi construído** em linguagem acessível, fluxo a fluxo.
-2. **Oriente a execução local**: passo a passo literal (quais comandos usar, qual
-   endereço abrir no navegador), sem pressupor conhecimento técnico.
+1. **Explique o que foi construído** em linguagem simples, fluxo a fluxo.
+2. **Ensine a rodar**: passo a passo literal (que comando digitar, que endereço
+   abrir no navegador), assumindo zero conhecimento técnico.
 3. **Entregue um roteiro de teste**: para cada fluxo do `PLANEJAMENTO.md`, o que
    testar e o que deve acontecer ("cadastre uma ocorrência de teste; ela deve
    aparecer na lista; tente salvar sem preencher o campo X — deve dar aviso").
-4. **Indique o próximo passo**: quando todos os fluxos estiverem OK para ele, o
+   Se há login, o **primeiro item** é o Login Único: abrir o app deve levar à
+   tela do SSO ("Entrar com a Microsoft") e voltar já logado; "Sair" deve
+   encerrar a sessão também no SSO. Lembre que esse teste **só funciona depois
+   que o administrador do SSO aprovar a aplicação** — até lá, o SSO recusa o
+   login (`invalid_client`); acompanhe o status em "Minhas aplicações".
+4. **Diga o caminho à frente**: quando todos os fluxos estiverem OK para ele, o
    próximo passo é rodar a `/supplog-check` (auditoria de conformidade); depois do
    relatório limpo, o handoff ao TI com a `/supplog-handoff`.
 5. **Relembre os pontos de atenção** registrados no `PLANEJAMENTO.md` (conflitos
    com o padrão sinalizados na entrevista) — eles vão pesar no crivo do TI.
 
-Se o solicitante encontrar problema no teste, corrija dentro desta mesma missão:
-o ciclo construir → testar → ajustar continua até o aceite funcional.
+Se o viber encontrar problema no teste, corrija dentro desta mesma missão: o
+ciclo construir → testar → ajustar continua até ele dar o OK funcional.
 
 ---
 
-## Padrões de Desenvolvimento & Vibe Coding (v1.1)
+## Padrões de Desenvolvimento & Vibe Coding (v1.2)
 
 > **Documento canônico** — fonte única de verdade dos Padrões de Desenvolvimento da
 > Supporte Logística (Supplog) para aplicações criadas com apoio de IA.
@@ -417,6 +474,23 @@ o ciclo construir → testar → ajustar continua até o aceite funcional.
 | ------ | ---------- | ------------------ | ---------------------------------------------- |
 | 1.0    | 22/07/2026 | Edu Ferreira       | Henrique Fernandes                             |
 | 1.1    | 23/07/2026 | Jhonatan Magalhães | _pendente — Edu Ferreira / Henrique Fernandes_ |
+| 1.2    | 14/09/2026 | Ludmilla Quirino   | _pendente_                                     |
+
+**Mudanças da v1.2 sobre a v1.1:**
+
+1. **Login Único (SSO) disponível.** A seção **4.4** deixa de descrever login
+   próprio e passa a definir a integração obrigatória com o Login Único da
+   Supporte (OpenID Connect em `https://supplog.com`), conforme a trilha oficial
+   [Login Único](https://docs.supplog.com/vibe-coding/login-unico/o-que-e-o-login-unico).
+   As regras de senha viram **4.4.1**, admitidas só como exceção autorizada.
+2. **Seção 5.4 reescrita:** o SSO é integrado **desde a homologação** (o cadastro
+   aceita `localhost`); em produção, aplicação aprovada no SSO com Redirect URIs
+   de produção cadastradas.
+3. **Seção 2.7:** README ganha a seção "Autenticação (Login Único)".
+4. **Seção 4.7:** MFA do acesso humano passa a ser coberto pelo Login Único
+   (conta Microsoft); a aplicação não implementa MFA próprio.
+5. Glossário: termos do SSO (OIDC, PKCE, `client_id`/`client_secret`, Redirect
+   URI, `id_token`, `sub`).
 
 **Mudanças da v1.1 sobre o PDF v1.0** _(pendentes de ratificação pelos autores do PDF)_:
 
@@ -433,7 +507,7 @@ o ciclo construir → testar → ajustar continua até o aceite funcional.
 6. **Seção 4 reestruturada (segurança vigente, 29/07/2026):** 4.1–4.5 alinhadas
    à política atual (OWASP/BOLA, RBAC, login/senha, criptografia/anonimização);
    higiene LGPD renumerada de 4.4 para **4.6**.
-7. **PO-SI-0016 mínimo útil (30/07/2026):** reframe (política vale para todos);
+7. **PO-SI-0015 mínimo útil (30/07/2026):** reframe (política vale para todos);
    senhas com bloqueio de dicionário/padrões e rotação NIST/90d; nova seção
    **4.7** com controles obrigatórios para apps externos.
 
@@ -661,6 +735,10 @@ obrigatoriamente:
 - Stack técnica, incluindo versão exata (ex.: `Python 3.12.4`) e classificação de
   porte
 - Como rodar localmente (incluindo comando de execução do seed)
+- Autenticação (Login Único), quando houver login: modo (bloqueio total /
+  botão), quem pode entrar, `client_id`, Redirect URIs cadastradas por ambiente
+  e variáveis `SSO_*` esperadas — **nunca** o `client_secret`. Sem login:
+  "Não se aplica" e o motivo
 - Fluxos principais e endpoints, incluindo: método e rota, tabelas utilizadas
   (leitura/escrita), request, response e possíveis erros
 - Estrutura de dados (tabelas principais e finalidade)
@@ -776,14 +854,13 @@ permitindo teste imediato sem depender de dado real.
 
 ### 4. Segurança
 
-Os requisitos das seções **4.1 a 4.6** são a tradução operacional, para o
-desenvolvimento assistido por IA (Vibe Coding), da **PO-SI-0016 – Política de
-Desenvolvimento Seguro** (GED/FLUIG) e são
+Os requisitos das seções **4.1 a 4.6** são a tradução operacional, para vibe
+coding, da **PO-SI-0015 – Política de Desenvolvimento Seguro** (GED/FLUIG) e são
 obrigatórios para **todas** as aplicações (uso interno e externo). Aplicações de
 uso **externo** devem cumprir, além disso, a seção **4.7**. Estes itens cobrem a
 camada de aplicação; infraestrutura e rede são de outra área.
 
-A PO-SI-0016 completa (governança, sanções, ferramentas homologadas, ROPA/RIPD
+A PO-SI-0015 completa (governança, sanções, ferramentas homologadas, ROPA/RIPD
 detalhado etc.) permanece a fonte normativa no FLUIG — aqui ficam só os
 requisitos acionáveis na construção do app.
 
@@ -813,6 +890,14 @@ requisitos acionáveis na construção do app.
 - **Upload de arquivos:** quando aplicável, validar o tipo real do arquivo (não
   confiar apenas na extensão do nome) e limitar rigorosamente o tamanho máximo
   aceito.
+- **Gestão de sessão:** a ação de logout deve invalidar a sessão de forma
+  definitiva no servidor (back-end), não se limitando a redirecionar a tela no
+  front-end. Com o Login Único (4.4), o logout também encerra a sessão no SSO.
+- **Timeout de sessão:** aplicações internas devem possuir expiração automática
+  por inatividade — entre **15 e 30 minutos** (risco baixo/moderado) ou entre
+  **2 e 5 minutos** (aplicações de alto risco com dados sensíveis e
+  confidenciais). Com o Login Único, aplica-se à sessão local do app (cookie);
+  a pessoa volta pelo SSO sem redigitar senha se a sessão central estiver viva.
 - **Certificados digitais:** arquivos de certificados (`.pfx`, `.pem`, `.crt`,
   `.enc`) não devem ser armazenados em diretórios públicos da aplicação.
 
@@ -837,21 +922,199 @@ requisitos acionáveis na construção do app.
 
 #### 4.3 Autenticação e Controle de Acessos
 
-- **Autenticação individual:** implementar controle de acesso por usuário e
-  senhas nominais. É expressamente proibida a utilização de contas genéricas ou
-  compartilhadas.
+- **Autenticação individual:** todo acesso é nominal e individual. Com o Login
+  Único (4.4) isso vem da conta corporativa Microsoft de cada pessoa; é
+  expressamente proibida a utilização de contas genéricas ou compartilhadas — e
+  proibido criar no app qualquer usuário "coringa" que contorne o SSO.
 - **Segregação (RBAC):** implementar segregação de acessos baseada em grupos ou
   perfis, garantindo que funcionalidades sensíveis sejam operáveis exclusivamente
   por pessoas autorizadas quando houver uso de dados pessoais, sensíveis e
-  confidenciais.
+  confidenciais — ou quando o projeto tiver papéis distintos. O SSO decide
+  **quem entra**; perfis, bloqueio por usuário e permissão por tela/ação/dado
+  ficam **no banco da própria aplicação**, chaveados pelo claim `sub` do SSO
+  (nunca pelo e-mail, que pode mudar).
 - **Privilégio mínimo (banco de dados):** as conexões do sistema com o banco de
   dados devem operar estritamente com os privilégios mínimos necessários, sendo
   proibido o uso de credenciais de administrador ou root.
 
-#### 4.4 Autenticação e Senhas (Login)
+#### 4.4 Autenticação — Login Único (SSO)
 
-Enquanto o SSO (ver seção 5.4) não está disponível, toda aplicação promovida para
-produção deve implementar seu próprio sistema de login, seguindo as regras abaixo.
+O **Login Único** (Single Sign-On) é o serviço de autenticação da Supporte,
+disponível em `https://supplog.com` e baseado em **OpenID Connect** (o mesmo
+padrão de Google e Microsoft). A pessoa entra com a conta corporativa Microsoft
+na primeira aplicação; nas demais, o login é automático. Documentação oficial:
+trilha [Login Único](https://docs.supplog.com/vibe-coding/login-unico/o-que-e-o-login-unico)
+(páginas "O que é", "Cadastrando sua aplicação" e "Integrando no seu projeto");
+guia técnico em `supportelogistica/supplog`, `docs/sso/06-guia-integracao.md`.
+
+**Uso obrigatório** em toda aplicação nova com login — interna ou externa,
+desde a homologação (5.4). A aplicação **não tem tela de login própria, não
+armazena senha e não gerencia usuários**: ela redireciona a pessoa para o SSO e
+recebe a identidade validada. O SSO cuida de senha, bloqueio por tentativas,
+sessão central, logout e desativação (conta Microsoft desativada = perde acesso
+a todas as aplicações). Automação sem tela e aplicação estática pública não têm
+login e ficam fora desta seção.
+
+**Fronteira de responsabilidade:**
+
+- **O SSO decide quem entra.** No cadastro define-se se entram só usuários
+  internos (colaboradores), só externos ou ambos; o SSO barra quem não
+  corresponde antes de chegar ao app.
+- **A aplicação decide o que a pessoa pode fazer** (4.3): perfis, bloqueio por
+  usuário e permissão por tela/ação/dado ficam no banco do próprio app,
+  chaveados pelo claim **`sub`** (identificador estável) — **nunca pelo e-mail**.
+
+**Cadastro da aplicação** (feito pelo responsável, sem chamado, em
+supplog.com → menu do usuário → **Minhas aplicações** → **Nova aplicação**):
+
+- **Nome** exibido na tela de login e **`client_id`** (minúsculas, números e
+  hífen; não muda depois).
+- **Tipo de cliente:** **confidencial** quando há back-end (Flask, Node/Nitro);
+  público só para front sem servidor. PKCE é exigido para ambos.
+- **Quem pode entrar:** internos / externos / ambos.
+- **Redirect URIs**, comparadas **byte a byte** (barra final, esquema e porta
+  contam): por ambiente, `<SSO_APP_URL>/entrar/callback` (callback) e
+  `<SSO_APP_URL>/` (retorno pós-logout), incluindo desenvolvimento
+  (`http://localhost:<porta>/...`). Fora de `localhost`, só `https`.
+- O **`client_secret` aparece uma única vez**: vai direto para o `.env`. Nunca em
+  repositório, chat, print, README ou commit. Se perder ou suspeitar de
+  vazamento, gere outro na página da aplicação (o anterior para na hora).
+- A aplicação nasce **Aguardando aprovação** de um administrador do SSO; até lá
+  o login é recusado (`invalid_client`) — o desenvolvimento continua. Alterar
+  Redirect URI de aplicação aprovada reenvia o cadastro para aprovação.
+
+**Dados de configuração:**
+
+| Dado                           | Valor                                                                                                              |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------------ |
+| Issuer                         | `https://supplog.com`                                                                                              |
+| Discovery                      | `https://supplog.com/.well-known/openid-configuration` — **todos** os endpoints saem daqui; proibido hardcode de path |
+| Scopes                         | `openid profile email`                                                                                             |
+| Fluxo                          | Authorization Code + **PKCE (S256)**, obrigatório mesmo com client secret                                          |
+| Autenticação no token endpoint | `client_secret_basic` (confidencial) ou `none` (público)                                                           |
+| Claims (no `id_token`)         | `sub`, `name`, `full_name`, `email`, `email_verified`, `tipo` (`INTERNO`/`EXTERNO`), `department`, `job_title`, `picture`. **Não existe endpoint userinfo.** |
+| Vida dos tokens                | `access_token` JWT RS256, 10 min; `id_token` 1 h; `refresh_token` opaco e **rotativo**                             |
+
+**Variáveis de ambiente** (no `.env`; as mesmas chaves, sem valor, no
+`.env.example`; carregadas em tempo de execução — 4.2):
+
+```bash
+SSO_ISSUER=https://supplog.com
+SSO_CLIENT_ID=meu-app
+SSO_CLIENT_SECRET=SEU_SECRET_AQUI
+# Origem pública do app. Usada na redirect_uri (/entrar/callback) e no retorno pós-logout (/).
+SSO_APP_URL=http://localhost:3000
+```
+
+Em produção, `SSO_APP_URL` é o endereço real (`https://meuapp.supplog.com`) e
+precisa corresponder a uma Redirect URI cadastrada. Some-se a chave da sessão
+(`SECRET_KEY` no Flask; `SSO_COOKIE_CHAVE` no Nitro, base64 de 32 bytes), também
+fora do repositório.
+
+**Dois modos de chamar o login** (mesmo fluxo OIDC; muda o gatilho):
+
+- **Bloqueio total** — padrão para sistema 100% interno, sem área pública: um
+  middleware **no servidor** protege a aplicação inteira. Sem sessão → página
+  HTML redireciona para `/entrar` (guardando o destino para voltar); requisição
+  de API/asset sem sessão → `401`. Libere só o próprio fluxo de login, assets do
+  bundle, marca e favicon.
+- **Botão** — quando há conteúdo aberto, landing page ou tela de entrada
+  própria: o botão oficial **"Entrar com Supplog SSO"** aponta para `/entrar`.
+  Texto fixo; ícone é o símbolo PP da marca (`https://supplog.com/brand/pp-laranja.svg`
+  em botão branco/fundo claro; `https://supplog.com/brand/pp-branco.svg` em botão
+  laranja ou chumbo escuro). Botão laranja usa texto e ícone brancos; botão
+  branco usa símbolo laranja e texto chumbo (laranja sobre branco reprova no
+  WCAG AA). Cor a critério do app entre as três.
+
+**Implementação obrigatória** — use a biblioteca OIDC da stack (Flask:
+**Authlib**, OAuth client com `server_metadata_url` do discovery,
+`code_challenge_method='S256'` e `client_secret_basic`; Node/Nitro:
+**`openid-client`** ou porte da implementação de referência em
+`supportelogistica/docs` — `server/routes/entrar/`, `server/utils/sso/`,
+`server/middleware/somente-interno.ts` — validando JWT com **`jose`**).
+**Proibido implementar o protocolo ou a criptografia à mão.**
+
+- **Rotas:**
+  - `/entrar` — gera `state`, `nonce` e par PKCE (`code_verifier` /
+    `code_challenge`), guarda-os em cookie **cifrado, httpOnly**, de vida curta
+    (≈10 min) e redireciona ao authorization endpoint com `response_type=code`,
+    scopes, `state`, `nonce`, `code_challenge` e `code_challenge_method=S256`.
+    Aceita `?destino=` (rota que a pessoa tentou abrir) **saneado**: só caminho
+    relativo à raiz, sem `//`, sem barra invertida — anti open-redirect.
+  - `/entrar/callback` — confere o `state`; trata `error` do SSO com mensagem
+    genérica; troca o `code` no token endpoint com `code_verifier` e
+    `redirect_uri`; valida o `id_token` via **JWKS do discovery**: assinatura,
+    `iss` = issuer, `aud` = `client_id`, `exp`, `nonce`. Abre a sessão e
+    redireciona ao destino saneado (ou `/`).
+  - `/entrar/sair` — apaga a sessão local **e** redireciona ao
+    `end_session_endpoint` com `id_token_hint` e `post_logout_redirect_uri`
+    cadastrada. Logout que só apaga cookie é não-conformidade (a pessoa
+    voltaria logada na próxima visita).
+- **Sessão:** cookie `httpOnly`, `SameSite=Lax`, `Secure` em produção, com
+  conteúdo cifrado (ou sessão server-side). Guarde `sub`, nome, e-mail, `tipo`,
+  `id_token` (para o logout), `refresh_token` e o instante de expiração do
+  access token. Nunca exponha tokens ao front.
+- **Renovação:** o access token dura 10 min — renove com o refresh token um
+  pouco antes de vencer. O refresh é **rotativo**: guarde sempre o **último**;
+  o reuso de um antigo revoga a cadeia inteira. `invalid_grant` (sessão SSO
+  encerrada, usuário desativado, refresh revogado) → limpe a sessão e mande a
+  pessoa para `/entrar` **sem erro na tela** (será silencioso se a sessão SSO
+  estiver viva). Serialize renovações concorrentes do mesmo refresh (várias
+  abas/requests em paralelo). Falha de rede/5xx com token ainda válido mantém a
+  sessão atual.
+- **Tipo de usuário:** se a aplicação aceita só internos, valide `tipo ==
+  INTERNO` também **no servidor** (`403` caso contrário). Ausência de `tipo`
+  trata-se como `EXTERNO` (menor privilégio).
+- **Usuário no banco:** tabela `USUARIO` com **`SsoSub`** como chave natural
+  única (3.2) e colunas como `Nome`, `Email`, `Tipo`, `EstaAtivo`, `CriadoEm`,
+  `AtualizadoEm`; atualize nome/e-mail a partir do `id_token` a cada login.
+  Perfis e permissões (RBAC, 4.3) em tabelas próprias (ex.: `PERFIL`,
+  `USUARIO_PERFIL`). **Nenhuma coluna de senha.**
+- **APIs próprias:** se o front chama a API do mesmo app, a sessão (cookie)
+  autentica. Se a API é consumida por terceiros com `access_token` do SSO,
+  valide-o localmente via JWKS (`iss`, `aud` = seu `client_id`, `exp`).
+- **Proxy reverso:** atrás de nginx, o servidor repassa `X-Forwarded-Proto` e
+  `X-Forwarded-Host`; o app precisa se enxergar como `https` em produção.
+- **Auditoria (4.1):** registre login, logout e falhas com `sub`/horário; nunca
+  registre tokens, `client_secret` ou dado pessoal em texto puro.
+- **Configuração validada no boot:** falta de qualquer `SSO_*` derruba o
+  processo com a causa no log (não só um 500 no `/entrar`).
+
+**Checklist de conformidade** (auditado pela `/supplog-check`, exigido no
+handoff):
+
+- [ ] Nenhuma página protegida é acessível sem sessão, inclusive por requisição
+      direta (API/asset de conteúdo).
+- [ ] `client_secret` só no `.env`; `.env` no `.gitignore`; `.env.example` com
+      as chaves `SSO_*` sem valor.
+- [ ] `id_token` validado com `iss`, `aud`, `exp` e `nonce`; assinatura via JWKS
+      do discovery; endpoints obtidos do discovery.
+- [ ] PKCE S256 e `state` em toda autorização.
+- [ ] Logout encerra a sessão **no SSO** (`end_session_endpoint` +
+      `id_token_hint`), não só apaga o cookie.
+- [ ] `invalid_grant` no refresh redireciona a `/entrar` sem erro na tela.
+- [ ] `sub` é a chave do usuário; e-mail não é chave.
+- [ ] Redirect URIs de produção cadastradas **exatamente** iguais às que o app
+      monta; domínio com HTTPS e headers `X-Forwarded-*` no nginx.
+- [ ] Nenhuma tela, rota, tabela ou coluna de senha própria.
+
+**Erros comuns:** `invalid_redirect_uri` → URI não cadastrada byte a byte
+(barra final, `http`/`https`, porta). `invalid_client` → aplicação ainda não
+aprovada, desativada ou `client_secret` errado. **Loop infinito de login** →
+`SSO_APP_URL` difere do endereço do navegador (`localhost` × `127.0.0.1`,
+`http` × `https`) e o cookie não casa. **Recusa só em produção com
+`redirect_uri` em `http://`** → nginx sem HTTPS ou sem `X-Forwarded-Proto` /
+`X-Forwarded-Host`. **"Seu usuário não tem acesso a esta aplicação"** → a pessoa
+não corresponde ao "Quem pode entrar" do cadastro.
+
+##### 4.4.1 Login próprio (exceção)
+
+Login com usuário e senha **na própria aplicação não é permitido** para
+aplicações novas. Admite-se **somente como exceção**, com autorização expressa
+da Segurança da Informação/TI registrada no `PLANEJAMENTO.md` e no README (ex.:
+sistema legado em adaptação ao SSO). Acesso machine-to-machine não é login
+próprio: segue os mecanismos da seção 4.7. Nesses casos aplicam-se
+integralmente as regras abaixo, além de 4.3:
 
 - **Armazenamento seguro:** a senha do usuário nunca deve ser armazenada em texto
   puro — é obrigatória a aplicação de funções de hash seguras e modernas
@@ -866,7 +1129,7 @@ produção deve implementar seu próprio sistema de login, seguindo as regras ab
 - **Histórico e senhas comprometidas:** impedir o reuso das **últimas 5** senhas.
   Quando viável, validar a nova credencial contra listas de senhas conhecidamente
   vazadas (sem expor a senha/hash completa — ex.: modelo k-anonymity).
-- **Rotação (alinhada à PO-SI-0016 / NIST SP 800-63B):**
+- **Rotação (alinhada à PO-SI-0015 / NIST SP 800-63B):**
   - **Privilégios elevados** (admin, root, DBA, contas de serviço, automações,
     acesso a dados sensíveis/confidenciais): expiração obrigatória em no máximo
     **90 dias**, com aviso prévio e bloqueio até nova senha.
@@ -884,13 +1147,6 @@ produção deve implementar seu próprio sistema de login, seguindo as regras ab
   tokens criptográficos de uso único e tempo de expiração curto (**15 a 30
   minutos**). É expressamente proibido o envio de senhas em texto claro por
   e-mail ou SMS.
-- **Gestão de sessão:** a ação de logout deve invalidar a sessão de forma
-  definitiva no servidor (back-end), não se limitando a redirecionar a tela no
-  front-end.
-- **Timeout de sessão:** aplicações internas devem possuir expiração automática
-  por inatividade — entre **15 e 30 minutos** (risco baixo/moderado) ou entre
-  **2 e 5 minutos** (aplicações de alto risco com dados sensíveis e
-  confidenciais).
 
 #### 4.5 Proteção de Dados
 
@@ -929,9 +1185,12 @@ esperada de qualquer aplicação que toque dado de pessoa.
 Aplica-se quando a aplicação é acessível **fora da rede corporativa** ou por
 usuários que **não** são colaboradores. Além de 4.1–4.6, é obrigatório:
 
-- **MFA/2FA** para todo acesso humano. Acessos machine-to-machine (APIs,
-  integrações, automações): OAuth 2.0 client credentials, certificados mTLS ou
-  chaves de API **rotacionáveis**.
+- **MFA/2FA** para todo acesso humano — coberto pelo **Login Único** (4.4):
+  a autenticação, inclusive o fator adicional, é do SSO/conta Microsoft; a
+  aplicação **não implementa MFA próprio**. No cadastro do SSO, "Quem pode
+  entrar" deve refletir o público externo (externos ou ambos). Acessos
+  machine-to-machine (APIs, integrações, automações): OAuth 2.0 client
+  credentials, certificados mTLS ou chaves de API **rotacionáveis**.
 - **HTTPS com TLS 1.2+** em todas as rotas e APIs — HTTP em texto claro proibido.
 - **Rate limiting** e proteção contra credential stuffing nos endpoints expostos.
 - **Cabeçalhos de segurança HTTP:** no mínimo CSP, HSTS e X-Frame-Options.
@@ -941,10 +1200,11 @@ usuários que **não** são colaboradores. Além de 4.1–4.6, é obrigatório:
 - **Superfície mínima:** só portas necessárias (ex.: 443); sem SSH, RDP ou banco
   expostos à internet; sem painéis administrativos, de infraestrutura ou de
   debug públicos.
-- **Herança do interno:** contas nominais (4.3), timeout de sessão (4.4) e
-  privilégio mínimo no banco (4.3) continuam obrigatórios.
+- **Herança do interno:** contas nominais (4.3), Login Único com validação de
+  `tipo` no servidor (4.4), timeout de sessão (4.1) e privilégio mínimo no banco
+  (4.3) continuam obrigatórios.
 
-> Detalhes normativos, sanções e fluxo formal de aprovação: **PO-SI-0016** e
+> Detalhes normativos, sanções e fluxo formal de aprovação: **PO-SI-0015** e
 > **PGP-SI-0015** no GED (FLUIG).
 
 ---
@@ -966,22 +1226,29 @@ regras passam a valer quando a aplicação é promovida para produção.
 
 #### 5.3 Variáveis de Ambiente e Configuração
 
-- **Homologação:** valores fictícios/de teste, sob responsabilidade do solicitante.
-- **Produção:** o solicitante repassa os valores reais para o TI aplicar.
+- **Homologação:** valores fictícios/de teste, sob responsabilidade do dev.
+- **Produção:** o dev repassa os valores reais para o TI aplicar.
 
 #### 5.4 Autenticação
 
-- **Homologação:** livre, sem exigência de login/SSO.
-- **Produção:** obrigatório uso de **SSO** (autenticação centralizada).
+- **Homologação:** a aplicação já nasce integrada ao **Login Único** (4.4) — o
+  cadastro no SSO aceita Redirect URIs de `localhost`, então o login funciona
+  local e em homologação com o mesmo código. Enquanto o administrador do SSO
+  não aprova a aplicação, o login é recusado e o desenvolvimento segue; o teste
+  do fluxo de login depende da aprovação.
+- **Produção:** obrigatório **Login Único** com a aplicação **aprovada** no SSO
+  e as Redirect URIs de produção (`https://<app>/entrar/callback` e
+  `https://<app>/`) cadastradas byte a byte. `SSO_APP_URL` e `SSO_CLIENT_SECRET`
+  reais são repassados ao TI junto com as demais variáveis (5.3), por canal
+  seguro. Incluir Redirect URI nova em aplicação aprovada reenvia o cadastro
+  para aprovação — faça isso antes de solicitar a subida.
 
-> O SSO ainda não está implementado. Enquanto isso, cada aplicação promovida para
-> produção deve seguir as regras de autenticação e senhas descritas nas seções
-> **4.3 e 4.4**. Quando o SSO estiver disponível, as aplicações já em produção
-> passarão por uma modificação futura para integração.
+> Aplicações em produção com login próprio (anteriores ao Login Único) devem ser
+> adaptadas ao SSO; até a adaptação, seguem a **4.4.1**.
 
 #### 5.5 Responsabilidade de Manutenção
 
-- **Homologação:** responsabilidade do solicitante/área que criou a aplicação.
+- **Homologação:** responsabilidade do dev/área que criou a aplicação.
 - **Produção:** responsabilidade passa a ser do TI.
 
 #### 5.6 Processo de Deploy/Subida
@@ -992,18 +1259,17 @@ regras passam a valer quando a aplicação é promovida para produção.
 #### 5.7 SLA de Avaliação e Subida para Produção
 
 1. A aplicação permanece em homologação por até **10 dias úteis**.
-2. Dentro desse prazo (ou ao final dele), o solicitante pode pedir a subida para
+2. Dentro desse prazo (ou ao final dele), o dev pode solicitar a subida para
    produção.
 3. O TI tem SLA de **10 dias úteis** para avaliar desenvolvimento e segurança, e
    realizar os ajustes necessários.
 
 - **Se aprovado:** a aplicação sobe para produção.
-- **Se reprovado:** a aplicação sai da homologação; o solicitante corrige
-  localmente e solicita nova homologação.
+- **Se reprovado:** a aplicação sai da homologação; o dev corrige localmente e
+  solicita nova homologação.
 - **Se os 10 dias de homologação terminarem sem solicitação de produção:** o TI
-  contata o solicitante para decidir entre avaliar ou remover. Se em até **2 dias
-  úteis** não houver resposta do solicitante ou de seu gestor, a aplicação é
-  **removida
+  contata o dev para decidir entre avaliar ou remover. Se em até **2 dias úteis**
+  não houver resposta do dev ou de seu gestor, a aplicação é **removida
   automaticamente**.
 
 #### 5.8 Restrição de Ambiente de Produção
@@ -1049,22 +1315,38 @@ da empresa. A decisão é registrada com justificativa e é final.
   solicitado (ex.: acessar registro de outro usuário só mudando o id na URL).
 - **RBAC (Role-Based Access Control):** controle de acesso por grupos ou perfis,
   restringindo funcionalidades sensíveis a quem está autorizado.
-- **SSO (Single Sign-On):** modelo de autenticação centralizada em que o usuário
-  faz login uma única vez e passa a ter acesso às aplicações permitidas, sem
-  precisar autenticar novamente em cada uma.
+- **SSO (Single Sign-On) / Login Único:** serviço de autenticação centralizada
+  da Supporte em `https://supplog.com` (seção 4.4). O usuário faz login uma única
+  vez com a conta Microsoft e passa a ter acesso às aplicações permitidas, sem
+  autenticar de novo em cada uma.
+- **OIDC (OpenID Connect):** padrão aberto de autenticação sobre OAuth 2.0 usado
+  pelo Login Único; a aplicação redireciona a pessoa ao provedor e recebe um
+  `id_token` com a identidade validada.
+- **PKCE (S256):** extensão do OAuth que protege a troca do código de
+  autorização com um par `code_verifier`/`code_challenge`; obrigatório no Login
+  Único, mesmo com `client_secret`.
+- **`client_id` / `client_secret`:** identificador público e senha da aplicação
+  cadastrada no SSO. O secret aparece uma vez no cadastro e vive só no `.env`.
+- **Redirect URI:** endereço da aplicação para onde o SSO devolve a pessoa após
+  o login (`/entrar/callback`) ou o logout (`/`); precisa estar cadastrado
+  exatamente igual.
+- **`id_token`:** JWT assinado pelo SSO com as claims da pessoa (`sub`, nome,
+  e-mail, `tipo`, departamento, cargo, foto); validado via JWKS.
+- **`sub`:** identificador estável do usuário no SSO — a chave do usuário no
+  banco da aplicação (nunca o e-mail).
 - **Endpoint:** uma rota/URL específica de uma API que executa uma ação (ex.:
   criar, listar, atualizar um registro).
 - **Hash (bcrypt / argon2):** algoritmo que transforma uma senha em um valor
   irreversível, usado para armazenar senhas com segurança, sem guardar o texto
-  original.
+  original. Relevante apenas no login próprio de exceção (4.4.1).
 - **SLA (Service Level Agreement):** prazo/acordo de nível de serviço, usado neste
   documento para definir o tempo de resposta do TI na avaliação de aplicações.
 - **LGPD (Lei Geral de Proteção de Dados):** lei brasileira que disciplina o
   tratamento de dados pessoais. Neste padrão, a seção **4.6** define a **higiene
   técnica** mínima — a conformidade jurídica é avaliada fora do escopo das skills.
-- **PO-SI-0016:** Política de Desenvolvimento Seguro da empresa (GED/FLUIG). As
-  seções **4.1–4.7** deste padrão são a tradução operacional para o
-  desenvolvimento assistido por IA (Vibe Coding);
+- **PO-SI-0015:** Política de Desenvolvimento Seguro da empresa (GED/FLUIG). As
+  seções **4.1–4.7** deste padrão são a tradução operacional para vibe coding;
   a política completa no FLUIG permanece a fonte normativa.
 - **MFA / 2FA:** autenticação multifator — obrigatória para acesso humano em
-  aplicações de uso externo (seção 4.7).
+  aplicações de uso externo (seção 4.7); com o Login Único, é provida pelo
+  SSO/conta Microsoft, não pela aplicação.
