@@ -10,7 +10,7 @@ técnico**: ele não sabe ler código, mas precisa saber — em português claro
 está conforme, o que não está, e o que pedir ao Claude para corrigir.
 
 A **fonte de verdade** desta auditoria é a **referência embutida no final deste
-arquivo** — os Padrões de Desenvolvimento Vibe Coding (v1.1), derivados do
+arquivo** — os Padrões de Desenvolvimento Vibe Coding (v1.2), derivados do
 documento canônico em `skills/supplog-iniciar/SKILL.md` do repositório
 de skills da Supplog. **Audite contra ela, item a item** — não de memória.
 
@@ -25,7 +25,7 @@ de skills da Supplog. **Audite contra ela, item a item** — não de memória.
    escrever/sobrescrever o relatório `RELATORIO-CHECK.md` na raiz do projeto.
 2. **Análise estática.** Você lê arquivos; **não executa** o app, o seed nem
    comandos que mudem estado. Itens impossíveis de verificar sem executar são
-   marcados como `❓ não verificável` — nunca "aprovados no chute".
+   marcados como `Não verificável` — nunca "aprovados no chute".
 3. **Sinaliza, não bloqueia.** Você não aprova nem reprova o projeto —
    aprovar/reprovar é do TI (crivo fora desta skill). Seu papel é dar visibilidade
    e caminho de correção.
@@ -74,28 +74,35 @@ interface não audita XSS). Cobertura por área:
 | Estrutura de pastas    | 2.5              | pastas obrigatórias da stack presentes e usadas                                                                                                                 |
 | Arquitetura            | 2.6              | rotas finas; regra de negócio em services; componentes React funcionais; custom hooks; chamadas de API em services/; middleware para auth/validação             |
 | Nomenclatura de código | 2.4              | snake_case/PascalCase/camelCase conforme a stack; comentários em português                                                                                      |
-| README                 | 2.7              | todas as seções obrigatórias presentes e preenchidas                                                                                                            |
-| Identidade visual      | 2.8              | apps com UI: tokens/fontes/logo/favicon do [brand](https://github.com/supportelogistica/brand); cores chumbo/laranja/branco; Lucide; zero emojis (automações sem tela: ➖) |
+| README                 | 2.7              | todas as seções obrigatórias presentes e preenchidas (inclui "Autenticação (Login Único)" sem `client_secret`)                                                  |
+| Identidade visual      | 2.8              | apps com UI: tokens/fontes/logo/favicon do [brand](https://github.com/supportelogistica/brand); cores chumbo/laranja/branco; Lucide; zero emojis (automações sem tela: Não se aplica) |
 | Dados                  | 3.1–3.7          | nomenclatura de tabelas/colunas; PK; CriadoEm/AtualizadoEm; booleanos; sem ORM; SQL puro parametrizado; scripts_criacao.sql; UTF-8; seed                        |
-| Segurança              | 4.1, 4.2, 4.5    | validação rigorosa no back-end; OWASP Top 10 (sem injeção/XSS/BOLA); SQL param.; escape; erros sem stack; logs/auditoria; upload; certificados fora de público; .env; .env.example; sem hardcode; deps de IA conferidas; criptografia trânsito/repouso; anonimização (fonte: PO-SI-0015) |
-| Controle de acessos    | 4.3              | contas nominais (sem genéricas); RBAC quando dado sensível; conexão DB com privilégio mínimo                                                                                                                                    |
-| Autenticação / senhas  | 4.4              | hash bcrypt/argon2; senha mín. 14 com 4 categorias; bloqueio dicionário/padrões/termos da org; histórico das últimas 5; checagem de vazamento quando viável; rotação 90d (elevados) / NIST (padrão); bloqueio ≥ 15 min após 5 tentativas; msgs genéricas; recuperação por token; logout real; timeout 15–30 min (ou 2–5 alto risco) |
+| Segurança              | 4.1, 4.2, 4.5    | validação rigorosa no back-end; OWASP Top 10 (sem injeção/XSS/BOLA); SQL param.; escape; erros sem stack; logs/auditoria; upload; logout real; timeout 15–30 min (ou 2–5 alto risco); certificados fora de público; .env; .env.example; sem hardcode; deps de IA conferidas; criptografia trânsito/repouso; anonimização (fonte: PO-SI-0015) |
+| Controle de acessos    | 4.3              | contas nominais (sem genéricas nem usuário "coringa" que contorne o SSO); RBAC no banco do app chaveado por `sub` quando há papéis ou dado sensível; conexão DB com privilégio mínimo                                           |
+| Login Único (SSO)      | 4.4              | app com login usa o SSO (sem tela/tabela/coluna de senha própria); rotas `/entrar`, `/entrar/callback`, `/entrar/sair`; biblioteca OIDC (Authlib / openid-client / jose), nada à mão; endpoints via discovery (sem path hardcoded); PKCE S256 + `state` + `nonce`; `id_token` validado via JWKS (`iss`, `aud`, `exp`, `nonce`); middleware de bloqueio total ou botão oficial "Entrar com Supplog SSO"; cookie httpOnly/SameSite=Lax/Secure em prod; refresh rotativo com `invalid_grant` → `/entrar`; `sub` como chave (não e-mail); `tipo == INTERNO` no servidor quando só internos; logout no `end_session_endpoint` com `id_token_hint`; `SSO_ISSUER/CLIENT_ID/CLIENT_SECRET/APP_URL` no `.env.example`; secret ausente do repo; destino pós-login saneado (anti open-redirect) |
+| Login próprio (exceção)| 4.4.1            | **só se existir** login com senha no app: exige autorização registrada no PLANEJAMENTO/README (sem ela: Não conforme em 4.4); hash bcrypt/argon2; senha mín. 14 com 4 categorias; bloqueio dicionário/padrões/termos da org; histórico das últimas 5; checagem de vazamento; rotação 90d (elevados); bloqueio ≥ 15 min após 5 tentativas; msgs genéricas; recuperação por token (apps só com SSO: Não se aplica) |
 | Higiene LGPD           | 4.6              | as 8 regras: inventário, back-end obrigatório, acesso restrito, seed fictício, nada em URL, logs, minimização, fonte DW                                                                                                         |
-| App externo            | 4.7              | MFA/2FA; TLS 1.2+; rate limiting; CSP/HSTS/X-Frame-Options; CSRF; cert AC confiável; sem admin/debug públicos; herança 4.3–4.4 (apps internos: ➖)                                                                              |
-| Ambiente               | 5.1–5.2          | SQLite em homologação; seed existe (e lembrete: não pode ir para produção)                                                                                      |
+| App externo            | 4.7              | MFA via Login Único (sem MFA próprio; "Quem pode entrar" inclui externos); TLS 1.2+; rate limiting; CSP/HSTS/X-Frame-Options; CSRF; cert AC confiável; sem admin/debug públicos; herança 4.1/4.3/4.4 (apps internos: Não se aplica) |
+| Ambiente               | 5.1–5.2, 5.4     | SQLite em homologação; seed existe (e lembrete: não pode ir para produção); SSO integrado desde a homologação; README registra `client_id` e Redirect URIs por ambiente                                                        |
 
 ### Passo 3 — Verificar item a item
 
 Para cada item, procure **evidência concreta** no código (use busca por padrões:
 concatenação em strings SQL, `fetch(` dentro de componentes, `class ... extends
-Component`, dados pessoais em `seed.sql`, segredos hardcoded etc.). Atribua um
-status:
+Component`, dados pessoais em `seed.sql`, segredos hardcoded etc.). Para o Login
+Único, busque `code_challenge_method`/`S256`, `nonce`, `jwks`/`JWKS`,
+`openid-configuration`, `end_session`/`id_token_hint`, `invalid_grant`,
+`SSO_CLIENT_SECRET` (só pode aparecer em `.env.example` e na leitura de env), e
+sinais de login próprio indevido: `bcrypt`, `argon2`, `password`/`Senha`,
+`SenhaHash`, formulário com `type="password"`. Atribua um status:
 
-- `✅ Conforme` — evidência positiva encontrada.
-- `❌ Não conforme` — evidência de violação (citar arquivo/linha).
-- `⚠️ Parcial` — atende em parte ou tem risco (explicar).
-- `➖ Não se aplica` — fora do escopo deste tipo de projeto (dizer por quê).
-- `❓ Não verificável` — exige execução ou informação que não está no repositório
+Use sempre estes rótulos em texto (sem emojis, sem símbolos):
+
+- `Conforme` — evidência positiva encontrada.
+- `Não conforme` — evidência de violação (citar arquivo/linha).
+- `Parcial` — atende em parte ou tem risco (explicar).
+- `Não se aplica` — fora do escopo deste tipo de projeto (dizer por quê).
+- `Não verificável` — exige execução ou informação que não está no repositório
   (dizer o que falta).
 
 ### Passo 4 — Gerar o relatório
@@ -108,7 +115,7 @@ críticos). Se já existir um relatório anterior, sobrescreva.
 # Relatório de Conformidade — <Nome do Projeto>
 
 > Gerado por /supplog-check em <data>. Base: Padrões de Desenvolvimento Vibe
-> Coding (v1.1). Auditoria estática, read-only — nenhum arquivo do projeto foi
+> Coding (v1.2). Auditoria estática, read-only — nenhum arquivo do projeto foi
 > alterado. A seção LGPD verifica higiene técnica, não conformidade jurídica.
 > A aprovação final para produção é do TI.
 
@@ -116,30 +123,34 @@ críticos). Se já existir um relatório anterior, sobrescreva.
 
 - Tipo/stack identificados: <...>
 - Enquadramento de porte: <ok / divergente — por quê>
-- Resultado: ✅ <n> · ❌ <n> · ⚠️ <n> · ➖ <n> · ❓ <n>
-- Pendências antes do handoff: <n> itens críticos (❌) e <n> atenções (⚠️)
+- Resultado: Conforme <n> · Não conforme <n> · Parcial <n> · Não se aplica <n> ·
+  Não verificável <n>
+- Pendências antes do handoff: <n> itens críticos (Não conforme) e <n> atenções
+  (Parcial)
 
 ## Itens críticos (corrigir antes do handoff)
 
-<lista curta dos ❌ mais graves, em linguagem simples>
+<lista curta dos "Não conforme" mais graves, em linguagem simples>
 
 ## Checklist detalhada
 
 ### <Área> (seção <x.y> do padrão)
 
-| Status | Item    | Evidência       | Como corrigir (cole no Claude)  |
-| ------ | ------- | --------------- | ------------------------------- |
-| ❌     | <regra> | <arquivo:linha> | "Peça ao Claude: '<instrução>'" |
+| Status       | Item    | Evidência       | Como corrigir (cole no Claude)  |
+| ------------ | ------- | --------------- | ------------------------------- |
+| Não conforme | <regra> | <arquivo:linha> | "Peça ao Claude: '<instrução>'" |
 
 <...uma subseção por área aplicável...>
 
 ## Itens não verificáveis estaticamente
 
-<o que exige rodar o app/seed para confirmar, e como o usuário pode testar>
+<o que exige rodar o app/seed para confirmar, e como o usuário pode testar —
+ex.: o login pelo SSO só é testável com a aplicação aprovada em "Minhas
+aplicações" e as Redirect URIs cadastradas exatamente iguais>
 
 ## Próximos passos
 
-1. Corrija os itens ❌ e ⚠️ com o Claude (as instruções acima estão prontas para
+1. Corrija os itens "Não conforme" e "Parcial" com o Claude (as instruções acima estão prontas para
    colar).
 2. Rode `/supplog-check` de novo até o relatório ficar limpo.
 3. Com o relatório limpo, siga para o handoff ao TI com a `/supplog-handoff`.
@@ -155,7 +166,7 @@ relatório.
 
 ---
 
-## Padrões de Desenvolvimento Vibe Coding (v1.1) — referência embutida
+## Padrões de Desenvolvimento Vibe Coding (v1.2) — referência embutida
 
 _(Fonte de verdade da auditoria. Numeração idêntica à do documento canônico
 `skills/supplog-iniciar/SKILL.md` — cite estes números no
@@ -225,10 +236,13 @@ relatório.)_
 
 Descrição; Contexto/Motivação; Responsável (área, contato, data de criação);
 Stack + versão exata + classificação de porte; Como rodar localmente (com comando
-do seed); Fluxos principais e endpoints (método, rota, tabelas lidas/escritas,
-request, response, erros); Estrutura de dados (tabelas e finalidade); Fontes do DW
-consumidas; Dependências externas; Status (Em desenvolvimento / Em teste /
-Aguardando aprovação / Em produção); Histórico de alterações.
+do seed); Autenticação (Login Único) — modo, quem pode entrar, `client_id`,
+Redirect URIs por ambiente, variáveis `SSO_*`, **nunca o secret** (ou "Não se
+aplica" com motivo); Fluxos principais e endpoints (método, rota, tabelas
+lidas/escritas, request, response, erros); Estrutura de dados (tabelas e
+finalidade); Fontes do DW consumidas; Dependências externas; Status (Em
+desenvolvimento / Em teste / Aguardando aprovação / Em produção); Histórico de
+alterações.
 
 ### 2.8 Identidade visual (marca / brand)
 
@@ -277,6 +291,8 @@ sem tela: não se aplica.
   claro.
 - Upload: validar o **tipo real** do arquivo (não só a extensão) e limitar
   tamanho.
+- Sessão: logout invalida a sessão no servidor (e no SSO, 4.4); timeout por
+  inatividade 15–30 min (ou 2–5 min em alto risco).
 - Certificados (`.pfx`, `.pem`, `.crt`, `.enc`) fora de diretórios públicos.
 
 ### 4.2 Variáveis de ambiente e segredos
@@ -291,13 +307,69 @@ sem tela: não se aplica.
 
 ### 4.3 Autenticação e controle de acessos
 
-- Contas nominais por usuário — proibidas contas genéricas/compartilhadas.
-- RBAC (grupos/perfis) quando houver dados pessoais, sensíveis ou confidenciais.
+- Contas nominais por usuário (vêm do Login Único) — proibidas contas
+  genéricas/compartilhadas e qualquer usuário "coringa" no app que contorne o
+  SSO.
+- RBAC (grupos/perfis) quando houver dados pessoais, sensíveis ou confidenciais
+  ou papéis distintos — no banco do app, chaveado pelo claim `sub` (nunca
+  e-mail). O SSO decide quem entra; o app decide o que cada um faz.
 - Conexão com banco sob privilégio mínimo — proibido admin/root.
 
-### 4.4 Autenticação e senhas (login)
+### 4.4 Autenticação — Login Único (SSO)
 
-Enquanto não há SSO, aplicação promovida para produção implementa login próprio:
+Toda aplicação nova com login usa o **Login Único** da Supporte (OpenID Connect
+em `https://supplog.com`), desde a homologação. Trilha oficial:
+[Login Único](https://docs.supplog.com/vibe-coding/login-unico/o-que-e-o-login-unico).
+O app **não tem tela de login própria, não guarda senha e não gerencia
+usuários**. Automação sem tela e estático público: Não se aplica.
+
+- **Cadastro** (feito pelo responsável em supplog.com → Minhas aplicações):
+  `client_id`; tipo confidencial (com back-end); "Quem pode entrar"
+  (internos/externos/ambos); Redirect URIs byte a byte —
+  `<SSO_APP_URL>/entrar/callback` e `<SSO_APP_URL>/` por ambiente (`https` fora
+  de localhost). Verificar que o README registra `client_id`, modo e URIs
+  (**nunca** o secret).
+- **Configuração:** issuer `https://supplog.com`; endpoints obtidos do
+  discovery `/.well-known/openid-configuration` (path de authorize/token/jwks
+  hardcoded é Não conforme); scopes `openid profile email`; Authorization Code + **PKCE S256**;
+  `client_secret_basic`. Variáveis `SSO_ISSUER`, `SSO_CLIENT_ID`,
+  `SSO_CLIENT_SECRET`, `SSO_APP_URL` (+ chave de sessão) no `.env`, chaves sem
+  valor no `.env.example`; configuração validada no boot.
+- **Biblioteca OIDC** da stack (Flask: Authlib; Node/Nitro: `openid-client` ou
+  porte da referência `supportelogistica/docs` + `jose`). Protocolo, JWT ou
+  criptografia implementados à mão: Não conforme.
+- **Rotas:** `/entrar` (gera `state`, `nonce`, PKCE em cookie cifrado httpOnly
+  de vida curta; `?destino=` saneado — só caminho relativo, sem `//`),
+  `/entrar/callback` (confere `state`; troca `code` com `code_verifier`; valida
+  `id_token` via JWKS: assinatura, `iss`, `aud` = client_id, `exp`, `nonce`),
+  `/entrar/sair` (limpa sessão local **e** redireciona ao
+  `end_session_endpoint` com `id_token_hint` + `post_logout_redirect_uri`).
+- **Modo:** bloqueio total (middleware no servidor protege tudo; HTML sem sessão
+  → `/entrar`; API/asset sem sessão → 401) **ou** botão oficial "Entrar com
+  Supplog SSO" (texto fixo, símbolo PP de `supplog.com/brand/pp-laranja.svg` /
+  `pp-branco.svg`, cor branco/laranja/chumbo) apontando para `/entrar`, quando
+  há área pública.
+- **Sessão:** cookie `httpOnly`, `SameSite=Lax`, `Secure` em produção, conteúdo
+  cifrado ou server-side; tokens nunca expostos ao front. Access token de 10 min
+  renovado com refresh **rotativo** (guardar sempre o último); `invalid_grant`
+  → limpa sessão e volta a `/entrar` sem erro na tela; renovações concorrentes
+  serializadas.
+- **Identidade:** `sub` como chave do usuário (tabela `USUARIO.SsoSub` única;
+  e-mail como chave ou coluna de senha: Não conforme). `tipo == INTERNO` validado no
+  servidor quando só internos entram (403 caso contrário).
+- **API consumida com access token do SSO:** validar localmente via JWKS
+  (`iss`, `aud`, `exp`).
+- **Proxy:** app se enxerga como `https` em produção (`X-Forwarded-Proto` /
+  `X-Forwarded-Host`).
+- **Auditoria:** login/logout/falhas registrados com `sub`; nunca tokens ou
+  secret em log.
+
+### 4.4.1 Login próprio (exceção)
+
+Login com senha no próprio app **não é permitido** em aplicação nova. Só como
+exceção autorizada pela Segurança da Informação/TI, **registrada no
+`PLANEJAMENTO.md`/README** — sem esse registro, login próprio é Não conforme na 4.4.
+Quando autorizado, auditar:
 
 - Senha nunca em texto puro — hash **bcrypt** ou **argon2**.
 - Mínimo **14 caracteres** com maiúsculas, minúsculas, números **e** especiais.
@@ -311,8 +383,7 @@ Enquanto não há SSO, aplicação promovida para produção implementa login pr
 - Mensagens de login genéricas; recuperação não revela se a conta existe.
 - Recuperação só via link com token de uso único e expiração 15–30 min — proibido
   enviar senha em texto claro por e-mail/SMS.
-- Logout invalida a sessão no servidor; timeout por inatividade 15–30 min (ou
-  2–5 min em alto risco).
+- Logout e timeout conforme 4.1.
 
 ### 4.5 Proteção de dados
 
@@ -339,19 +410,26 @@ Higiene **técnica** (não é parecer jurídico):
 
 Além de 4.1–4.6, quando o app é externo:
 
-- MFA/2FA para acesso humano; M2M via OAuth client credentials, mTLS ou API keys
-  rotacionáveis.
+- MFA/2FA para acesso humano — coberto pelo Login Único (4.4); MFA próprio no
+  app é Não conforme; "Quem pode entrar" do cadastro inclui externos. M2M via OAuth client
+  credentials, mTLS ou API keys rotacionáveis.
 - HTTPS TLS 1.2+ (HTTP claro proibido).
 - Rate limiting e proteção a credential stuffing.
 - Headers CSP, HSTS, X-Frame-Options; CSRF com tokens.
 - Certificados de AC confiável (sem autoassinado em prod).
 - Sem painéis admin/debug públicos; só portas necessárias.
-- Herda contas nominais, timeout e privilégio mínimo no DB (4.3–4.4).
+- Herda contas nominais e privilégio mínimo no DB (4.3), Login Único com `tipo`
+  validado no servidor (4.4) e timeout (4.1).
 
-### 5.1–5.2 Ambiente (o que a auditoria estática cobre)
+### 5.1–5.4 Ambiente (o que a auditoria estática cobre)
 
 - **5.1 Banco:** homologação **SQLite**; produção **PostgreSQL** (criado só após
   aprovação).
 - **5.2 Seed:** existe e roda em homologação; **não pode continuar existindo no
   projeto em produção** (sinalizar como pendência de handoff, não como erro em
   homologação).
+- **5.4 Autenticação:** Login Único integrado **desde a homologação** (o
+  cadastro aceita `localhost`); produção exige aplicação aprovada no SSO com
+  Redirect URIs de produção cadastradas byte a byte. Aprovação e URIs de
+  produção são Não verificável no código — registrar como pendência de
+  handoff, indicando que o usuário confira em "Minhas aplicações".

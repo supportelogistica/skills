@@ -4,7 +4,8 @@ Biblioteca oficial de skills da Supplog para Claude Code.
 
 As skills padronizam como planejamos, verificamos e entregamos software na empresa,
 seguindo os Padrões de Desenvolvimento Vibe Coding (stack por porte, dados no DW, LGPD,
-nomenclatura em português, SQL puro parametrizado etc.).
+nomenclatura em português, SQL puro parametrizado, autenticação pelo
+[Login Único](https://docs.supplog.com/vibe-coding/login-unico/o-que-e-o-login-unico) etc.).
 
 ## Skills disponíveis
 
