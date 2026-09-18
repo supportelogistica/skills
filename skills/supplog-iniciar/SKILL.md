@@ -468,7 +468,7 @@ o ciclo construir → testar → ajustar continua até o aceite funcional.
 > **Documento canônico** — fonte única de verdade dos Padrões de Desenvolvimento da
 > Supporte Logística (Supplog) para aplicações criadas com apoio de IA.
 > Mora neste `SKILL.md` da `supplog-iniciar`. Ao alterar os padrões aqui, atualize
-> as referências embutidas em `supplog-check` e `supplog-handoff`.
+> as referências embutidas em `supplog-check`, `supplog-handoff` e `supplog-sso`.
 
 ### Controle de versão
 
@@ -1247,7 +1247,7 @@ regras passam a valer quando a aplicação é promovida para produção.
   para aprovação — faça isso antes de solicitar a subida.
 
 > Aplicações em produção com login próprio (anteriores ao Login Único) devem ser
-> adaptadas ao SSO; até a adaptação, seguem a **4.4.1**.
+> adaptadas ao SSO (skill `/supplog-sso`); até a adaptação, seguem a **4.4.1**.
 
 #### 5.5 Responsabilidade de Manutenção
 

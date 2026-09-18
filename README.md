@@ -12,6 +12,7 @@ nomenclatura em português, SQL puro parametrizado, autenticação pelo
 | Skill | O que faz |
 | --- | --- |
 | [`supplog-iniciar`](./skills/supplog-iniciar/SKILL.md) | Entrevista guiada para planejar um projeto antes de codar; gera `PLANEJAMENTO.md` e esqueleto de `README.md` |
+| [`supplog-sso`](./skills/supplog-sso/SKILL.md) | Integra o Login Único (SSO) em uma aplicação já existente: diagnostica o acesso atual, orienta o cadastro no SSO, implementa OIDC e aposenta o login com senha |
 | [`supplog-check`](./skills/supplog-check/SKILL.md) | Verifica se o projeto obedece o `PLANEJAMENTO.md` e os Padrões de Desenvolvimento |
 | [`supplog-handoff`](./skills/supplog-handoff/SKILL.md) | Roda a verificação de conformidade e guia a entrega do projeto para o TI da Supporte |
 
