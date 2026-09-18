@@ -55,9 +55,9 @@ nome do diretório deve ser idêntico ao `name` do frontmatter.
 Desenvolvimento Vibe Coding da Supplog (stack por porte, dados no DW, LGPD,
 nomenclatura em português, SQL puro parametrizado, login pelo Login Único/SSO
 etc.). O documento canônico dos padrões mora em `skills/supplog-iniciar/SKILL.md`;
-`supplog-check` e `supplog-handoff` carregam referências embutidas com a mesma
-numeração — ao mudar o padrão, atualize as três. Comentários e documentação em
-português.
+`supplog-check`, `supplog-handoff` e `supplog-sso` carregam referências embutidas
+com a mesma numeração — ao mudar o padrão, atualize as quatro (`supplog-sso`
+embute 4.3, 4.4, 4.4.1 e 5.4). Comentários e documentação em português.
 
 ## Como adicionar uma skill
 
