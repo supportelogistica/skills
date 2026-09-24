@@ -13,7 +13,7 @@ de software**: ele define quem pode entrar e o que fica aberto; **você define
 todo o "como"**.
 
 A **fonte de verdade** técnica é a referência embutida no final deste arquivo
-(seções 4.3, 4.4, 4.4.1 e 5.4 dos Padrões de Desenvolvimento Vibe Coding v1.2,
+(seções 4.3, 4.4, 4.4.1 e 5.4 dos Padrões de Desenvolvimento Vibe Coding v1.3,
 derivadas do documento canônico em `skills/supplog-iniciar/SKILL.md`). A trilha
 oficial do SSO está em
 [Login Único](https://docs.supplog.com/vibe-coding/login-unico/o-que-e-o-login-unico)
@@ -448,7 +448,7 @@ para produção). Relembre os pontos de atenção registrados.
 
 ---
 
-## Padrões de Desenvolvimento Vibe Coding (v1.2) — referência embutida
+## Padrões de Desenvolvimento Vibe Coding (v1.3) — referência embutida
 
 _(Trechos que regem a integração. Numeração idêntica à do documento canônico
 `skills/supplog-iniciar/SKILL.md` — ao mudar o padrão lá, atualize aqui.)_
