@@ -16,7 +16,7 @@ enviar, para onde enviar e o que vai acontecer depois**, em português claro.
 > poderão automatizar o envio e integrar com o processo do TI.
 
 A **fonte de verdade** é a referência embutida no final deste arquivo (Padrões de
-Desenvolvimento Vibe Coding v1.2, derivada do documento canônico
+Desenvolvimento Vibe Coding v1.3, derivada do documento canônico
 `skills/supplog-iniciar/SKILL.md` do repositório de skills da
 Supplog).
 
@@ -69,6 +69,14 @@ Verifique e **relate em linguagem acessível**:
   da subida, assim que o TI informar o endereço.
 - **Seed e banco:** `database/scripts_criacao.sql` e seed presentes (o TI recria
   o banco com eles na avaliação).
+- **Repositório (seção 2.9):** o código está commitado e enviado ao repositório
+  do GitHub da Supporte (`git remote -v`, `git status --short`), e o README
+  traz o endereço? Autores dos commits com e-mail `@supplog.com`
+  (`git log --format=%ae | sort -u`)? Sem repositório ainda: pendência — o
+  solicitante abre o chamado no Fluig (Sustentação → Inovação → GitHub →
+  Criação, projeto de vibe coding com o Claude, repositório na organização
+  Supporte Logistica - Vibe Coders) e o guia registra "chamado aberto em
+  <data>".
 
 Se houver pendência, faça **uma única pergunta**: resolver primeiro (recomendado)
 ou prosseguir mesmo assim? Se prosseguir, as pendências entram registradas no
@@ -112,7 +120,7 @@ anterior, sobrescreva):
 # Guia de Handoff — <Nome da Aplicação>
 
 > Gerado por /supplog-handoff em <data>. Base: Padrões de Desenvolvimento Vibe
-> Coding (v1.2). Este guia orienta a solicitação de avaliação ao TI — quem
+> Coding (v1.3). Este guia orienta a solicitação de avaliação ao TI — quem
 > aprova ou reprova é o TI (SLA na seção "Depois do envio").
 
 ## O pacote
@@ -127,6 +135,8 @@ anterior, sobrescreva):
 
 - Relatório da /supplog-check: <Conforme n · Não conforme n · Parcial n — ou
   "não foi rodado">
+- Repositório: <endereço no GitHub (organização Supporte Logistica - Vibe
+  Coders), tudo enviado — ou "chamado aberto em <data>, aguardando criação">
 - Pendências levadas junto (se houver): <lista ou "nenhuma">
 
 ## Login Único (SSO)
@@ -157,6 +167,8 @@ anterior, sobrescreva):
 > - **O que faz:** <descrição em 1-2 frases>
 > - **Responsável:** <nome/área/contato>
 > - **Stack e porte:** <stack> (<classificação>)
+> - **Repositório:** <endereço no GitHub — ou "chamado de criação aberto em
+>   <data>">
 > - **Fontes do DW consumidas:** <lista ou "nenhuma">
 > - **Login Único (SSO):** client_id `<client_id>`, <aprovada / aguardando
 >   aprovação>; Redirect URIs de produção <cadastradas / a cadastrar quando o
@@ -212,7 +224,7 @@ esperado é o SLA de 10 dias úteis.
 
 ---
 
-## Padrões de Desenvolvimento Vibe Coding (v1.2) — referência embutida
+## Padrões de Desenvolvimento Vibe Coding (v1.3) — referência embutida
 
 _(Trechos relevantes ao handoff. Numeração idêntica à do documento canônico
 `skills/supplog-iniciar/SKILL.md`.)_
@@ -220,7 +232,8 @@ _(Trechos relevantes ao handoff. Numeração idêntica à do documento canônico
 ### 2.7 README obrigatório
 
 Descrição; Contexto/Motivação; Responsável (área, contato, data de criação);
-Stack + versão exata + classificação de porte; Como rodar localmente (com comando
+Repositório (endereço no GitHub ou "chamado aberto em <data>", 2.9); Stack +
+versão exata + classificação de porte; Como rodar localmente (com comando
 do seed); Autenticação (Login Único) — modo, quem pode entrar, `client_id`,
 Redirect URIs por ambiente, variáveis `SSO_*`, **nunca o secret** (ou "Não se
 aplica" com motivo); Fluxos principais e endpoints (método, rota, tabelas
@@ -228,6 +241,15 @@ lidas/escritas, request, response, erros); Estrutura de dados (tabelas e
 finalidade); Fontes do DW consumidas; Dependências externas; Status (Em
 desenvolvimento / Em teste / Aguardando aprovação / Em produção); Histórico de
 alterações.
+
+### 2.9 Versionamento e repositório (Git / GitHub)
+
+Toda aplicação tem repositório próprio na organização do GitHub **Supporte
+Logistica - Vibe Coders**, criado pelo TI via chamado no Fluig (Sustentação →
+Inovação → GitHub → Criação; informar projeto de vibe coding construído com o
+Claude). Commits com e-mail `@supplog.com`; `.env` e `app.db` fora do
+histórico; código enviado ao repositório antes do handoff; README com o
+endereço.
 
 ### 4.2 Variáveis de ambiente e segredos
 

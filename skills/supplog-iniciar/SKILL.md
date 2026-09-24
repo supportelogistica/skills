@@ -19,7 +19,7 @@ decisões técnicas alinhadas ao padrão. Sua missão tem duas metades insepará
    pronto para o solicitante validar.
 
 A **fonte de verdade** técnica são os **Padrões de Desenvolvimento Vibe Coding
-(v1.2) no final deste arquivo** — os padrões moram aqui, neste `SKILL.md`.
+(v1.3) no final deste arquivo** — os padrões moram aqui, neste `SKILL.md`.
 
 > **Divisão de papéis no ciclo Supplog:** esta skill vai da ideia ao app
 > construído. O **teste funcional é do solicitante** (ele valida cada fluxo
@@ -37,7 +37,9 @@ A **fonte de verdade** técnica são os **Padrões de Desenvolvimento Vibe Codin
 3. **Planejamento** — escreve `PLANEJAMENTO.md` + `README.md` e apresenta o plano
    em linguagem acessível; o solicitante confirma antes da construção começar.
 4. **Construção** — estrutura de pastas, banco, código e telas, tudo conforme o
-   padrão, fluxo a fluxo. Telas e UI seguem a marca oficial
+   padrão, fluxo a fluxo, **versionado desde o primeiro commit** (Git com a
+   conta Supplog; repositório criado pelo TI via chamado — seção 2.9). Telas e
+   UI seguem a marca oficial
    ([supportelogistica/brand](https://github.com/supportelogistica/brand)).
 5. **Entrega para teste** — app rodando + roteiro de teste em linguagem
    acessível. O aceite funcional é do solicitante; depois do OK dele, o próximo
@@ -139,6 +141,10 @@ se a conversa pedir, mas **não pule** nenhum bloco.
 ### Bloco 7 — Identidade
 
 - Qual o nome da aplicação? Quem é o **responsável** (área, contato)?
+- O contato é o **e-mail corporativo** (`@supplog.com`) do responsável — é
+  esse e-mail que assina os commits e identifica a conta do GitHub (seção 2.9).
+  Explique em uma frase: o código fica em repositório da Supporte, criado pelo
+  TI, e só contas Supplog têm acesso.
 
 ---
 
@@ -182,7 +188,7 @@ projeto**:
 # Planejamento — <Nome da Aplicação>
 
 > Gerado pela entrevista /supplog-iniciar. Base: Padrões de Desenvolvimento Vibe
-> Coding (v1.2).
+> Coding (v1.3).
 
 ## Problema
 
@@ -224,6 +230,14 @@ roteiro de teste>
   distintos ou dado pessoal/sensível>
 - Entradas de usuário: <formulários, uploads — ou "nenhuma">
 
+## Versionamento (seção 2.9)
+
+- Git configurado com e-mail Supplog: <sim — `<nome>@supplog.com` / pendente>
+- Chamado de criação do repositório (Fluig → Sustentação → Inovação → GitHub →
+  Criação): <aberto em <data> / pendente / repositório criado>
+- Repositório: <endereço no GitHub, na organização Supporte Logistica - Vibe
+  Coders — ou "aguardando o chamado">
+
 ## Classificação automática
 
 - **Tipo:** <Automação | Estático | Back-end pequeno | Back-end médio/grande>
@@ -236,8 +250,8 @@ roteiro de teste>
 (scripts_criacao.sql, seed, SQL puro parametrizado, CriadoEm/AtualizadoEm) e 5.1
 (SQLite em homologação); se tem login, cite 4.3–4.4 (Login Único) e 5.4; se tem
 dado pessoal, cite 4.5–4.6; se for uso externo, cite 4.7; sempre cite 2.4 (nomenclatura), 2.5
-(pastas) e 2.6 (arquitetura) da stack escolhida; se houver interface, cite 2.8
-(marca / brand)>
+(pastas), 2.6 (arquitetura) da stack escolhida e 2.9 (versionamento); se houver
+interface, cite 2.8 (marca / brand)>
 
 ## Pontos de atenção / conflitos com o padrão
 
@@ -273,6 +287,7 @@ que ganha a entrada inicial).
 - Área: <preenchido>
 - Contato: <preenchido>
 - Data de criação: <preenchido>
+- Repositório: <!-- TODO: endereço no GitHub (organização Supporte Logistica - Vibe Coders); enquanto o TI não criar, "chamado aberto em <data>" -->
 
 ## Stack técnica
 
@@ -334,23 +349,50 @@ Com o plano confirmado, **construa a aplicação completa**. Regras da construç
 1. **Esqueleto primeiro.** Monte a estrutura de pastas da stack classificada
    exatamente como a seção 2.5 do padrão define (inclui `.env.example`,
    `.gitignore` com `.env`, `README.md`).
-2. **Banco antes do código** (quando houver banco): modele as tabelas conforme as
+2. **Versionamento desde o primeiro commit** (seção 2.9) — logo depois do
+   esqueleto, antes de qualquer código:
+   - **Identidade Git com a conta Supplog.** Rode `git config user.email`. O
+     resultado precisa ser o e-mail corporativo do solicitante
+     (`<nome>@supplog.com`). Se estiver vazio ou for e-mail pessoal, configure
+     no repositório (`git config user.name "<Nome Sobrenome>"` e
+     `git config user.email <nome>@supplog.com`; use `--global` se a máquina é
+     só de trabalho). A conta do GitHub que vai receber acesso é a vinculada a
+     esse e-mail — conta pessoal não entra no repositório da Supporte.
+   - **`git init` + commit inicial** com o esqueleto. Confira que `.env`,
+     `database/app.db`, `node_modules/`, `.venv/` e artefatos de build estão no
+     `.gitignore` antes do primeiro `git add`. Daí em diante, um commit a cada
+     fluxo concluído.
+   - **Peça ao solicitante abrir o chamado de criação do repositório agora**
+     (o atendimento leva tempo e não bloqueia a construção): chamado no
+     **Fluig** → **Sustentação → Inovação → GitHub → Criação**. Entregue o
+     texto pronto para colar:
+
+     > Solicito a criação de repositório para a aplicação **<Nome da
+     > Aplicação>** na organização do GitHub **Supporte Logistica - Vibe
+     > Coders**. Projeto de **vibe coding, construído com o Claude** conforme
+     > os Padrões de Desenvolvimento Vibe Coding. Responsável: <nome, área,
+     > `<nome>@supplog.com`>. Acesso para a conta GitHub vinculada a esse e-mail.
+
+   - **Quando o TI devolver o endereço**, adicione o remote, envie tudo
+     (`git push`) e registre o endereço em "Repositório" do README e do
+     `PLANEJAMENTO.md`. Até lá, registre "chamado aberto em <data>".
+3. **Banco antes do código** (quando houver banco): modele as tabelas conforme as
    seções 3.1–3.4 (nomes em português, `UPPER_SNAKE_CASE`/`PascalCase`, PK,
    `CriadoEm`/`AtualizadoEm`, booleanos com prefixo), escreva
    `database/scripts_criacao.sql` (única fonte de verdade do schema, UTF-8,
    seção 3.5–3.6) e o seed com dados 100% fictícios (seção 3.7). Banco local:
    **SQLite** (seção 5.1).
-3. **Fluxo a fluxo.** Implemente **todos** os fluxos do `PLANEJAMENTO.md`, um por
+4. **Fluxo a fluxo.** Implemente **todos** os fluxos do `PLANEJAMENTO.md`, um por
    vez. A cada fluxo concluído, informe ao solicitante, em linguagem acessível, o
    que ficou pronto ("o cadastro de ocorrências já salva e lista — faltam o
    relatório e a tela de busca"). Evite jargão nos status.
-4. **Arquitetura obrigatória** (seção 2.6): rotas finas; regra de negócio em
+5. **Arquitetura obrigatória** (seção 2.6): rotas finas; regra de negócio em
    services; acesso a banco isolado e **sempre em SQL puro parametrizado** (sem
    ORM, sem query builder); em React, componentes funcionais, custom hooks e
    chamadas de API em `services/`; middleware para autenticação/validação quando
    houver API.
-5. **Nomenclatura** (seção 2.4) em tudo; comentários de código em português.
-6. **Segurança desde o início** (seções 4.1–4.2 e 4.5; fonte PO-SI-0016):
+6. **Nomenclatura** (seção 2.4) em tudo; comentários de código em português.
+7. **Segurança desde o início** (seções 4.1–4.2 e 4.5; fonte PO-SI-0016):
    validação rigorosa de toda entrada no back-end; mitigação OWASP Top 10 (sem
    injeção, XSS, BOLA); SQL parametrizado; escape de output; erros sem stack
    trace; logs/auditoria de ações sensíveis; upload com tipo real e tamanho;
@@ -358,7 +400,7 @@ Com o plano confirmado, **construa a aplicação completa**. Regras da construç
    `.env.example` versionado; deps sugeridas por IA conferidas; dados sensíveis
    criptografados em trânsito/repouso; massa de produção anonimizada em
    homologação. App **externo** → seção **4.7** também.
-7. **Acesso e login pelo Login Único** (seções 4.3–4.4 e 5.4) — toda aplicação
+8. **Acesso e login pelo Login Único** (seções 4.3–4.4 e 5.4) — toda aplicação
    com back-end e tela nasce integrada ao SSO da Supporte, já na homologação.
    **Nunca construa tela de login com senha, tabela de senhas nem cadastro de
    usuário próprio** (login próprio só como exceção autorizada, 4.4.1).
@@ -393,23 +435,24 @@ Com o plano confirmado, **construa a aplicação completa**. Regras da construç
      conexão com o banco sob privilégio mínimo. Contas nominais são garantidas
      pelo SSO — proibido criar usuário genérico/compartilhado no app.
    - Preencha a seção **Autenticação (Login Único)** do README (sem o secret).
-8. **Higiene LGPD** (seção 4.6) quando houver dado pessoal: nada de dado pessoal
+9. **Higiene LGPD** (seção 4.6) quando houver dado pessoal: nada de dado pessoal
    em app estático, em URL, em log ou no seed; colete só o que os fluxos
    justificam; fonte de dado da empresa é só o DW.
-9. **Marca / interface (obrigatório quando houver tela)** — seção 2.8. **Antes**
-   de construir qualquer UI, consulte o repositório oficial
-   [supportelogistica/brand](https://github.com/supportelogistica/brand). Leia
-   nesta ordem: `README.md` → `AGENTS.md` → `DESIGN.md`. Use somente assets e
-   tokens oficiais (logo, favicon, fontes, grafismos, `tokens/`). Não redesenhe
-   a marca nem invente cores/tipografia fora do que o brand define. Automações
-   sem interface estão isentas.
-10. **Escopo fechado.** Não invente fluxos que não foram levantados. Se a
+10. **Marca / interface (obrigatório quando houver tela)** — seção 2.8. **Antes**
+    de construir qualquer UI, consulte o repositório oficial
+    [supportelogistica/brand](https://github.com/supportelogistica/brand). Leia
+    nesta ordem: `README.md` → `AGENTS.md` → `DESIGN.md`. Use somente assets e
+    tokens oficiais (logo, favicon, fontes, grafismos, `tokens/`). Não redesenhe
+    a marca nem invente cores/tipografia fora do que o brand define. Automações
+    sem interface estão isentas.
+11. **Escopo fechado.** Não invente fluxos que não foram levantados. Se a
     construção exigir uma decisão técnica nova (ex.: tabela extra), **decida você**
     conforme o padrão e registre em "Adendos da construção" no `PLANEJAMENTO.md`.
-11. **README de verdade.** Ao final, resolva **todos** os TODOs do README:
+12. **README de verdade.** Ao final, resolva **todos** os TODOs do README:
     versão exata da stack, como rodar (incluindo o comando do seed), endpoints
-    com método/rota/tabelas/request/response/erros, estrutura de dados. Histórico
-    ganha a entrada inicial. Status permanece **Em desenvolvimento**.
+    com método/rota/tabelas/request/response/erros, estrutura de dados,
+    repositório (endereço ou "chamado aberto em <data>"). Histórico ganha a
+    entrada inicial. Status permanece **Em desenvolvimento**.
 
 ### Critério de conclusão (DoD técnico)
 
@@ -433,6 +476,10 @@ A construção só está concluída quando **tudo** abaixo for verdade:
       erro (quando houver banco).
 - [ ] App sobe localmente seguindo **exatamente** as instruções do README (teste
       você mesmo as instruções antes de entregar).
+- [ ] Versionamento (2.9): `git log --format=%ae` mostra só e-mail
+      `@supplog.com`; tudo commitado (sem `.env`, sem `app.db`); chamado de
+      criação do repositório aberto — ou remote configurado e `push` feito, se
+      o TI já criou.
 - [ ] Nenhum TODO pendente no README.
 
 ---
@@ -454,7 +501,11 @@ O aceite funcional **é do solicitante, não seu**. Ao entregar:
    login (`invalid_client`); acompanhe o status em "Minhas aplicações".
 4. **Indique o próximo passo**: quando todos os fluxos estiverem OK para ele, o
    próximo passo é rodar a `/supplog-check` (auditoria de conformidade); depois do
-   relatório limpo, o handoff ao TI com a `/supplog-handoff`.
+   relatório limpo, o handoff ao TI com a `/supplog-handoff`. Antes do check,
+   o código precisa estar no repositório do GitHub: se o chamado ainda não foi
+   atendido, acompanhe-o; assim que o TI informar o endereço, peça ao Claude
+   para configurar o remote e enviar (a auditoria e o handoff pressupõem o
+   repositório).
 5. **Relembre os pontos de atenção** registrados no `PLANEJAMENTO.md` (conflitos
    com o padrão sinalizados na entrevista) — eles vão pesar no crivo do TI.
 
@@ -463,7 +514,7 @@ o ciclo construir → testar → ajustar continua até o aceite funcional.
 
 ---
 
-## Padrões de Desenvolvimento & Vibe Coding (v1.2)
+## Padrões de Desenvolvimento & Vibe Coding (v1.3)
 
 > **Documento canônico** — fonte única de verdade dos Padrões de Desenvolvimento da
 > Supporte Logística (Supplog) para aplicações criadas com apoio de IA.
@@ -477,6 +528,18 @@ o ciclo construir → testar → ajustar continua até o aceite funcional.
 | 1.0    | 22/07/2026 | Edu Ferreira       | Henrique Fernandes                             |
 | 1.1    | 23/07/2026 | Jhonatan Magalhães | _pendente — Edu Ferreira / Henrique Fernandes_ |
 | 1.2    | 14/09/2026 | Ludmilla Quirino   | _pendente_                                     |
+| 1.3    | 24/09/2026 | Ludmilla Quirino   | _pendente_                                     |
+
+**Mudanças da v1.3 sobre a v1.2:**
+
+1. **Nova seção 2.9 — Versionamento e repositório (Git / GitHub):** commits
+   com a conta Supplog (`@supplog.com`); repositório criado pelo TI via chamado
+   no Fluig (Sustentação → Inovação → GitHub → Criação) na organização do
+   GitHub **Supporte Logistica - Vibe Coders**, informando que é projeto de
+   vibe coding com o Claude; versionamento
+   desde o primeiro commit; aplicações existentes sem versionamento entram no
+   mesmo fluxo antes da auditoria.
+2. **Seção 2.7:** README ganha o item "Repositório".
 
 **Mudanças da v1.2 sobre a v1.1:**
 
@@ -734,6 +797,8 @@ obrigatoriamente:
 - Descrição da aplicação
 - Contexto / Motivação
 - Responsável (área, contato, data de criação)
+- Repositório: endereço no GitHub (2.9); enquanto o TI não o criar, "chamado
+  aberto em <data>"
 - Stack técnica, incluindo versão exata (ex.: `Python 3.12.4`) e classificação de
   porte
 - Como rodar localmente (incluindo comando de execução do seed)
@@ -780,6 +845,35 @@ repositório:
    - Favicon: regra comum vs. kit por ambiente (produção / homolog / localhost)
      conforme `AGENTS.md`
 5. **Automações sem tela** (Python puro) estão **isentas** desta seção.
+
+#### 2.9 Versionamento e repositório (Git / GitHub) _(novo na v1.3)_
+
+Toda aplicação — nova **ou já existente e ainda sem versionamento** — vive em
+repositório Git no GitHub da Supporte, criado pelo TI. Vale para todos os tipos
+(automação, estático, Flask, Node/Nitro).
+
+1. **Conta Supplog.** Os commits são assinados com o e-mail corporativo
+   (`git config user.name` / `git config user.email <nome>@supplog.com`), e a
+   conta do GitHub que recebe acesso ao repositório é a vinculada a esse
+   e-mail. Commit com e-mail pessoal é não-conformidade — corrija a
+   configuração antes do próximo commit.
+2. **Repositório via chamado.** Cada aplicação tem o próprio repositório na
+   organização do GitHub **Supporte Logistica - Vibe Coders**, criado pelo TI.
+   O responsável abre chamado no **Fluig** → **Sustentação → Inovação →
+   GitHub → Criação**, informando: que é projeto de **vibe coding, construído
+   com o Claude**, conforme estes padrões; o nome da aplicação; o responsável
+   (nome, área, e-mail Supplog); e a organização de destino. Abra o chamado no
+   início da construção — a espera não bloqueia o desenvolvimento local.
+3. **Desde o primeiro commit.** `git init` junto com o esqueleto (2.5); `.env`,
+   `database/app.db`, `node_modules/`, `.venv/` e artefatos de build no
+   `.gitignore` (4.2); commits pequenos a cada fluxo concluído. Quando o
+   repositório existir, adicione o remote e envie tudo. A `/supplog-check` e o
+   handoff pressupõem o código no repositório.
+4. **Aplicação existente sem versionamento** segue os três passos acima antes
+   da auditoria: configura a conta, faz o primeiro commit com o estado atual
+   (sem segredos — confira o `.gitignore` antes do `git add`) e abre o chamado.
+   Não se reconstrói histórico.
+5. **README** registra o endereço do repositório (2.7).
 
 ---
 

@@ -11,7 +11,7 @@ precisa saber — em português claro — o que está conforme, o que não está
 pedir ao Claude para corrigir.
 
 A **fonte de verdade** desta auditoria é a **referência embutida no final deste
-arquivo** — os Padrões de Desenvolvimento Vibe Coding (v1.2), derivados do
+arquivo** — os Padrões de Desenvolvimento Vibe Coding (v1.3), derivados do
 documento canônico em `skills/supplog-iniciar/SKILL.md` do repositório
 de skills da Supplog. **Audite contra ela, item a item** — não de memória.
 
@@ -62,6 +62,15 @@ configuração, dependências):
 - Se existir `PLANEJAMENTO.md` (projeto nascido da `/supplog-iniciar`), use-o como
   referência do escopo. Se não existir, registre no relatório e use o `README.md`
   como referência.
+- **Versionamento (seção 2.9):** existe `.git/`? Comandos Git **somente de
+  leitura** são permitidos nesta auditoria (não mudam estado): `git remote -v`
+  (remote no GitHub da Supporte?), `git config user.email` (termina em
+  `@supplog.com`?), `git log --format=%ae | sort -u` (algum autor com e-mail
+  pessoal?), `git status --short` (código fora do commit?) e
+  `git ls-files .env database/app.db` (segredo ou banco no histórico?). Projeto
+  **sem `.git/`** — caso típico de aplicação anterior ao padrão — é
+  **Não conforme** em 2.9, e a correção começa pelo chamado de criação do
+  repositório (ver tabela). Continue a auditoria normalmente.
 
 ### Passo 2 — Montar a checklist aplicável
 
@@ -77,6 +86,7 @@ interface não audita XSS). Cobertura por área:
 | Nomenclatura de código | 2.4              | snake_case/PascalCase/camelCase conforme a stack; comentários em português                                                                                      |
 | README                 | 2.7              | todas as seções obrigatórias presentes e preenchidas (inclui "Autenticação (Login Único)" sem `client_secret`)                                                  |
 | Identidade visual      | 2.8              | apps com UI: tokens/fontes/logo/favicon do [brand](https://github.com/supportelogistica/brand); cores chumbo/laranja/branco; Lucide; zero emojis (automações sem tela: Não se aplica) |
+| Versionamento          | 2.9              | `.git/` presente; remote na organização do GitHub Supporte Logistica - Vibe Coders ou chamado de criação registrado no README/PLANEJAMENTO; `user.email` e autores dos commits com `@supplog.com` (e-mail pessoal: Não conforme); `.env` e `app.db` fora do histórico; nada relevante fora do commit; README com o endereço do repositório. Sem repositório → correção: "Peça ao Claude: 'configure o Git deste projeto com meu e-mail Supplog, faça o primeiro commit sem o .env e me dê o texto do chamado no Fluig, Sustentação → Inovação → GitHub → Criação (projeto de vibe coding com o Claude, repositório na organização Supporte Logistica - Vibe Coders)'" |
 | Dados                  | 3.1–3.7          | nomenclatura de tabelas/colunas; PK; CriadoEm/AtualizadoEm; booleanos; sem ORM; SQL puro parametrizado; scripts_criacao.sql; UTF-8; seed                        |
 | Segurança              | 4.1, 4.2, 4.5    | validação rigorosa no back-end; OWASP Top 10 (sem injeção/XSS/BOLA); SQL param.; escape; erros sem stack; logs/auditoria; upload; logout real; timeout 15–30 min (ou 2–5 alto risco); certificados fora de público; .env; .env.example; sem hardcode; deps de IA conferidas; criptografia trânsito/repouso; anonimização (fonte: PO-SI-0016) |
 | Controle de acessos    | 4.3              | contas nominais (sem genéricas nem usuário "coringa" que contorne o SSO); RBAC no banco do app chaveado por `sub` quando há papéis ou dado sensível; conexão DB com privilégio mínimo                                           |
@@ -116,7 +126,7 @@ críticos). Se já existir um relatório anterior, sobrescreva.
 # Relatório de Conformidade — <Nome do Projeto>
 
 > Gerado por /supplog-check em <data>. Base: Padrões de Desenvolvimento Vibe
-> Coding (v1.2). Auditoria estática, read-only — nenhum arquivo do projeto foi
+> Coding (v1.3). Auditoria estática, read-only — nenhum arquivo do projeto foi
 > alterado. A seção LGPD verifica higiene técnica, não conformidade jurídica.
 > A aprovação final para produção é do TI.
 
@@ -167,7 +177,7 @@ Claude, guiada pelo relatório.
 
 ---
 
-## Padrões de Desenvolvimento Vibe Coding (v1.2) — referência embutida
+## Padrões de Desenvolvimento Vibe Coding (v1.3) — referência embutida
 
 _(Fonte de verdade da auditoria. Numeração idêntica à do documento canônico
 `skills/supplog-iniciar/SKILL.md` — cite estes números no
@@ -236,7 +246,8 @@ relatório.)_
 ### 2.7 README obrigatório
 
 Descrição; Contexto/Motivação; Responsável (área, contato, data de criação);
-Stack + versão exata + classificação de porte; Como rodar localmente (com comando
+Repositório (endereço no GitHub ou "chamado aberto em <data>", 2.9); Stack +
+versão exata + classificação de porte; Como rodar localmente (com comando
 do seed); Autenticação (Login Único) — modo, quem pode entrar, `client_id`,
 Redirect URIs por ambiente, variáveis `SSO_*`, **nunca o secret** (ou "Não se
 aplica" com motivo); Fluxos principais e endpoints (método, rota, tabelas
@@ -254,6 +265,28 @@ Apps **com interface** devem seguir
 Fira Code; logo e favicon oficiais (não redesenhados); cores base chumbo
 `#58595B`, laranja `#F37021`, branco; ícones Lucide; **zero emojis**. Automações
 sem tela: não se aplica.
+
+### 2.9 Versionamento e repositório (Git / GitHub)
+
+Toda aplicação — nova ou existente ainda sem versionamento, de qualquer tipo —
+vive em repositório Git no GitHub da Supporte, criado pelo TI.
+
+- **Conta Supplog:** `git config user.email` e autores dos commits com e-mail
+  `@supplog.com`; a conta do GitHub com acesso é a vinculada a esse e-mail.
+  E-mail pessoal em commit: Não conforme.
+- **Repositório via chamado:** cada aplicação tem repositório próprio na
+  organização do GitHub **Supporte Logistica - Vibe Coders**, criado pelo TI a
+  partir de chamado no Fluig (Sustentação → Inovação → GitHub → Criação),
+  informando projeto de vibe coding construído com o Claude, nome da aplicação
+  e responsável. Remote no
+  GitHub da Supporte configurado; enquanto o chamado não é atendido, README /
+  PLANEJAMENTO registram "chamado aberto em <data>" (Parcial, não Não conforme).
+- **Desde o primeiro commit:** `.git/` presente; `.env`, `database/app.db`,
+  `node_modules/`, `.venv/`, build fora do histórico (`git ls-files`); código
+  relevante commitado. Sem `.git/`: Não conforme.
+- **Aplicação existente sem versionamento:** mesmos passos antes da auditoria —
+  primeiro commit com o estado atual, sem segredos; sem reconstruir histórico.
+- README registra o endereço do repositório (2.7).
 
 ### 3.1–3.7 Dados
 
