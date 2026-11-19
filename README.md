@@ -14,7 +14,8 @@ nomenclatura em português, SQL puro parametrizado, autenticação pelo
 | [`supplog-iniciar`](./skills/supplog-iniciar/SKILL.md) | Entrevista guiada para planejar um projeto antes de codar; gera `PLANEJAMENTO.md` e esqueleto de `README.md` |
 | [`supplog-sso`](./skills/supplog-sso/SKILL.md) | Integra o Login Único (SSO) em uma aplicação já existente: diagnostica o acesso atual, orienta o cadastro no SSO, implementa OIDC e aposenta o login com senha |
 | [`supplog-check`](./skills/supplog-check/SKILL.md) | Verifica se o projeto obedece o `PLANEJAMENTO.md` e os Padrões de Desenvolvimento |
-| [`supplog-handoff`](./skills/supplog-handoff/SKILL.md) | Roda a verificação de conformidade e guia a entrega do projeto para o TI da Supporte |
+| [`supplog-seguranca`](./skills/supplog-seguranca/SKILL.md) | Autoanálise de segurança exigida pela PO-SI-0016: checklist da política, classificação de dados (LGPD, DPO/ROPA/RIPD), varredura de dependências e `RELATORIO-SEGURANCA.md`; corrige os achados sob confirmação |
+| [`supplog-handoff`](./skills/supplog-handoff/SKILL.md) | Confere pendências, gera o zip sem segredos e o `GUIA-HANDOFF.md` com o chamado de avaliação no Fluig (subdomínio obrigatório) |
 
 ## Instalação (zip)
 

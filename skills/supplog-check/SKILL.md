@@ -11,12 +11,19 @@ precisa saber — em português claro — o que está conforme, o que não está
 pedir ao Claude para corrigir.
 
 A **fonte de verdade** desta auditoria é a **referência embutida no final deste
-arquivo** — os Padrões de Desenvolvimento Vibe Coding (v1.3), derivados do
+arquivo** — os Padrões de Desenvolvimento Vibe Coding (v1.4), derivados do
 documento canônico em `skills/supplog-iniciar/SKILL.md` do repositório
 de skills da Supplog. **Audite contra ela, item a item** — não de memória.
 
 > Esta skill funciona em **qualquer projeto alinhado ao padrão Vibe Coding**,
 > mesmo os que não nasceram da `/supplog-iniciar`.
+
+> **Divisão com a `/supplog-seguranca`:** esta auditoria cobre o padrão
+> inteiro (stack, pastas, arquitetura, README, dados, versionamento) e os
+> requisitos de segurança no nível do padrão (seções 4.x). A verificação item
+> a item contra a PO-SI-0016, a classificação de dados (DPO/ROPA/RIPD) e a
+> varredura de dependências são da `/supplog-seguranca` — o relatório desta
+> skill aponta para ela em vez de repetir.
 
 ---
 
@@ -84,17 +91,18 @@ interface não audita XSS). Cobertura por área:
 | Estrutura de pastas    | 2.5              | pastas obrigatórias da stack presentes e usadas                                                                                                                 |
 | Arquitetura            | 2.6              | rotas finas; regra de negócio em services; componentes React funcionais; custom hooks; chamadas de API em services/; middleware para auth/validação             |
 | Nomenclatura de código | 2.4              | snake_case/PascalCase/camelCase conforme a stack; comentários em português                                                                                      |
-| README                 | 2.7              | todas as seções obrigatórias presentes e preenchidas (inclui "Autenticação (Login Único)" sem `client_secret`)                                                  |
+| README                 | 2.7              | todas as seções obrigatórias presentes e preenchidas (inclui "Autenticação (Login Único)" sem `client_secret` e "Endereço em produção" com o subdomínio `<app>.supplog.com` — ausente: Parcial, pendência de handoff, pois o chamado de avaliação exige o subdomínio) |
 | Identidade visual      | 2.8              | apps com UI: tokens/fontes/logo/favicon do [brand](https://github.com/supportelogistica/brand); cores chumbo/laranja/branco; Lucide; zero emojis (automações sem tela: Não se aplica) |
-| Versionamento          | 2.9              | `.git/` presente; remote na organização do GitHub Supporte Logistica - Vibe Coders ou chamado de criação registrado no README/PLANEJAMENTO; `user.email` e autores dos commits com `@supplog.com` (e-mail pessoal: Não conforme); `.env` e `app.db` fora do histórico; nada relevante fora do commit; README com o endereço do repositório. Sem repositório → correção: "Peça ao Claude: 'configure o Git deste projeto com meu e-mail Supplog, faça o primeiro commit sem o .env e me dê o texto do chamado no Fluig, Sustentação → Inovação → GitHub → Criação (projeto de vibe coding com o Claude, repositório na organização Supporte Logistica - Vibe Coders)'" |
+| Versionamento          | 2.9              | `.git/` presente; remote na organização do GitHub Supporte Logistica - Vibe Coders ou chamado de criação registrado no README/PLANEJAMENTO (com nome de usuário do GitHub); `user.email` e autores dos commits com `@supplog.com` (e-mail pessoal: Não conforme); `.env` e `app.db` fora do histórico; nada relevante fora do commit; README com o endereço do repositório. Sem repositório → correção: "Peça ao Claude: 'configure o Git deste projeto com meu e-mail Supplog, faça o primeiro commit sem o .env e me dê o texto do chamado no Fluig, Sustentação → Inovação → GitHub → Criação (projeto de vibe coding com o Claude, repositório na organização Supporte Logistica - Vibe Coders, com meu nome de usuário do GitHub)'" |
 | Dados                  | 3.1–3.7          | nomenclatura de tabelas/colunas; PK; CriadoEm/AtualizadoEm; booleanos; sem ORM; SQL puro parametrizado; scripts_criacao.sql; UTF-8; seed                        |
-| Segurança              | 4.1, 4.2, 4.5    | validação rigorosa no back-end; OWASP Top 10 (sem injeção/XSS/BOLA); SQL param.; escape; erros sem stack; logs/auditoria; upload; logout real; timeout 15–30 min (ou 2–5 alto risco); certificados fora de público; .env; .env.example; sem hardcode; deps de IA conferidas; criptografia trânsito/repouso; anonimização (fonte: PO-SI-0016) |
+| Segurança              | 4.1, 4.2, 4.5    | validação rigorosa no back-end; OWASP Top 10 e API Top 10 (sem injeção/XSS/BOLA); SQL param.; escape; erros sem stack; logs/auditoria com usuário e IP; upload; logout real; timeout 15–30 min (ou 2–5 em alto risco: financeiro, RH, LGPD, admin); certificados fora de público; .env; .env.example; sem hardcode; deps de IA conferidas; sem links externos/badges/rastreadores; criptografia trânsito/repouso; anonimização; classificação dos dados (pessoal/sensível/confidencial) registrada no PLANEJAMENTO/README (fonte: PO-SI-0016). Varredura de CVEs e checklist completa da política: `/supplog-seguranca` |
+| Governança             | 4.8              | README/PLANEJAMENTO registram o status do Termo de Ciência e Responsabilidade (FO-SI-0025) e nenhum arquivo de deploy/config aponta para hospedagem externa (`vercel.json`, `netlify.toml`, `render.yaml`, Supabase, GitHub Pages, workflow de deploy para fora) — presença: Não conforme; `RELATORIO-SEGURANCA.md` existe (ausente: Parcial — "rode a `/supplog-seguranca`") |
 | Controle de acessos    | 4.3              | contas nominais (sem genéricas nem usuário "coringa" que contorne o SSO); RBAC no banco do app chaveado por `sub` quando há papéis ou dado sensível; conexão DB com privilégio mínimo                                           |
 | Login Único (SSO)      | 4.4              | app com login usa o SSO (sem tela/tabela/coluna de senha própria); rotas `/entrar`, `/entrar/callback`, `/entrar/sair`; biblioteca OIDC (Authlib / openid-client / jose), nada à mão; endpoints via discovery (sem path hardcoded); PKCE S256 + `state` + `nonce`; `id_token` validado via JWKS (`iss`, `aud`, `exp`, `nonce`); middleware de bloqueio total ou botão oficial "Entrar com Supplog SSO"; cookie httpOnly/SameSite=Lax/Secure em prod; refresh rotativo com `invalid_grant` → `/entrar`; `sub` como chave (não e-mail); `tipo == INTERNO` no servidor quando só internos; logout no `end_session_endpoint` com `id_token_hint`; `SSO_ISSUER/CLIENT_ID/CLIENT_SECRET/APP_URL` no `.env.example`; secret ausente do repo; destino pós-login saneado (anti open-redirect) |
 | Login próprio (exceção)| 4.4.1            | **só se existir** login com senha no app: exige autorização registrada no PLANEJAMENTO/README (sem ela: Não conforme em 4.4 — correção: "rode a `/supplog-sso` para migrar ao Login Único"); hash bcrypt/argon2; senha mín. 14 com 4 categorias; bloqueio dicionário/padrões/termos da org; histórico das últimas 5; checagem de vazamento; rotação 90d (elevados); bloqueio ≥ 15 min após 5 tentativas; msgs genéricas; recuperação por token (apps só com SSO: Não se aplica) |
-| Higiene LGPD           | 4.6              | as 8 regras: inventário, back-end obrigatório, acesso restrito, seed fictício, nada em URL, logs, minimização, fonte DW                                                                                                         |
+| Higiene LGPD           | 4.6              | as 9 regras: inventário, back-end obrigatório, acesso restrito, seed fictício, nada em URL, logs, minimização, fonte DW, retenção e descarte documentados (dado pessoal sem prazo: Não conforme)                                 |
 | App externo            | 4.7              | MFA via Login Único (sem MFA próprio; "Quem pode entrar" inclui externos); TLS 1.2+; rate limiting; CSP/HSTS/X-Frame-Options; CSRF; cert AC confiável; sem admin/debug públicos; herança 4.1/4.3/4.4 (apps internos: Não se aplica) |
-| Ambiente               | 5.1–5.2, 5.4     | SQLite em homologação; seed existe (e lembrete: não pode ir para produção); SSO integrado desde a homologação; README registra `client_id` e Redirect URIs por ambiente                                                        |
+| Ambiente               | 5.1–5.2, 5.4, 5.6 | SQLite em homologação; seed existe (e lembrete: não pode ir para produção); SSO integrado desde a homologação; README registra `client_id` e Redirect URIs por ambiente; Redirect URIs de produção (quando registradas) no subdomínio `https://<app>.supplog.com/...` — igual ao "Endereço em produção" |
 
 ### Passo 3 — Verificar item a item
 
@@ -126,9 +134,10 @@ críticos). Se já existir um relatório anterior, sobrescreva.
 # Relatório de Conformidade — <Nome do Projeto>
 
 > Gerado por /supplog-check em <data>. Base: Padrões de Desenvolvimento Vibe
-> Coding (v1.3). Auditoria estática, read-only — nenhum arquivo do projeto foi
+> Coding (v1.4). Auditoria estática, read-only — nenhum arquivo do projeto foi
 > alterado. A seção LGPD verifica higiene técnica, não conformidade jurídica.
-> A aprovação final para produção é do TI.
+> A autoanálise de segurança da PO-SI-0016 é da /supplog-seguranca. A
+> aprovação final para produção é do TI.
 
 ## Resumo
 
@@ -164,20 +173,23 @@ aplicações" e as Redirect URIs cadastradas exatamente iguais>
 1. Corrija os itens "Não conforme" e "Parcial" com o Claude (as instruções acima estão prontas para
    colar).
 2. Rode `/supplog-check` de novo até o relatório ficar limpo.
-3. Com o relatório limpo, siga para o handoff ao TI com a `/supplog-handoff`.
+3. Rode a `/supplog-seguranca` (autoanálise de segurança exigida pela
+   PO-SI-0016) e corrija o que ela apontar.
+4. Com os dois relatórios limpos, siga para o handoff ao TI com a
+   `/supplog-handoff` — tenha o subdomínio desejado decidido.
 ```
 
 ### Passo 5 — Encerrar
 
 No chat, em linguagem acessível: diga quantos itens passaram/falharam, quais são
 os 3 mais importantes de corrigir primeiro, e reforce o ciclo **corrigir →
-re-rodar o check → handoff ao TI**. Não ofereça aplicar as correções nesta mesma
-sessão de auditoria — a correção é uma conversa separada do solicitante com o
-Claude, guiada pelo relatório.
+re-rodar o check → `/supplog-seguranca` → handoff ao TI**. Não ofereça aplicar
+as correções nesta mesma sessão de auditoria — a correção é uma conversa
+separada do solicitante com o Claude, guiada pelo relatório.
 
 ---
 
-## Padrões de Desenvolvimento Vibe Coding (v1.3) — referência embutida
+## Padrões de Desenvolvimento Vibe Coding (v1.4) — referência embutida
 
 _(Fonte de verdade da auditoria. Numeração idêntica à do documento canônico
 `skills/supplog-iniciar/SKILL.md` — cite estes números no
@@ -246,11 +258,13 @@ relatório.)_
 ### 2.7 README obrigatório
 
 Descrição; Contexto/Motivação; Responsável (área, contato, data de criação);
-Repositório (endereço no GitHub ou "chamado aberto em <data>", 2.9); Stack +
-versão exata + classificação de porte; Como rodar localmente (com comando
-do seed); Autenticação (Login Único) — modo, quem pode entrar, `client_id`,
-Redirect URIs por ambiente, variáveis `SSO_*`, **nunca o secret** (ou "Não se
-aplica" com motivo); Fluxos principais e endpoints (método, rota, tabelas
+Repositório (endereço no GitHub ou "chamado aberto em <data>", 2.9); Endereço
+em produção (subdomínio desejado `<nome-da-aplicacao>.supplog.com`, 5.6; ou
+"Não se aplica" para automação sem tela); Stack + versão exata +
+classificação de porte; Como rodar localmente (com comando do seed);
+Autenticação (Login Único) — modo, quem pode entrar, `client_id`, Redirect
+URIs por ambiente, variáveis `SSO_*`, **nunca o secret** (ou "Não se aplica"
+com motivo); Fluxos principais e endpoints (método, rota, tabelas
 lidas/escritas, request, response, erros); Estrutura de dados (tabelas e
 finalidade); Fontes do DW consumidas; Dependências externas; Status (Em
 desenvolvimento / Em teste / Aguardando aprovação / Em produção); Histórico de
@@ -272,15 +286,17 @@ Toda aplicação — nova ou existente ainda sem versionamento, de qualquer tipo
 vive em repositório Git no GitHub da Supporte, criado pelo TI.
 
 - **Conta Supplog:** `git config user.email` e autores dos commits com e-mail
-  `@supplog.com`; a conta do GitHub com acesso é a vinculada a esse e-mail.
-  E-mail pessoal em commit: Não conforme.
+  `@supplog.com`; a conta do GitHub com acesso é a que tem esse e-mail
+  adicionado e verificado (conta pessoal serve com o vínculo; só e-mail
+  pessoal, não entra). E-mail pessoal em commit: Não conforme.
 - **Repositório via chamado:** cada aplicação tem repositório próprio na
   organização do GitHub **Supporte Logistica - Vibe Coders**, criado pelo TI a
   partir de chamado no Fluig (Sustentação → Inovação → GitHub → Criação),
-  informando projeto de vibe coding construído com o Claude, nome da aplicação
-  e responsável. Remote no
-  GitHub da Supporte configurado; enquanto o chamado não é atendido, README /
-  PLANEJAMENTO registram "chamado aberto em <data>" (Parcial, não Não conforme).
+  informando projeto de vibe coding construído com o Claude, nome da
+  aplicação e responsável com e-mail corporativo e **nome de usuário do
+  GitHub**. Remote no GitHub da Supporte configurado; enquanto o chamado não
+  é atendido, README / PLANEJAMENTO registram "chamado aberto em <data>"
+  (Parcial, não Não conforme).
 - **Desde o primeiro commit:** `.git/` presente; `.env`, `database/app.db`,
   `node_modules/`, `.venv/`, build fora do histórico (`git ls-files`); código
   relevante commitado. Sem `.git/`: Não conforme.
@@ -315,18 +331,20 @@ vive em repositório Git no GitHub da Supporte, criado pelo TI.
 
 - Validar rigorosamente **toda** entrada no back-end (tamanho, tipo, sintaxe,
   regras de negócio) — formulário, query string, upload; nunca só no front.
-- Mitigar OWASP Top 10; proibido publicar com injeção (SQL/NoSQL/comandos), XSS
-  ou BOLA.
+- Mitigar OWASP Top 10 (e API Security Top 10 quando expõe API); proibido
+  publicar com injeção (SQL/NoSQL/comandos), XSS ou BOLA.
 - SQL: queries parametrizadas/prepared statements obrigatórias (sem concatenação).
 - XSS: escapar output em templates/HTML (não desativar o padrão do Jinja2/React).
 - Erros: nunca expor stack trace ou erro interno ao usuário.
 - Logs/auditoria: registrar eventos de segurança e ações sensíveis (login
-  sucesso/falha, mudanças de privilégios); não logar confidencial/senha em texto
-  claro.
+  sucesso/falha, mudanças de privilégios, acesso a dado sensível) com
+  **usuário (`sub`) e IP**; não logar confidencial/senha em texto claro.
 - Upload: validar o **tipo real** do arquivo (não só a extensão) e limitar
   tamanho.
 - Sessão: logout invalida a sessão no servidor (e no SSO, 4.4); timeout por
-  inatividade 15–30 min (ou 2–5 min em alto risco).
+  inatividade 15–30 min, ou 2–5 min em **alto risco** (dado financeiro, RH,
+  LGPD ou acesso administrativo). "Lembrar-me" próprio: proibido em alto
+  risco; com Login Único, não se implementa.
 - Certificados (`.pfx`, `.pem`, `.crt`, `.enc`) fora de diretórios públicos.
 
 ### 4.2 Variáveis de ambiente e segredos
@@ -337,7 +355,12 @@ vive em repositório Git no GitHub da Supporte, criado pelo TI.
 - Carregar via `python-dotenv` (Flask) ou `process.env` (Node).
 - Nenhum segredo real em README, comentário ou mensagem de commit.
 - Dependências sugeridas por IA: confirmar existência, autoria e reputação;
-  proibido pacote obsoleto, rastreador não homologado ou lib sem manutenção.
+  proibido pacote obsoleto, descontinuado ou sem manutenção; verificação de
+  CVEs (`npm audit`/`pip-audit`) é da `/supplog-seguranca`.
+- Sem links externos desconhecidos, rastreadores, scripts de terceiros ou
+  badges hospedados fora da empresa no código e na documentação (assets vêm
+  do brand ou ficam no projeto). Protocolos inseguros (FTP, Telnet, SMTP sem
+  TLS): Não conforme.
 
 ### 4.3 Autenticação e controle de acessos
 
@@ -419,8 +442,16 @@ Quando autorizado, auditar:
   enviar senha em texto claro por e-mail/SMS.
 - Logout e timeout conforme 4.1.
 
-### 4.5 Proteção de dados
+### 4.5 Classificação e proteção de dados
 
+- Todo dado tratado classificado no PLANEJAMENTO/README: pessoal, pessoal
+  sensível (saúde, biometria, religião, política, criança/adolescente) ou
+  confidencial não pessoal. Sem classificação com dado pessoal presente:
+  Parcial. Dado pessoal → necessidade de DPO/ROPA registrada; RIPD indicado
+  quando dois ou mais critérios (sensível; 1.000 titulares/12 meses ou uso
+  recorrente; decisão automatizada/perfilamento/monitoramento; terceiro
+  externo). A análise de enquadramento é da `/supplog-seguranca`; aqui
+  verifica-se só o registro.
 - Criptografia adequada em trânsito e em repouso para dados confidenciais/sensíveis.
 - Massas reais de produção em dev/homolog só com anonimização/mascaramento.
 
@@ -439,6 +470,9 @@ Higiene **técnica** (não é parecer jurídico):
 6. **Logs:** não registrar dado pessoal em texto puro.
 7. **Minimização:** só coletar/armazenar o que os fluxos documentados justificam.
 8. **Fonte:** dado pessoal da empresa só via **DW** (única fonte permitida).
+9. **Retenção e descarte (PO-SI-0006):** prazo de retenção e forma de
+   descarte/anonimização documentados por tipo de dado pessoal; aplicação
+   permite eliminar ou anonimizar a pedido do titular (PO-SI-0004).
 
 ### 4.7 Aplicações de uso externo
 
@@ -455,6 +489,16 @@ Além de 4.1–4.6, quando o app é externo:
 - Herda contas nominais e privilégio mínimo no DB (4.3), Login Único com `tipo`
   validado no servidor (4.4) e timeout (4.1).
 
+### 4.8 Governança do desenvolvimento seguro
+
+Termo de Ciência e Responsabilidade (FO-SI-0025) assinado antes do
+desenvolvimento — status registrado no PLANEJAMENTO/README (ausente: Parcial;
+Não verificável no código). Hospedagem e teste só na máquina local e nos
+ambientes do TI: arquivo de deploy para Vercel, Netlify, Render, Supabase,
+GitHub Pages ou similar no projeto é Não conforme. Código só no repositório
+oficial. Autoanálise de segurança: `RELATORIO-SEGURANCA.md` presente
+(ausente: Parcial). Deploy vedado com vulnerabilidade Alta/Crítica.
+
 ### 5.1–5.4 Ambiente (o que a auditoria estática cobre)
 
 - **5.1 Banco:** homologação **SQLite**; produção **PostgreSQL** (criado só após
@@ -464,6 +508,13 @@ Além de 4.1–4.6, quando o app é externo:
   homologação).
 - **5.4 Autenticação:** Login Único integrado **desde a homologação** (o
   cadastro aceita `localhost`); produção exige aplicação aprovada no SSO com
-  Redirect URIs de produção cadastradas byte a byte. Aprovação e URIs de
-  produção são Não verificável no código — registrar como pendência de
-  handoff, indicando que o usuário confira em "Minhas aplicações".
+  Redirect URIs de produção no subdomínio
+  (`https://<subdominio>.supplog.com/...`) cadastradas byte a byte. Aprovação
+  e URIs de produção são Não verificável no código — registrar como pendência
+  de handoff, indicando que o usuário confira em "Minhas aplicações".
+- **5.6 Chamado de avaliação e subdomínio:** a entrega é por chamado no Fluig
+  (Sustentação → Inovação → Desenvolvimento IA → Avaliação Desenvolvimento)
+  e exige o **subdomínio desejado** (`nome-da-aplicacao.supplog.com`,
+  minúsculas, sem acento, hífen, igual ao `client_id`). O README registra o
+  subdomínio em "Endereço em produção"; ausente em app com tela ou API:
+  Parcial — pendência de handoff.
