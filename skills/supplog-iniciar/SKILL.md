@@ -19,13 +19,14 @@ decisões técnicas alinhadas ao padrão. Sua missão tem duas metades insepará
    pronto para o solicitante validar.
 
 A **fonte de verdade** técnica são os **Padrões de Desenvolvimento Vibe Coding
-(v1.3) no final deste arquivo** — os padrões moram aqui, neste `SKILL.md`.
+(v1.4) no final deste arquivo** — os padrões moram aqui, neste `SKILL.md`.
 
 > **Divisão de papéis no ciclo Supplog:** esta skill vai da ideia ao app
 > construído. O **teste funcional é do solicitante** (ele valida cada fluxo
 > manualmente e dá o aceite). A auditoria formal de conformidade é da
-> `/supplog-check`, e a promoção para produção passa pelo crivo do TI (handoff —
-> via `/supplog-handoff`).
+> `/supplog-check`, a autoanálise de segurança exigida pela PO-SI-0016 é da
+> `/supplog-seguranca`, e a promoção para produção passa pelo crivo do TI
+> (handoff — via `/supplog-handoff`).
 
 ---
 
@@ -101,6 +102,18 @@ se a conversa pedir, mas **não pule** nenhum bloco.
   LGPD, seção 4.6 do padrão).
 - **De onde vêm os dados?** Lembre a regra: a **única fonte permitida** de dados
   da empresa é o **DW**. Registre quais fontes do DW serão consumidas.
+- **Classifique o que foi levantado (seção 4.5):** dado pessoal, dado pessoal
+  **sensível** (saúde, biometria, religião, política, criança/adolescente) ou
+  dado **confidencial** não pessoal (preço, contrato, estratégia). Se há dado
+  pessoal, explique em uma frase que a aplicação passa pela avaliação do DPO
+  e entra no ROPA; se há dado sensível, grande volume (1.000 titulares ou
+  mais por ano, ou uso recorrente em produção), decisão automatizada sobre
+  pessoas ou envio a terceiro externo, pode exigir RIPD (dois ou mais
+  critérios). Registre no PLANEJAMENTO — quem decide é a Segurança da
+  Informação.
+- **Por quanto tempo o dado precisa ficar guardado?** (seção 4.6, item 9) A
+  resposta vira o prazo de retenção documentado; dado pessoal sem prazo nem
+  forma de descarte é não-conformidade com a PO-SI-0006.
 
 ### Bloco 4 — Integrações
 
@@ -138,13 +151,45 @@ se a conversa pedir, mas **não pule** nenhum bloco.
   Registre que toda entrada será **validada no back-end** e que upload valida tipo
   real e tamanho (seção 4.1).
 
-### Bloco 7 — Identidade
+### Bloco 7 — Identidade, conta do GitHub, subdomínio e termo
 
 - Qual o nome da aplicação? Quem é o **responsável** (área, contato)?
 - O contato é o **e-mail corporativo** (`@supplog.com`) do responsável — é
   esse e-mail que assina os commits e identifica a conta do GitHub (seção 2.9).
   Explique em uma frase: o código fica em repositório da Supporte, criado pelo
   TI, e só contas Supplog têm acesso.
+- **Conta do GitHub (seção 2.9):** pergunte se o responsável já tem conta no
+  GitHub com o e-mail corporativo vinculado e **verificado**, e qual é o
+  **nome de usuário** — ele vai no chamado de criação do repositório; sem
+  ele o convite do TI não encontra a conta. Conforme a resposta:
+  - **Não tem conta:** oriente a criar agora em `github.com/signup` com o
+    e-mail corporativo (nunca o pessoal), nome de usuário reconhecível
+    (ex.: `nome-sobrenome`), confirmar o código que chega no Outlook e seguir
+    no plano **Free**.
+  - **Tem conta com e-mail pessoal:** não precisa criar outra — adicionar o
+    e-mail corporativo em **Settings → Emails**, verificar pelo link que
+    chega no Outlook e **desmarcar** "Block command line pushes that expose
+    my email" (ligada, o GitHub recusa os pushes assinados com o e-mail
+    corporativo).
+  - Em ambos: o e-mail precisa aparecer como **Verified** em Settings →
+    Emails; quando o TI criar o repositório, chega um convite por e-mail —
+    aceitá-lo é o que libera o push. O passo a passo com telas está em
+    [Passo a passo do desenvolvimento](https://docs.supplog.com/vibe-coding/comecando/passo-a-passo-do-desenvolvimento),
+    seção "Sua conta do GitHub".
+
+  A conta não bloqueia a entrevista: registre "pendente" e siga; o nome de
+  usuário precisa existir antes de abrir o chamado (Fase 4).
+- **Subdomínio em produção (seção 5.6):** quando a aplicação tem tela ou
+  API, derive do nome o subdomínio `<nome-da-aplicacao>.supplog.com`
+  (minúsculas, sem acento, hífen entre palavras — o mesmo valor do
+  `client_id` do SSO) e confirme com o solicitante. É o endereço pelo qual as
+  pessoas vão abrir a aplicação, é obrigatório no chamado de avaliação e
+  define as Redirect URIs de produção no SSO. Automação sem tela: não se
+  aplica.
+- **Termo de Ciência e Responsabilidade (seção 4.8):** lembre em uma frase que
+  a PO-SI-0016 exige o termo (FO-SI-0025) assinado pelo responsável antes de
+  iniciar o desenvolvimento; quem ainda não assinou pede à Segurança da
+  Informação. Registre o status no PLANEJAMENTO e siga.
 
 ---
 
@@ -188,7 +233,7 @@ projeto**:
 # Planejamento — <Nome da Aplicação>
 
 > Gerado pela entrevista /supplog-iniciar. Base: Padrões de Desenvolvimento Vibe
-> Coding (v1.3).
+> Coding (v1.4).
 
 ## Problema
 
@@ -207,6 +252,11 @@ roteiro de teste>
 
 - Fontes do DW consumidas: <...>
 - Dados pessoais/LGPD envolvidos: <lista ou "nenhum">
+- Classificação (seção 4.5): <pessoal | pessoal sensível | confidencial não
+  pessoal | nenhum>; avaliação do DPO/ROPA: <sim / não se aplica>; RIPD:
+  <provável — critérios atendidos: ... / não indicado>
+- Retenção e descarte (seção 4.6, item 9): <prazo por tipo de dado e como é
+  eliminado/anonimizado — ou "não se aplica">
 - O que guarda / consulta: <...>
 
 ## Integrações
@@ -229,10 +279,16 @@ roteiro de teste>
 - Perfis/RBAC: <sim (quais papéis) / não — obrigatório quando houver papéis
   distintos ou dado pessoal/sensível>
 - Entradas de usuário: <formulários, uploads — ou "nenhuma">
+- Subdomínio desejado em produção (seção 5.6): `<nome-da-aplicacao>.supplog.com`
+  — ou "não se aplica (automação sem tela)"
+- Termo de Ciência e Responsabilidade (FO-SI-0025, seção 4.8): <assinado /
+  pendente>
 
 ## Versionamento (seção 2.9)
 
 - Git configurado com e-mail Supplog: <sim — `<nome>@supplog.com` / pendente>
+- Conta do GitHub: <nome de usuário> — e-mail corporativo <verificado /
+  pendente de vínculo>
 - Chamado de criação do repositório (Fluig → Sustentação → Inovação → GitHub →
   Criação): <aberto em <data> / pendente / repositório criado>
 - Repositório: <endereço no GitHub, na organização Supporte Logistica - Vibe
@@ -250,7 +306,8 @@ roteiro de teste>
 (scripts_criacao.sql, seed, SQL puro parametrizado, CriadoEm/AtualizadoEm) e 5.1
 (SQLite em homologação); se tem login, cite 4.3–4.4 (Login Único) e 5.4; se tem
 dado pessoal, cite 4.5–4.6; se for uso externo, cite 4.7; sempre cite 2.4 (nomenclatura), 2.5
-(pastas), 2.6 (arquitetura) da stack escolhida e 2.9 (versionamento); se houver
+(pastas), 2.6 (arquitetura) da stack escolhida, 2.9 (versionamento), 4.8
+(governança) e 5.6 (chamado de avaliação e subdomínio); se houver
 interface, cite 2.8 (marca / brand)>
 
 ## Pontos de atenção / conflitos com o padrão
@@ -288,6 +345,7 @@ que ganha a entrada inicial).
 - Contato: <preenchido>
 - Data de criação: <preenchido>
 - Repositório: <!-- TODO: endereço no GitHub (organização Supporte Logistica - Vibe Coders); enquanto o TI não criar, "chamado aberto em <data>" -->
+- Endereço em produção (subdomínio desejado): <!-- TODO: `<nome-da-aplicacao>.supplog.com` — ou "Não se aplica" para automação sem tela -->
 
 ## Stack técnica
 
@@ -302,8 +360,8 @@ que ganha a entrada inicial).
 
 <!-- TODO: preencher se houver login — modo (bloqueio total / botão), quem pode
 entrar, client_id (NUNCA o client_secret), Redirect URIs cadastradas por
-ambiente, variáveis SSO_* esperadas no .env. Se não houver login, escrever
-"Não se aplica" e o motivo. -->
+ambiente (produção em https://<subdomínio>.supplog.com/...), variáveis SSO_*
+esperadas no .env. Se não houver login, escrever "Não se aplica" e o motivo. -->
 
 ## Fluxos principais e endpoints
 
@@ -364,18 +422,25 @@ Com o plano confirmado, **construa a aplicação completa**. Regras da construç
      fluxo concluído.
    - **Peça ao solicitante abrir o chamado de criação do repositório agora**
      (o atendimento leva tempo e não bloqueia a construção): chamado no
-     **Fluig** → **Sustentação → Inovação → GitHub → Criação**. Entregue o
+     **Fluig** com Área **SUSTENTAÇÃO**, Subárea **INOVAÇÃO**, Sistema
+     **GITHUB**, Serviços **CRIAÇÃO**. Antes de entregar o texto, confira
+     que o nome de usuário do GitHub foi informado no Bloco 7 e que o e-mail
+     corporativo está verificado na conta — sem isso o convite não encontra
+     a conta e o repositório nasce sem o solicitante dentro. Entregue o
      texto pronto para colar:
 
      > Solicito a criação de repositório para a aplicação **<Nome da
      > Aplicação>** na organização do GitHub **Supporte Logistica - Vibe
      > Coders**. Projeto de **vibe coding, construído com o Claude** conforme
-     > os Padrões de Desenvolvimento Vibe Coding. Responsável: <nome, área,
-     > `<nome>@supplog.com`>. Acesso para a conta GitHub vinculada a esse e-mail.
+     > os Padrões de Desenvolvimento Vibe Coding. Responsável: <nome>,
+     > <área>, `<nome>@supplog.com`, usuário do GitHub **<usuario>** (e-mail
+     > corporativo verificado na conta). Acesso para essa conta.
 
-   - **Quando o TI devolver o endereço**, adicione o remote, envie tudo
-     (`git push`) e registre o endereço em "Repositório" do README e do
-     `PLANEJAMENTO.md`. Até lá, registre "chamado aberto em <data>".
+   - **Quando o TI devolver o endereço**, lembre o solicitante de aceitar o
+     convite do GitHub (chega por e-mail; sem aceitar, o push falha),
+     adicione o remote, envie tudo (`git push`) e registre o endereço em
+     "Repositório" do README e do `PLANEJAMENTO.md`. Até lá, registre
+     "chamado aberto em <data>".
 3. **Banco antes do código** (quando houver banco): modele as tabelas conforme as
    seções 3.1–3.4 (nomes em português, `UPPER_SNAKE_CASE`/`PascalCase`, PK,
    `CriadoEm`/`AtualizadoEm`, booleanos com prefixo), escreva
@@ -392,14 +457,21 @@ Com o plano confirmado, **construa a aplicação completa**. Regras da construç
    chamadas de API em `services/`; middleware para autenticação/validação quando
    houver API.
 6. **Nomenclatura** (seção 2.4) em tudo; comentários de código em português.
-7. **Segurança desde o início** (seções 4.1–4.2 e 4.5; fonte PO-SI-0016):
-   validação rigorosa de toda entrada no back-end; mitigação OWASP Top 10 (sem
-   injeção, XSS, BOLA); SQL parametrizado; escape de output; erros sem stack
-   trace; logs/auditoria de ações sensíveis; upload com tipo real e tamanho;
+7. **Segurança desde o início** (seções 4.1–4.2, 4.5 e 4.8; fonte
+   PO-SI-0016): validação rigorosa de toda entrada no back-end; mitigação
+   OWASP Top 10 e API Security Top 10 (sem injeção, XSS, BOLA); SQL
+   parametrizado; escape de output; erros sem stack trace; logs/auditoria de
+   ações sensíveis com usuário e IP; upload com tipo real e tamanho;
    certificados fora de pastas públicas; nenhum segredo hardcoded;
-   `.env.example` versionado; deps sugeridas por IA conferidas; dados sensíveis
-   criptografados em trânsito/repouso; massa de produção anonimizada em
-   homologação. App **externo** → seção **4.7** também.
+   `.env.example` versionado; deps sugeridas por IA conferidas (existência,
+   autoria, reputação, CVEs) e sem links externos, badges ou rastreadores no
+   código e na documentação; dados sensíveis criptografados em
+   trânsito/repouso; massa de produção anonimizada em homologação; timeout
+   de sessão 2–5 min quando a aplicação é de alto risco (dado financeiro,
+   RH, LGPD ou acesso administrativo). O app roda e é testado **só na máquina
+   local e nos ambientes do TI** — nunca em Vercel, Netlify, Render, Supabase,
+   GitHub Pages ou conta pessoal (4.8). App **externo** → seção **4.7**
+   também.
 8. **Acesso e login pelo Login Único** (seções 4.3–4.4 e 5.4) — toda aplicação
    com back-end e tela nasce integrada ao SSO da Supporte, já na homologação.
    **Nunca construa tela de login com senha, tabela de senhas nem cadastro de
@@ -410,7 +482,10 @@ Com o plano confirmado, **construa a aplicação completa**. Regras da construç
      sugerido (minúsculas, números e hífen); tipo de cliente **confidencial**;
      "Quem pode entrar" conforme a entrevista; e as **Redirect URIs** exatas de
      desenvolvimento — `http://localhost:<porta>/entrar/callback` e
-     `http://localhost:<porta>/`. Avise: o `client_secret` aparece **uma única
+     `http://localhost:<porta>/` — mais as de produção com o subdomínio
+     definido no Bloco 7 — `https://<subdominio>.supplog.com/entrar/callback`
+     e `https://<subdominio>.supplog.com/` (cadastrar tudo de uma vez evita
+     o reenvio para aprovação na hora da subida). Avise: o `client_secret` aparece **uma única
      vez** e deve ir **direto para o `.env`** — **nunca colar no chat**, em
      print ou no README. A aplicação fica **Aguardando aprovação**; o
      desenvolvimento continua e o teste do login depende da aprovação.
@@ -451,8 +526,9 @@ Com o plano confirmado, **construa a aplicação completa**. Regras da construç
 12. **README de verdade.** Ao final, resolva **todos** os TODOs do README:
     versão exata da stack, como rodar (incluindo o comando do seed), endpoints
     com método/rota/tabelas/request/response/erros, estrutura de dados,
-    repositório (endereço ou "chamado aberto em <data>"). Histórico ganha a
-    entrada inicial. Status permanece **Em desenvolvimento**.
+    repositório (endereço ou "chamado aberto em <data>"), endereço em
+    produção (subdomínio). Histórico ganha a entrada inicial. Status
+    permanece **Em desenvolvimento**.
 
 ### Critério de conclusão (DoD técnico)
 
@@ -477,9 +553,14 @@ A construção só está concluída quando **tudo** abaixo for verdade:
 - [ ] App sobe localmente seguindo **exatamente** as instruções do README (teste
       você mesmo as instruções antes de entregar).
 - [ ] Versionamento (2.9): `git log --format=%ae` mostra só e-mail
-      `@supplog.com`; tudo commitado (sem `.env`, sem `app.db`); chamado de
-      criação do repositório aberto — ou remote configurado e `push` feito, se
-      o TI já criou.
+      `@supplog.com`; tudo commitado (sem `.env`, sem `app.db`); nome de
+      usuário do GitHub registrado no PLANEJAMENTO; chamado de criação do
+      repositório aberto — ou remote configurado e `push` feito, se o TI já
+      criou.
+- [ ] Governança (4.8): status do Termo de Ciência e Responsabilidade
+      registrado; subdomínio desejado no README e no PLANEJAMENTO (ou "não se
+      aplica"); nada do projeto hospedado fora da máquina local e dos
+      ambientes do TI.
 - [ ] Nenhum TODO pendente no README.
 
 ---
@@ -499,13 +580,15 @@ O aceite funcional **é do solicitante, não seu**. Ao entregar:
    encerrar a sessão também no SSO. Lembre que esse teste **só funciona depois
    que o administrador do SSO aprovar a aplicação** — até lá, o SSO recusa o
    login (`invalid_client`); acompanhe o status em "Minhas aplicações".
-4. **Indique o próximo passo**: quando todos os fluxos estiverem OK para ele, o
-   próximo passo é rodar a `/supplog-check` (auditoria de conformidade); depois do
-   relatório limpo, o handoff ao TI com a `/supplog-handoff`. Antes do check,
-   o código precisa estar no repositório do GitHub: se o chamado ainda não foi
-   atendido, acompanhe-o; assim que o TI informar o endereço, peça ao Claude
-   para configurar o remote e enviar (a auditoria e o handoff pressupõem o
-   repositório).
+4. **Indique o próximo passo**: quando todos os fluxos estiverem OK para ele,
+   o próximo passo é rodar a `/supplog-check` (auditoria de conformidade) e a
+   `/supplog-seguranca` (autoanálise de segurança exigida pela PO-SI-0016);
+   com os dois relatórios limpos, o handoff ao TI com a `/supplog-handoff`,
+   que prepara o chamado de avaliação no Fluig — e esse chamado exige o
+   subdomínio desejado. Antes do check, o código precisa estar no repositório
+   do GitHub: se o chamado ainda não foi atendido, acompanhe-o; assim que o
+   TI informar o endereço, peça ao Claude para configurar o remote e enviar
+   (a auditoria e o handoff pressupõem o repositório).
 5. **Relembre os pontos de atenção** registrados no `PLANEJAMENTO.md` (conflitos
    com o padrão sinalizados na entrevista) — eles vão pesar no crivo do TI.
 
@@ -514,12 +597,13 @@ o ciclo construir → testar → ajustar continua até o aceite funcional.
 
 ---
 
-## Padrões de Desenvolvimento & Vibe Coding (v1.3)
+## Padrões de Desenvolvimento & Vibe Coding (v1.4)
 
 > **Documento canônico** — fonte única de verdade dos Padrões de Desenvolvimento da
 > Supporte Logística (Supplog) para aplicações criadas com apoio de IA.
 > Mora neste `SKILL.md` da `supplog-iniciar`. Ao alterar os padrões aqui, atualize
-> as referências embutidas em `supplog-check`, `supplog-handoff` e `supplog-sso`.
+> as referências embutidas em `supplog-check`, `supplog-handoff`, `supplog-sso` e
+> `supplog-seguranca`.
 
 ### Controle de versão
 
@@ -529,6 +613,39 @@ o ciclo construir → testar → ajustar continua até o aceite funcional.
 | 1.1    | 23/07/2026 | Jhonatan Magalhães | _pendente — Edu Ferreira / Henrique Fernandes_ |
 | 1.2    | 14/09/2026 | Ludmilla Quirino   | _pendente_                                     |
 | 1.3    | 24/09/2026 | Ludmilla Quirino   | _pendente_                                     |
+| 1.4    | 19/11/2026 | Ludmilla Quirino   | _pendente_                                     |
+
+**Mudanças da v1.4 sobre a v1.3** _(alinhamento à PO-SI-0016 rev. 01, à
+PO-SI-0015, à PO-SI-0004, à PO-SI-0006 e ao caminho completo publicado em
+docs.supplog.com)_:
+
+1. **Seção 2.9:** o chamado de criação do repositório passa a exigir o **nome
+   de usuário do GitHub** do responsável, com o e-mail corporativo vinculado
+   e verificado na conta; campos do chamado no Fluig explicitados.
+2. **Seção 2.7:** README ganha o item "Endereço em produção (subdomínio)".
+3. **Seções 4.1, 4.2 e 4.5** ampliadas com requisitos da PO-SI-0016 rev. 01:
+   OWASP API Security Top 10; logs com usuário e IP; definição de aplicação de
+   alto risco; "Lembrar-me"; links externos, badges e rastreadores proibidos;
+   verificação contínua de CVEs; protocolos inseguros; licenças;
+   classificação da informação (pessoal / sensível / confidencial), avaliação
+   do DPO, ROPA e critérios de RIPD.
+4. **Seção 4.6:** novo item 9 — retenção e descarte (PO-SI-0006) e direitos
+   do titular (PO-SI-0004).
+5. **Nova seção 4.8 — Governança do desenvolvimento seguro:** Termo de Ciência
+   e Responsabilidade, ferramentas de IA homologadas com conta corporativa
+   (PO-SI-0015), hospedagem e teste só na máquina local e nos ambientes do TI,
+   código só no repositório oficial, revisão humana do código gerado,
+   autoanálise de segurança (`/supplog-seguranca`) e veto a vulnerabilidade
+   Alta/Crítica em produção.
+6. **Seção 5.6 reescrita:** chamado de avaliação no Fluig (Sustentação →
+   Inovação → Desenvolvimento IA → Avaliação Desenvolvimento) com o `.zip`
+   anexado e o **subdomínio obrigatório** (`<app>.supplog.com`).
+7. **Seção 5.7:** avaliação em duas frentes (Sustentação e Segurança da
+   Informação, eventualmente Jurídico); a subida para produção é pedida como
+   acompanhamento do mesmo chamado.
+8. **Nova seção 5.10 — Depois da produção:** chamados de Manutenção e de
+   Melhoria (branch + pull request).
+9. Glossário: subdomínio, DPO, ROPA, RIPD, PO-SI-0015, FO-SI-0025.
 
 **Mudanças da v1.3 sobre a v1.2:**
 
@@ -799,6 +916,8 @@ obrigatoriamente:
 - Responsável (área, contato, data de criação)
 - Repositório: endereço no GitHub (2.9); enquanto o TI não o criar, "chamado
   aberto em <data>"
+- Endereço em produção: subdomínio desejado, `<nome-da-aplicacao>.supplog.com`
+  (5.6); automação sem tela: "Não se aplica"
 - Stack técnica, incluindo versão exata (ex.: `Python 3.12.4`) e classificação de
   porte
 - Como rodar localmente (incluindo comando de execução do seed)
@@ -857,23 +976,42 @@ repositório Git no GitHub da Supporte, criado pelo TI. Vale para todos os tipos
    conta do GitHub que recebe acesso ao repositório é a vinculada a esse
    e-mail. Commit com e-mail pessoal é não-conformidade — corrija a
    configuração antes do próximo commit.
-2. **Repositório via chamado.** Cada aplicação tem o próprio repositório na
+2. **Conta do GitHub com o e-mail corporativo.** Conta pessoal serve, desde
+   que o e-mail `@supplog.com` esteja adicionado e **verificado** nela
+   (Settings → Emails, marca **Verified**) e a opção "Block command line
+   pushes that expose my email" esteja desmarcada; quem não tem conta cria em
+   `github.com/signup` com o e-mail corporativo. O **nome de usuário** é
+   público e vai no chamado; conta que só tem e-mail pessoal não entra no
+   repositório da Supporte. O convite do TI chega por e-mail e precisa ser
+   aceito para o push funcionar. Passo a passo:
+   [Passo a passo do desenvolvimento](https://docs.supplog.com/vibe-coding/comecando/passo-a-passo-do-desenvolvimento),
+   seção "Sua conta do GitHub".
+3. **Repositório via chamado.** Cada aplicação tem o próprio repositório na
    organização do GitHub **Supporte Logistica - Vibe Coders**, criado pelo TI.
-   O responsável abre chamado no **Fluig** → **Sustentação → Inovação →
-   GitHub → Criação**, informando: que é projeto de **vibe coding, construído
-   com o Claude**, conforme estes padrões; o nome da aplicação; o responsável
-   (nome, área, e-mail Supplog); e a organização de destino. Abra o chamado no
-   início da construção — a espera não bloqueia o desenvolvimento local.
-3. **Desde o primeiro commit.** `git init` junto com o esqueleto (2.5); `.env`,
+   O responsável abre chamado no **Fluig** com os campos abaixo, informando:
+   que é projeto de **vibe coding, construído com o Claude**, conforme estes
+   padrões; o nome da aplicação; o responsável (nome, área, e-mail Supplog e
+   **nome de usuário do GitHub**); e a organização de destino. Abra o chamado
+   no início da construção — a espera não bloqueia o desenvolvimento local.
+
+   | Campo    | Valor       |
+   | -------- | ----------- |
+   | Área     | SUSTENTAÇÃO |
+   | Subárea  | INOVAÇÃO    |
+   | Sistema  | GITHUB      |
+   | Serviços | CRIAÇÃO     |
+4. **Desde o primeiro commit.** `git init` junto com o esqueleto (2.5); `.env`,
    `database/app.db`, `node_modules/`, `.venv/` e artefatos de build no
    `.gitignore` (4.2); commits pequenos a cada fluxo concluído. Quando o
    repositório existir, adicione o remote e envie tudo. A `/supplog-check` e o
-   handoff pressupõem o código no repositório.
-4. **Aplicação existente sem versionamento** segue os três passos acima antes
+   handoff pressupõem o código no repositório. O repositório oficial é o
+   **único** lugar do código: nada em servidor de arquivos compartilhado,
+   conta pessoal ou plataforma externa (4.8).
+5. **Aplicação existente sem versionamento** segue os passos acima antes
    da auditoria: configura a conta, faz o primeiro commit com o estado atual
    (sem segredos — confira o `.gitignore` antes do `git add`) e abre o chamado.
    Não se reconstrói histórico.
-5. **README** registra o endereço do repositório (2.7).
+6. **README** registra o endereço do repositório (2.7).
 
 ---
 
@@ -952,14 +1090,18 @@ permitindo teste imediato sem depender de dado real.
 
 Os requisitos das seções **4.1 a 4.6** são a tradução operacional, para o
 desenvolvimento assistido por IA (Vibe Coding), da **PO-SI-0016 – Política de
-Desenvolvimento Seguro** (GED/FLUIG) e são
+Desenvolvimento Seguro** (rev. 01, GED/FLUIG) e são
 obrigatórios para **todas** as aplicações (uso interno e externo). Aplicações de
-uso **externo** devem cumprir, além disso, a seção **4.7**. Estes itens cobrem a
-camada de aplicação; infraestrutura e rede são de outra área.
+uso **externo** devem cumprir, além disso, a seção **4.7**. A seção **4.8**
+reúne as obrigações de governança que cercam o desenvolvimento (termo,
+ferramentas, hospedagem, revisão). Estes itens cobrem a camada de aplicação;
+infraestrutura e rede são de outra área.
 
-A PO-SI-0016 completa (governança, sanções, ferramentas homologadas, ROPA/RIPD
-detalhado etc.) permanece a fonte normativa no FLUIG — aqui ficam só os
-requisitos acionáveis na construção do app.
+A PO-SI-0016 completa (sanções, papéis, ROPA/RIPD detalhado etc.), a
+**PO-SI-0015 – Uso Responsável de IA**, a **PO-SI-0004 – Privacidade de Dados
+Pessoais** e a **PO-SI-0006 – Retenção e Descarte** permanecem a fonte
+normativa no FLUIG — aqui ficam só os requisitos acionáveis na construção do
+app. A verificação item a item contra a política é da `/supplog-seguranca`.
 
 #### 4.1 Segurança em Desenvolvimento
 
@@ -967,8 +1109,9 @@ requisitos acionáveis na construção do app.
   upload) deve ter tamanho, tipo, sintaxe e regras de negócio validados
   rigorosamente no back-end antes de ser processada ou armazenada — nunca somente
   no front-end.
-- **Prevenção de vulnerabilidades (OWASP Top 10):** o desenvolvimento deve
-  mitigar as vulnerabilidades do OWASP Top 10; é expressamente proibida a
+- **Prevenção de vulnerabilidades (OWASP Top 10 e API Security Top 10):** o
+  desenvolvimento deve mitigar as vulnerabilidades do OWASP Top 10 e, quando
+  expõe API, do OWASP API Security Top 10; é expressamente proibida a
   publicação de códigos com falhas de injeção (SQL, NoSQL, comandos), XSS
   (Cross-Site Scripting) e BOLA (Broken Object Level Authorization).
 - **Consultas a banco de dados:** uso obrigatório de consultas
@@ -982,8 +1125,9 @@ requisitos acionáveis na construção do app.
   traces) ao usuário final.
 - **Logs e auditoria:** implementar o registro contínuo de eventos de segurança e
   trilhas de auditoria para ações sensíveis (sucesso/falha de login, mudanças de
-  privilégios). Não é permitido gravar dados confidenciais ou senhas em texto
-  claro nos arquivos de log.
+  privilégios, acesso a dado sensível), cada registro com **identificação do
+  usuário** (`sub`) **e endereço IP**. Não é permitido gravar dados
+  confidenciais ou senhas em texto claro nos arquivos de log.
 - **Upload de arquivos:** quando aplicável, validar o tipo real do arquivo (não
   confiar apenas na extensão do nome) e limitar rigorosamente o tamanho máximo
   aceito.
@@ -992,9 +1136,16 @@ requisitos acionáveis na construção do app.
   front-end. Com o Login Único (4.4), o logout também encerra a sessão no SSO.
 - **Timeout de sessão:** aplicações internas devem possuir expiração automática
   por inatividade — entre **15 e 30 minutos** (risco baixo/moderado) ou entre
-  **2 e 5 minutos** (aplicações de alto risco com dados sensíveis e
-  confidenciais). Com o Login Único, aplica-se à sessão local do app (cookie);
-  a pessoa volta pelo SSO sem redigitar senha se a sessão central estiver viva.
+  **2 e 5 minutos** em aplicação de **alto risco** (processa dado financeiro,
+  de recursos humanos, dado protegido pela LGPD ou acesso administrativo).
+  Com o Login Único, aplica-se à sessão local do app (cookie); a pessoa volta
+  pelo SSO sem redigitar senha se a sessão central estiver viva. Em alto
+  risco, renovação automática por atividade (mouse/teclado) é admitida desde
+  que ações críticas exijam reautenticação.
+- **"Lembrar-me":** proibido em aplicação de alto risco. Nas demais, só com
+  cookie `Secure`/`HttpOnly`/`SameSite=Strict` baseado em token revogável,
+  invalidado no banco no logout. Com o Login Único a sessão central já cumpre
+  esse papel — a aplicação não implementa "Lembrar-me" próprio.
 - **Certificados digitais:** arquivos de certificados (`.pfx`, `.pem`, `.crt`,
   `.enc`) não devem ser armazenados em diretórios públicos da aplicação.
 
@@ -1014,8 +1165,21 @@ requisitos acionáveis na construção do app.
 - **Segredos fora de artefatos:** nenhum segredo real em README, comentário de
   código ou mensagem de commit.
 - **Validação de IA:** dependências sugeridas por IA devem ter sua existência,
-  autoria e reputação confirmadas manualmente. É proibido o uso de pacotes
-  obsoletos, rastreadores não homologados ou bibliotecas sem manutenção.
+  autoria e reputação confirmadas manualmente (mitigação de alucinação de
+  pacote). É proibido o uso de pacotes obsoletos, descontinuados ou sem
+  manutenção ativa, mesmo quando recomendados pelo assistente.
+- **Verificação contínua:** toda dependência é verificada contra
+  vulnerabilidades conhecidas (`npm audit` / `pip-audit` ou equivalente) e
+  tem origem em repositório oficial com licença compatível. Vulnerabilidade
+  Alta ou Crítica em dependência é corrigida antes de qualquer subida (4.8).
+- **Sem links externos:** proibido inserir no código ou na documentação links
+  externos desconhecidos, rastreadores, scripts de terceiros ou badges de
+  status hospedados fora da empresa. Assets e fontes vêm do brand (2.8) ou
+  ficam no próprio projeto.
+- **Protocolos:** proibidos FTP, TFTP, Telnet, SMBv1 e e-mail sem TLS; use
+  SFTP/FTPS, SSH e SMTP com STARTTLS/TLS.
+- **Licenças:** nenhuma ferramenta, biblioteca ou componente sem licença
+  corporativa regular ou licença open source validada.
 
 #### 4.3 Autenticação e Controle de Acessos
 
@@ -1245,14 +1409,35 @@ integralmente as regras abaixo, além de 4.3:
   minutos**). É expressamente proibido o envio de senhas em texto claro por
   e-mail ou SMS.
 
-#### 4.5 Proteção de Dados
+#### 4.5 Classificação e Proteção de Dados
 
+- **Classificação antes do código (PO-SI-0016, item 8):** todo dado tratado
+  pela aplicação é classificado no `PLANEJAMENTO.md` em uma categoria:
+  **dado pessoal** (nome, e-mail, CPF, matrícula, telefone), **dado pessoal
+  sensível** (origem racial/étnica, religião, opinião política, sindicato,
+  saúde, vida sexual, genético, biométrico, criança/adolescente) ou **dado
+  confidencial não pessoal** (segredo de negócio, precificação, arquitetura).
+- **Dado pessoal → DPO e ROPA:** aplicação que trata dado pessoal é submetida
+  à avaliação do Encarregado (DPO) e tem o tratamento registrado no ROPA. A
+  skill registra a necessidade; a avaliação acontece no chamado de avaliação
+  (5.6) e pode estender o prazo.
+- **RIPD (relatório de impacto):** exigido quando **dois ou mais** critérios
+  estão presentes — (a) dado sensível ou de criança/adolescente; (b) volume:
+  1.000 titulares ou mais em 12 meses **ou** uso recorrente em produção;
+  (c) finalidade: decisão automatizada sem revisão humana, perfilamento ou
+  monitoramento contínuo de pessoas; (d) compartilhamento com terceiro
+  externo à Supporte (API, integração, exportação, nuvem de terceiro). Dado
+  sensível de criança/adolescente exige RIPD sempre.
 - **Criptografia:** o código-fonte deve garantir que dados confidenciais ou
   sensíveis recebam tratamento restrito, implementando criptografia adequada em
-  trânsito e em repouso.
+  trânsito e em repouso; proibido armazenar, exibir ou logar dado pessoal
+  identificável ou confidencial em texto claro.
 - **Anonimização:** massas de dados reais de produção não podem ser usadas em
   ambientes de desenvolvimento ou homologação sem a devida anonimização ou
-  mascaramento.
+  mascaramento. Dado da empresa só entra em homologação, via DW; na máquina
+  local roda só o seed fictício.
+- **Nada de teste para produção:** entre ambientes transita só código,
+  scripts e pacotes validados — nunca dado.
 
 #### 4.6 Dados Pessoais — Higiene LGPD
 
@@ -1276,6 +1461,15 @@ esperada de qualquer aplicação que toque dado de pessoa.
    justificam.
 8. **Fonte:** dado pessoal da empresa é consumido exclusivamente via DW (única
    fonte permitida).
+9. **Retenção e descarte (PO-SI-0006) e direitos do titular (PO-SI-0004):**
+   todo dado pessoal guardado pela aplicação tem **prazo de retenção** e
+   **forma de descarte** documentados no `PLANEJAMENTO.md`/README (ex.:
+   recrutamento 90 dias após reprovação; dado de acesso enquanto durar o
+   contrato; comercial 10 anos após o término). A aplicação precisa permitir
+   eliminar ou anonimizar o dado ao fim do prazo ou a pedido do titular —
+   pedidos chegam por `privacidade@supplog.com` e são respondidos em até 15
+   dias úteis, então o responsável precisa saber localizar e apagar o dado.
+   Dado pessoal sem prazo é não-conformidade.
 
 #### 4.7 Aplicações de uso externo
 
@@ -1301,8 +1495,62 @@ usuários que **não** são colaboradores. Além de 4.1–4.6, é obrigatório:
   `tipo` no servidor (4.4), timeout de sessão (4.1) e privilégio mínimo no banco
   (4.3) continuam obrigatórios.
 
-> Detalhes normativos, sanções e fluxo formal de aprovação: **PO-SI-0016** e
-> **PGP-SI-0015** no GED (FLUIG).
+#### 4.8 Governança do desenvolvimento seguro _(novo na v1.4)_
+
+Obrigações que cercam o código, vindas da **PO-SI-0016** (rev. 01) e da
+**PO-SI-0015 – Uso Responsável de IA**. Valem para todo tipo de aplicação.
+
+1. **Termo de Ciência e Responsabilidade (FO-SI-0025):** o responsável pela
+   aplicação assina o termo **antes de iniciar o desenvolvimento** e antes de
+   submeter qualquer aplicação à validação, use ou não ferramenta de IA. A
+   Segurança da Informação envia o termo junto com a licença da ferramenta;
+   ele é reassinado a cada revisão relevante da PO-SI-0015 ou da PO-SI-0016.
+2. **Ferramenta homologada, conta corporativa:** o desenvolvimento usa só
+   ferramentas de IA homologadas (inventário no FLUIG), acessadas com conta
+   corporativa. Conta pessoal, versão gratuita ou plataforma pública não
+   homologada para inserir, analisar ou refatorar código da empresa é
+   proibida (Shadow IA). Dado pessoal, credencial, segredo de negócio ou
+   código proprietário nunca entra em ferramenta não homologada; em
+   ferramenta homologada, dado confidencial entra mascarado.
+3. **Responsabilidade é humana:** a IA não transfere responsabilidade. Todo
+   código gerado é revisado criticamente pelo responsável antes de ser
+   submetido (validação de entradas, erros, autenticação, ausência de
+   "alucinações" — função, lógica ou pacote inexistente) e depois pela
+   Sustentação e pela Segurança da Informação antes de produção.
+4. **Hospedagem e teste só nos ambientes da empresa:** a aplicação roda na
+   máquina local do responsável e nos ambientes disponibilizados pelo TI.
+   É vedado hospedar, testar ou publicar artefatos da empresa em plataforma
+   externa (Vercel, Netlify, Render, Supabase, GitHub Pages e similares) ou
+   em conta pessoal, mesmo protótipo com dado fictício. Protótipo ou prova
+   de conceito disponibilizado fora do ambiente corporativo passa pelo mesmo
+   fluxo de validação (5.6).
+5. **Código só no repositório oficial (2.9):** proibido desenvolver, testar
+   ou guardar código, scripts ou pastas de projeto em servidor de arquivos
+   compartilhado. Proibido publicar prints, vídeos ou trechos de código da
+   aplicação em redes sociais, fóruns ou aplicativos de mensagem sem
+   validação da Segurança da Informação.
+6. **Canais oficiais:** aprovações, passagens de ambiente e validações de
+   deploy tramitam só por e-mail corporativo, Teams e Fluig — com preferência
+   pelo Fluig (5.6).
+7. **Autoanálise de segurança antes de submeter:** o responsável roda a
+   `/supplog-seguranca` (checklist item a item da PO-SI-0016 + varredura de
+   dependências) e corrige o apontado antes do handoff. O `.zip` entregue
+   leva o `RELATORIO-SEGURANCA.md`.
+8. **Sem vulnerabilidade Alta ou Crítica em produção:** o código é escaneado
+   antes de qualquer subida; deploy com vulnerabilidade Alta/Crítica só com
+   aceite de risco formal da Alta Gestão e da Segurança da Informação.
+   Zero-day em dependência tem prioridade máxima de correção. A Segurança da
+   Informação pode retirar do ar qualquer aplicação com falha não corrigida.
+9. **Autor sem acesso à produção:** quem desenvolve não tem credencial
+   administrativa nem acesso direto ao ambiente de produção; alterações após
+   a publicação seguem a 5.10.
+10. **Incidente:** vazamento de dado ou credencial em ferramenta de IA,
+    comportamento anômalo de agente ou uso de ferramenta não homologada é
+    incidente de segurança — reporte imediatamente à Segurança da
+    Informação.
+
+> Detalhes normativos, sanções e fluxo formal de aprovação: **PO-SI-0016**,
+> **PO-SI-0015** e **PGP-SI-0015** no GED (FLUIG).
 
 ---
 
@@ -1334,11 +1582,13 @@ regras passam a valer quando a aplicação é promovida para produção.
   não aprova a aplicação, o login é recusado e o desenvolvimento segue; o teste
   do fluxo de login depende da aprovação.
 - **Produção:** obrigatório **Login Único** com a aplicação **aprovada** no SSO
-  e as Redirect URIs de produção (`https://<app>/entrar/callback` e
-  `https://<app>/`) cadastradas byte a byte. `SSO_APP_URL` e `SSO_CLIENT_SECRET`
-  reais são repassados ao TI junto com as demais variáveis (5.3), por canal
-  seguro. Incluir Redirect URI nova em aplicação aprovada reenvia o cadastro
-  para aprovação — faça isso antes de solicitar a subida.
+  e as Redirect URIs de produção no subdomínio do chamado (5.6) —
+  `https://<subdominio>.supplog.com/entrar/callback` e
+  `https://<subdominio>.supplog.com/` — cadastradas byte a byte.
+  `SSO_APP_URL` e `SSO_CLIENT_SECRET` reais são repassados ao TI junto com as
+  demais variáveis (5.3), por canal seguro. Incluir Redirect URI nova em
+  aplicação aprovada reenvia o cadastro para aprovação — faça isso antes de
+  solicitar a subida.
 
 > Aplicações em produção com login próprio (anteriores ao Login Único) devem ser
 > adaptadas ao SSO (skill `/supplog-sso`); até a adaptação, seguem a **4.4.1**.
@@ -1348,7 +1598,35 @@ regras passam a valer quando a aplicação é promovida para produção.
 - **Homologação:** responsabilidade do solicitante/área que criou a aplicação.
 - **Produção:** responsabilidade passa a ser do TI.
 
-#### 5.6 Processo de Deploy/Subida
+#### 5.6 Chamado de avaliação e subdomínio _(reescrito na v1.4)_
+
+A entrega é formalizada por **chamado no Fluig**, distinto do chamado de
+criação do repositório (2.9), com o `.zip` do projeto anexado (gerado pela
+`/supplog-handoff`, sem segredos). É esse chamado que coloca a aplicação na
+fila de avaliação e a leva à homologação e à produção.
+
+| Campo    | Valor                     |
+| -------- | ------------------------- |
+| Área     | SUSTENTAÇÃO               |
+| Subárea  | INOVAÇÃO                  |
+| Sistema  | DESENVOLVIMENTO IA        |
+| Serviços | AVALIAÇÃO DESENVOLVIMENTO |
+
+**Subdomínio obrigatório.** O texto do chamado informa o **subdomínio
+desejado** para a aplicação em produção, no formato
+`nome-da-aplicacao.supplog.com`: nome curto, minúsculas, sem acento e sem
+espaço, hífen entre palavras — o mesmo valor usado como `client_id` no SSO
+(4.4). Chamado sem subdomínio **não segue para o deploy**. É nesse endereço
+que ficam as Redirect URIs de produção no SSO e o valor de produção de
+`SSO_APP_URL`; decida o subdomínio antes de cadastrá-las, para o endereço
+cadastrado e o publicado serem o mesmo. Automação sem tela nem API não tem
+subdomínio ("Não se aplica").
+
+O texto do chamado traz ainda: nome e descrição da aplicação; responsável
+(nome, área, e-mail corporativo); stack e porte; repositório; fontes do DW;
+dados do Login Único (`client_id`, status, Redirect URIs de produção — nunca
+o secret); classificação dos dados (4.5) e se há dado pessoal (DPO/ROPA/RIPD);
+e os relatórios `RELATORIO-CHECK.md` e `RELATORIO-SEGURANCA.md` no pacote.
 
 - **Homologação:** solicitação simples, com permanência de até 10 dias úteis.
 - **Produção:** sujeito ao SLA de avaliação descrito a seguir.
@@ -1356,10 +1634,16 @@ regras passam a valer quando a aplicação é promovida para produção.
 #### 5.7 SLA de Avaliação e Subida para Produção
 
 1. A aplicação permanece em homologação por até **10 dias úteis**.
-2. Dentro desse prazo (ou ao final dele), o solicitante pode pedir a subida para
-   produção.
+2. Dentro desse prazo (ou ao final dele), o solicitante pede a subida para
+   produção **como acompanhamento do mesmo chamado** de avaliação (5.6) — não
+   há um segundo chamado; é por ele que se respondem as pendências.
 3. O TI tem SLA de **10 dias úteis** para avaliar desenvolvimento e segurança, e
-   realizar os ajustes necessários.
+   realizar os ajustes necessários. A avaliação corre em **duas frentes**,
+   cada uma com parecer próprio: **Sustentação** (desenvolvimento,
+   sustentabilidade, clean code) e, aprovada essa, **Segurança da Informação**
+   (requisitos da seção 4, varredura de vulnerabilidades, governança de
+   acessos). Aplicação com dado sensível pode ainda ir ao **Jurídico**/DPO,
+   o que pode estender o prazo (PO-SI-0016, item 15).
 
 - **Se aprovado:** a aplicação sobe para produção.
 - **Se reprovado:** a aplicação sai da homologação; o solicitante corrige
@@ -1382,6 +1666,23 @@ regras passam a valer quando a aplicação é promovida para produção.
 O TI pode recusar uma proposta de aplicação, **em qualquer etapa** (homologação ou
 produção), caso já exista solução equivalente entre as aplicações já consolidadas
 da empresa. A decisão é registrada com justificativa e é final.
+
+#### 5.10 Depois da produção _(novo na v1.4)_
+
+Publicada, a aplicação entra na sustentação do TI (5.5) e o autor deixa de
+ter acesso direto à produção (4.8). Toda alteração começa por chamado no
+Fluig com os mesmos Área, Subárea e Sistema da 5.6, mudando só o campo
+Serviços:
+
+| Serviços       | Quando usar                                                      | Quem implementa                                   |
+| -------------- | ---------------------------------------------------------------- | ------------------------------------------------- |
+| **Manutenção** | Bugs, falhas e inconsistências — a aplicação não faz o que deveria | O TI, a partir do comportamento esperado descrito |
+| **Melhoria**   | Novos desenvolvimentos, mudanças de interface, qualquer evolução | O responsável, em branch e pull request           |
+
+Na melhoria: abra o chamado, crie uma branch no repositório da aplicação,
+abra a pull request e, pelo chamado, solicite à Sustentação o merge e o
+deploy. Padrão de branch e PR:
+[Branch e pull request](https://docs.supplog.com/vibe-coding/boas-praticas/branch-e-pull-request).
 
 ---
 
@@ -1443,9 +1744,23 @@ da empresa. A decisão é registrada com justificativa e é final.
   tratamento de dados pessoais. Neste padrão, a seção **4.6** define a **higiene
   técnica** mínima — a conformidade jurídica é avaliada fora do escopo das skills.
 - **PO-SI-0016:** Política de Desenvolvimento Seguro da empresa (GED/FLUIG). As
-  seções **4.1–4.7** deste padrão são a tradução operacional para o
+  seções **4.1–4.8** deste padrão são a tradução operacional para o
   desenvolvimento assistido por IA (Vibe Coding);
   a política completa no FLUIG permanece a fonte normativa.
+- **PO-SI-0015:** Política de Uso Responsável de Inteligência Artificial —
+  ferramentas homologadas, conta corporativa, mascaramento de dado
+  confidencial, revisão humana e declaração de uso de IA (seção 4.8).
+- **FO-SI-0025:** Termo de Ciência e Responsabilidade para uso de IA, assinado
+  pelo responsável antes de iniciar o desenvolvimento (seção 4.8).
+- **DPO (Encarregado):** pessoa que responde pelo tratamento de dados pessoais
+  na empresa; avalia toda aplicação que trata dado pessoal (seção 4.5).
+- **ROPA:** Registro de Operações de Tratamento de Dados Pessoais — inventário
+  formal onde a aplicação que trata dado pessoal é registrada (seção 4.5).
+- **RIPD:** Relatório de Impacto à Proteção de Dados Pessoais — exigido em
+  tratamento de alto risco, pelos critérios da seção 4.5.
+- **Subdomínio:** a parte que vem antes de `supplog.com` no endereço da
+  aplicação em produção (`nome-da-aplicacao.supplog.com`); obrigatório no
+  chamado de avaliação (seção 5.6) e base das Redirect URIs de produção.
 - **MFA / 2FA:** autenticação multifator — obrigatória para acesso humano em
   aplicações de uso externo (seção 4.7); com o Login Único, é provida pelo
   SSO/conta Microsoft, não pela aplicação.

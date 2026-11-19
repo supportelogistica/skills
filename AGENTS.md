@@ -57,7 +57,12 @@ nomenclatura em português, SQL puro parametrizado, login pelo Login Único/SSO
 etc.). O documento canônico dos padrões mora em `skills/supplog-iniciar/SKILL.md`;
 `supplog-check`, `supplog-handoff` e `supplog-sso` carregam referências embutidas
 com a mesma numeração — ao mudar o padrão, atualize as quatro (`supplog-sso`
-embute 4.3, 4.4, 4.4.1 e 5.4). Comentários e documentação em português.
+embute 4.3, 4.4, 4.4.1 e 5.4; `supplog-handoff` embute 2.7, 2.9, 4.2, 4.5,
+4.8 e 5). `supplog-seguranca` embute os requisitos das políticas PO-SI-0016,
+PO-SI-0015, PO-SI-0004 e PO-SI-0006 com a numeração **dos próprios
+documentos** — ao receber uma revisão de política, atualize primeiro essa
+referência e depois a seção 4 do padrão. Comentários e documentação em
+português.
 
 ## Como adicionar uma skill
 

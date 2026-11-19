@@ -1,6 +1,6 @@
 ---
 name: supplog-sso
-description: Integra o Login Único (SSO) em app já existente: diagnostica o acesso atual, orienta o cadastro no SSO, implementa OIDC e aposenta o login com senha. Use ao adicionar ou migrar login para o SSO.
+description: "Integra o Login Único (SSO) em app já existente: diagnostica o acesso atual, orienta o cadastro no SSO, implementa OIDC e aposenta o login com senha. Use ao adicionar ou migrar login para o SSO."
 ---
 
 # /supplog-sso — Login Único em aplicação existente (Padrão Supplog)
@@ -13,7 +13,7 @@ de software**: ele define quem pode entrar e o que fica aberto; **você define
 todo o "como"**.
 
 A **fonte de verdade** técnica é a referência embutida no final deste arquivo
-(seções 4.3, 4.4, 4.4.1 e 5.4 dos Padrões de Desenvolvimento Vibe Coding v1.3,
+(seções 4.3, 4.4, 4.4.1 e 5.4 dos Padrões de Desenvolvimento Vibe Coding v1.4,
 derivadas do documento canônico em `skills/supplog-iniciar/SKILL.md`). A trilha
 oficial do SSO está em
 [Login Único](https://docs.supplog.com/vibe-coding/login-unico/o-que-e-o-login-unico)
@@ -166,14 +166,17 @@ Redirect URIs (uma por linha, exatamente assim):
   http://localhost:<porta>/
   https://<homologacao>/entrar/callback        (se já existe)
   https://<homologacao>/
-  https://<producao>/entrar/callback           (se já está em produção)
-  https://<producao>/
+  https://<subdominio>.supplog.com/entrar/callback
+  https://<subdominio>.supplog.com/
 ```
 
-Cadastre **todas as URIs dos ambientes que já existem de uma vez**: alterar
-Redirect URI de aplicação aprovada reenvia o cadastro para aprovação. Fora de
-`localhost`, só `https`; o SSO compara byte a byte (barra final, esquema e
-porta contam).
+Cadastre **todas as URIs de uma vez**, inclusive as de produção: alterar
+Redirect URI de aplicação aprovada reenvia o cadastro para aprovação. O
+endereço de produção é o **subdomínio** que vai no chamado de avaliação
+(seção 5.6: `nome-da-aplicacao.supplog.com`, minúsculas, sem acento, hífen —
+sugira o mesmo valor do `client_id`); se a aplicação já está em produção, use
+o endereço atual. Fora de `localhost`, só `https`; o SSO compara byte a byte
+(barra final, esquema e porta contam).
 
 Avise: o `client_secret` aparece **uma única vez** — vai direto para o `.env`,
 nunca no chat, print, README ou commit. A aplicação nasce **Aguardando
@@ -448,7 +451,7 @@ para produção). Relembre os pontos de atenção registrados.
 
 ---
 
-## Padrões de Desenvolvimento Vibe Coding (v1.3) — referência embutida
+## Padrões de Desenvolvimento Vibe Coding (v1.4) — referência embutida
 
 _(Trechos que regem a integração. Numeração idêntica à do documento canônico
 `skills/supplog-iniciar/SKILL.md` — ao mudar o padrão lá, atualize aqui.)_
@@ -591,7 +594,9 @@ uso único (15–30 min). Acesso máquina-a-máquina não é login próprio: seg
   então o mesmo código roda local e em homologação. Login recusado até a
   aprovação; o desenvolvimento segue.
 - **Produção:** aplicação **Aprovada** no SSO com Redirect URIs de produção
-  (`https://<app>/entrar/callback` e `https://<app>/`) cadastradas byte a byte;
+  no subdomínio do chamado de avaliação (5.6) —
+  `https://<subdominio>.supplog.com/entrar/callback` e
+  `https://<subdominio>.supplog.com/` — cadastradas byte a byte;
   `SSO_APP_URL` e `SSO_CLIENT_SECRET` reais repassados ao TI com as demais
   variáveis (5.3), por canal seguro. Incluir URI nova em aplicação aprovada
   reenvia para aprovação — faça antes de solicitar a subida.
