@@ -1,6 +1,6 @@
 ---
 name: supplog-iniciar
-description: Construção, seguindo os Padrões de Desenvolvimento Vibe Coding da Supplog. Conduz entrevista guiada em linguagem clara, classifica stack/porte automaticamente, gera PLANEJAMENTO.md e README.md e constrói a aplicação completa conforme o padrão (estrutura de pastas, arquitetura, banco com scripts e seed, segurança, LGPD). Use quando o usuário quiser criar, iniciar ou começar do zero uma nova aplicação, app, automação, site, sistema ou projeto.
+description: "Cria uma aplicação do zero pelos Padrões Vibe Coding da Supplog: entrevista guiada, PLANEJAMENTO.md, README.md e construção completa. Use ao criar ou iniciar um novo app, automação, site ou sistema."
 ---
 
 # /supplog-iniciar — Da ideia ao app rodando (Padrão Supplog)
