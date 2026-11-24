@@ -180,12 +180,14 @@ se a conversa pedir, mas **não pule** nenhum bloco.
   A conta não bloqueia a entrevista: registre "pendente" e siga; o nome de
   usuário precisa existir antes de abrir o chamado (Fase 4).
 - **Subdomínio em produção (seção 5.6):** quando a aplicação tem tela ou
-  API, derive do nome o subdomínio `<nome-da-aplicacao>.supplog.com`
-  (minúsculas, sem acento, hífen entre palavras — o mesmo valor do
-  `client_id` do SSO) e confirme com o solicitante. É o endereço pelo qual as
-  pessoas vão abrir a aplicação, é obrigatório no chamado de avaliação e
-  define as Redirect URIs de produção no SSO. Automação sem tela: não se
-  aplica.
+  API, derive do nome o subdomínio (minúsculas, sem acento, hífen entre
+  palavras — o mesmo valor do `client_id` do SSO) e o **domínio pelo escopo**
+  respondido no Bloco 6: app **interno** →
+  `<nome-da-aplicacao>.supportelogistica.com.br`; app **externo** →
+  `<nome-da-aplicacao>.supplog.com`. Confirme com o solicitante. É o endereço
+  pelo qual as pessoas vão abrir a aplicação, é obrigatório no chamado de
+  avaliação e define as Redirect URIs de produção no SSO. Automação sem tela:
+  não se aplica.
 - **Termo de Ciência e Responsabilidade (seção 4.8):** lembre em uma frase que
   a PO-SI-0016 exige o termo (FO-SI-0025) assinado pelo responsável antes de
   iniciar o desenvolvimento; quem ainda não assinou pede à Segurança da
@@ -279,8 +281,9 @@ roteiro de teste>
 - Perfis/RBAC: <sim (quais papéis) / não — obrigatório quando houver papéis
   distintos ou dado pessoal/sensível>
 - Entradas de usuário: <formulários, uploads — ou "nenhuma">
-- Subdomínio desejado em produção (seção 5.6): `<nome-da-aplicacao>.supplog.com`
-  — ou "não se aplica (automação sem tela)"
+- Subdomínio desejado em produção (seção 5.6): <`<nome-da-aplicacao>.supportelogistica.com.br`
+  (interno) | `<nome-da-aplicacao>.supplog.com` (externo) | "não se aplica
+  (automação sem tela)">; domínio conforme o Escopo acima
 - Termo de Ciência e Responsabilidade (FO-SI-0025, seção 4.8): <assinado /
   pendente>
 
@@ -345,7 +348,7 @@ que ganha a entrada inicial).
 - Contato: <preenchido>
 - Data de criação: <preenchido>
 - Repositório: <!-- TODO: endereço no GitHub (organização Supporte Logistica - Vibe Coders); enquanto o TI não criar, "chamado aberto em <data>" -->
-- Endereço em produção (subdomínio desejado): <!-- TODO: `<nome-da-aplicacao>.supplog.com` — ou "Não se aplica" para automação sem tela -->
+- Endereço em produção (subdomínio desejado): <!-- TODO: `<nome-da-aplicacao>.supportelogistica.com.br` se interno, `<nome-da-aplicacao>.supplog.com` se externo — ou "Não se aplica" para automação sem tela -->
 
 ## Stack técnica
 
@@ -360,7 +363,7 @@ que ganha a entrada inicial).
 
 <!-- TODO: preencher se houver login — modo (bloqueio total / botão), quem pode
 entrar, client_id (NUNCA o client_secret), Redirect URIs cadastradas por
-ambiente (produção em https://<subdomínio>.supplog.com/...), variáveis SSO_*
+ambiente (produção no endereço acima, https://<subdominio>.<dominio>/...), variáveis SSO_*
 esperadas no .env. Se não houver login, escrever "Não se aplica" e o motivo. -->
 
 ## Fluxos principais e endpoints
@@ -482,9 +485,10 @@ Com o plano confirmado, **construa a aplicação completa**. Regras da construç
      sugerido (minúsculas, números e hífen); tipo de cliente **confidencial**;
      "Quem pode entrar" conforme a entrevista; e as **Redirect URIs** exatas de
      desenvolvimento — `http://localhost:<porta>/entrar/callback` e
-     `http://localhost:<porta>/` — mais as de produção com o subdomínio
-     definido no Bloco 7 — `https://<subdominio>.supplog.com/entrar/callback`
-     e `https://<subdominio>.supplog.com/` (cadastrar tudo de uma vez evita
+     `http://localhost:<porta>/` — mais as de produção no endereço definido
+     no Bloco 7 (`supportelogistica.com.br` se interno, `supplog.com` se
+     externo) — `https://<subdominio>.<dominio>/entrar/callback` e
+     `https://<subdominio>.<dominio>/` (cadastrar tudo de uma vez evita
      o reenvio para aprovação na hora da subida). Avise: o `client_secret` aparece **uma única
      vez** e deve ir **direto para o `.env`** — **nunca colar no chat**, em
      print ou no README. A aplicação fica **Aguardando aprovação**; o
@@ -639,7 +643,9 @@ docs.supplog.com)_:
    Alta/Crítica em produção.
 6. **Seção 5.6 reescrita:** chamado de avaliação no Fluig (Sustentação →
    Inovação → Desenvolvimento IA → Avaliação Desenvolvimento) com o `.zip`
-   anexado e o **subdomínio obrigatório** (`<app>.supplog.com`).
+   anexado e o **subdomínio obrigatório**, com o domínio definido pelo
+   escopo: `<app>.supportelogistica.com.br` (interno) ou `<app>.supplog.com`
+   (externo).
 7. **Seção 5.7:** avaliação em duas frentes (Sustentação e Segurança da
    Informação, eventualmente Jurídico); a subida para produção é pedida como
    acompanhamento do mesmo chamado.
@@ -916,8 +922,10 @@ obrigatoriamente:
 - Responsável (área, contato, data de criação)
 - Repositório: endereço no GitHub (2.9); enquanto o TI não o criar, "chamado
   aberto em <data>"
-- Endereço em produção: subdomínio desejado, `<nome-da-aplicacao>.supplog.com`
-  (5.6); automação sem tela: "Não se aplica"
+- Endereço em produção: subdomínio desejado (5.6) —
+  `<nome-da-aplicacao>.supportelogistica.com.br` se interno,
+  `<nome-da-aplicacao>.supplog.com` se externo; automação sem tela: "Não se
+  aplica"
 - Stack técnica, incluindo versão exata (ex.: `Python 3.12.4`) e classificação de
   porte
 - Como rodar localmente (incluindo comando de execução do seed)
@@ -1583,8 +1591,10 @@ regras passam a valer quando a aplicação é promovida para produção.
   do fluxo de login depende da aprovação.
 - **Produção:** obrigatório **Login Único** com a aplicação **aprovada** no SSO
   e as Redirect URIs de produção no subdomínio do chamado (5.6) —
-  `https://<subdominio>.supplog.com/entrar/callback` e
-  `https://<subdominio>.supplog.com/` — cadastradas byte a byte.
+  `https://<subdominio>.<dominio>/entrar/callback` e
+  `https://<subdominio>.<dominio>/`, com `<dominio>` =
+  `supportelogistica.com.br` (interno) ou `supplog.com` (externo) —
+  cadastradas byte a byte.
   `SSO_APP_URL` e `SSO_CLIENT_SECRET` reais são repassados ao TI junto com as
   demais variáveis (5.3), por canal seguro. Incluir Redirect URI nova em
   aplicação aprovada reenvia o cadastro para aprovação — faça isso antes de
@@ -1613,10 +1623,16 @@ fila de avaliação e a leva à homologação e à produção.
 | Serviços | AVALIAÇÃO DESENVOLVIMENTO |
 
 **Subdomínio obrigatório.** O texto do chamado informa o **subdomínio
-desejado** para a aplicação em produção, no formato
-`nome-da-aplicacao.supplog.com`: nome curto, minúsculas, sem acento e sem
-espaço, hífen entre palavras — o mesmo valor usado como `client_id` no SSO
-(4.4). Chamado sem subdomínio **não segue para o deploy**. É nesse endereço
+desejado** para a aplicação em produção: nome curto, minúsculas, sem acento
+e sem espaço, hífen entre palavras — o mesmo valor usado como `client_id` no
+SSO (4.4). O **domínio depende do escopo** da aplicação (4.7):
+
+| Escopo                                           | Endereço em produção                       |
+| ------------------------------------------------ | ------------------------------------------ |
+| **Interno** (rede corporativa, só colaboradores) | `nome-da-aplicacao.supportelogistica.com.br` |
+| **Externo** (fora da rede ou usuários externos)  | `nome-da-aplicacao.supplog.com`            |
+
+Chamado sem subdomínio **não segue para o deploy**. É nesse endereço
 que ficam as Redirect URIs de produção no SSO e o valor de produção de
 `SSO_APP_URL`; decida o subdomínio antes de cadastrá-las, para o endereço
 cadastrado e o publicado serem o mesmo. Automação sem tela nem API não tem
@@ -1758,8 +1774,9 @@ deploy. Padrão de branch e PR:
   formal onde a aplicação que trata dado pessoal é registrada (seção 4.5).
 - **RIPD:** Relatório de Impacto à Proteção de Dados Pessoais — exigido em
   tratamento de alto risco, pelos critérios da seção 4.5.
-- **Subdomínio:** a parte que vem antes de `supplog.com` no endereço da
-  aplicação em produção (`nome-da-aplicacao.supplog.com`); obrigatório no
+- **Subdomínio:** a parte que vem antes do domínio no endereço da aplicação
+  em produção — `nome-da-aplicacao.supportelogistica.com.br` para app
+  interno, `nome-da-aplicacao.supplog.com` para app externo; obrigatório no
   chamado de avaliação (seção 5.6) e base das Redirect URIs de produção.
 - **MFA / 2FA:** autenticação multifator — obrigatória para acesso humano em
   aplicações de uso externo (seção 4.7); com o Login Único, é provida pelo
