@@ -91,7 +91,7 @@ interface não audita XSS). Cobertura por área:
 | Estrutura de pastas    | 2.5              | pastas obrigatórias da stack presentes e usadas                                                                                                                 |
 | Arquitetura            | 2.6              | rotas finas; regra de negócio em services; componentes React funcionais; custom hooks; chamadas de API em services/; middleware para auth/validação             |
 | Nomenclatura de código | 2.4              | snake_case/PascalCase/camelCase conforme a stack; comentários em português                                                                                      |
-| README                 | 2.7              | todas as seções obrigatórias presentes e preenchidas (inclui "Autenticação (Login Único)" sem `client_secret` e "Endereço em produção" com o subdomínio `<app>.supplog.com` — ausente: Parcial, pendência de handoff, pois o chamado de avaliação exige o subdomínio) |
+| README                 | 2.7              | todas as seções obrigatórias presentes e preenchidas (inclui "Autenticação (Login Único)" sem `client_secret` e "Endereço em produção" com o subdomínio no domínio do escopo: `<app>.supportelogistica.com.br` se interno, `<app>.supplog.com` se externo — ausente ou com domínio trocado: Parcial, pendência de handoff, pois o chamado de avaliação exige o subdomínio) |
 | Identidade visual      | 2.8              | apps com UI: tokens/fontes/logo/favicon do [brand](https://github.com/supportelogistica/brand); cores chumbo/laranja/branco; Lucide; zero emojis (automações sem tela: Não se aplica) |
 | Versionamento          | 2.9              | `.git/` presente; remote na organização do GitHub Supporte Logistica - Vibe Coders ou chamado de criação registrado no README/PLANEJAMENTO (com nome de usuário do GitHub); `user.email` e autores dos commits com `@supplog.com` (e-mail pessoal: Não conforme); `.env` e `app.db` fora do histórico; nada relevante fora do commit; README com o endereço do repositório. Sem repositório → correção: "Peça ao Claude: 'configure o Git deste projeto com meu e-mail Supplog, faça o primeiro commit sem o .env e me dê o texto do chamado no Fluig, Sustentação → Inovação → GitHub → Criação (projeto de vibe coding com o Claude, repositório na organização Supporte Logistica - Vibe Coders, com meu nome de usuário do GitHub)'" |
 | Dados                  | 3.1–3.7          | nomenclatura de tabelas/colunas; PK; CriadoEm/AtualizadoEm; booleanos; sem ORM; SQL puro parametrizado; scripts_criacao.sql; UTF-8; seed                        |
@@ -102,7 +102,7 @@ interface não audita XSS). Cobertura por área:
 | Login próprio (exceção)| 4.4.1            | **só se existir** login com senha no app: exige autorização registrada no PLANEJAMENTO/README (sem ela: Não conforme em 4.4 — correção: "rode a `/supplog-sso` para migrar ao Login Único"); hash bcrypt/argon2; senha mín. 14 com 4 categorias; bloqueio dicionário/padrões/termos da org; histórico das últimas 5; checagem de vazamento; rotação 90d (elevados); bloqueio ≥ 15 min após 5 tentativas; msgs genéricas; recuperação por token (apps só com SSO: Não se aplica) |
 | Higiene LGPD           | 4.6              | as 9 regras: inventário, back-end obrigatório, acesso restrito, seed fictício, nada em URL, logs, minimização, fonte DW, retenção e descarte documentados (dado pessoal sem prazo: Não conforme)                                 |
 | App externo            | 4.7              | MFA via Login Único (sem MFA próprio; "Quem pode entrar" inclui externos); TLS 1.2+; rate limiting; CSP/HSTS/X-Frame-Options; CSRF; cert AC confiável; sem admin/debug públicos; herança 4.1/4.3/4.4 (apps internos: Não se aplica) |
-| Ambiente               | 5.1–5.2, 5.4, 5.6 | SQLite em homologação; seed existe (e lembrete: não pode ir para produção); SSO integrado desde a homologação; README registra `client_id` e Redirect URIs por ambiente; Redirect URIs de produção (quando registradas) no subdomínio `https://<app>.supplog.com/...` — igual ao "Endereço em produção" |
+| Ambiente               | 5.1–5.2, 5.4, 5.6 | SQLite em homologação; seed existe (e lembrete: não pode ir para produção); SSO integrado desde a homologação; README registra `client_id` e Redirect URIs por ambiente; Redirect URIs de produção (quando registradas) no subdomínio `https://<app>.<dominio>/...` — igual ao "Endereço em produção" |
 
 ### Passo 3 — Verificar item a item
 
@@ -259,8 +259,9 @@ relatório.)_
 
 Descrição; Contexto/Motivação; Responsável (área, contato, data de criação);
 Repositório (endereço no GitHub ou "chamado aberto em <data>", 2.9); Endereço
-em produção (subdomínio desejado `<nome-da-aplicacao>.supplog.com`, 5.6; ou
-"Não se aplica" para automação sem tela); Stack + versão exata +
+em produção (subdomínio desejado, 5.6: `<nome-da-aplicacao>.supportelogistica.com.br`
+se interno, `<nome-da-aplicacao>.supplog.com` se externo; ou "Não se aplica"
+para automação sem tela); Stack + versão exata +
 classificação de porte; Como rodar localmente (com comando do seed);
 Autenticação (Login Único) — modo, quem pode entrar, `client_id`, Redirect
 URIs por ambiente, variáveis `SSO_*`, **nunca o secret** (ou "Não se aplica"
@@ -509,12 +510,16 @@ oficial. Autoanálise de segurança: `RELATORIO-SEGURANCA.md` presente
 - **5.4 Autenticação:** Login Único integrado **desde a homologação** (o
   cadastro aceita `localhost`); produção exige aplicação aprovada no SSO com
   Redirect URIs de produção no subdomínio
-  (`https://<subdominio>.supplog.com/...`) cadastradas byte a byte. Aprovação
+  (`https://<subdominio>.<dominio>/...`, domínio do escopo — 5.6) cadastradas
+  byte a byte. Aprovação
   e URIs de produção são Não verificável no código — registrar como pendência
   de handoff, indicando que o usuário confira em "Minhas aplicações".
 - **5.6 Chamado de avaliação e subdomínio:** a entrega é por chamado no Fluig
   (Sustentação → Inovação → Desenvolvimento IA → Avaliação Desenvolvimento)
-  e exige o **subdomínio desejado** (`nome-da-aplicacao.supplog.com`,
-  minúsculas, sem acento, hífen, igual ao `client_id`). O README registra o
-  subdomínio em "Endereço em produção"; ausente em app com tela ou API:
-  Parcial — pendência de handoff.
+  e exige o **subdomínio desejado** (minúsculas, sem acento, hífen, igual ao
+  `client_id`) com o domínio definido pelo escopo: app **interno** →
+  `nome-da-aplicacao.supportelogistica.com.br`; app **externo** (4.7) →
+  `nome-da-aplicacao.supplog.com`. O README registra o subdomínio em
+  "Endereço em produção"; ausente em app com tela ou API: Parcial — pendência
+  de handoff; domínio incoerente com o escopo do PLANEJAMENTO (interno em
+  `supplog.com` ou externo em `supportelogistica.com.br`): Parcial.

@@ -166,16 +166,18 @@ Redirect URIs (uma por linha, exatamente assim):
   http://localhost:<porta>/
   https://<homologacao>/entrar/callback        (se já existe)
   https://<homologacao>/
-  https://<subdominio>.supplog.com/entrar/callback
-  https://<subdominio>.supplog.com/
+  https://<subdominio>.<dominio>/entrar/callback
+  https://<subdominio>.<dominio>/
 ```
 
 Cadastre **todas as URIs de uma vez**, inclusive as de produção: alterar
 Redirect URI de aplicação aprovada reenvia o cadastro para aprovação. O
 endereço de produção é o **subdomínio** que vai no chamado de avaliação
-(seção 5.6: `nome-da-aplicacao.supplog.com`, minúsculas, sem acento, hífen —
-sugira o mesmo valor do `client_id`); se a aplicação já está em produção, use
-o endereço atual. Fora de `localhost`, só `https`; o SSO compara byte a byte
+(seção 5.6: minúsculas, sem acento, hífen — sugira o mesmo valor do
+`client_id`), e o `<dominio>` vem do escopo da aplicação: **interna** (só
+colaboradores na rede corporativa) → `supportelogistica.com.br`; **externa**
+(acessível de fora ou por usuários externos) → `supplog.com`. Se a aplicação
+já está em produção, use o endereço atual. Fora de `localhost`, só `https`; o SSO compara byte a byte
 (barra final, esquema e porta contam).
 
 Avise: o `client_secret` aparece **uma única vez** — vai direto para o `.env`,
@@ -595,8 +597,10 @@ uso único (15–30 min). Acesso máquina-a-máquina não é login próprio: seg
   aprovação; o desenvolvimento segue.
 - **Produção:** aplicação **Aprovada** no SSO com Redirect URIs de produção
   no subdomínio do chamado de avaliação (5.6) —
-  `https://<subdominio>.supplog.com/entrar/callback` e
-  `https://<subdominio>.supplog.com/` — cadastradas byte a byte;
+  `https://<subdominio>.<dominio>/entrar/callback` e
+  `https://<subdominio>.<dominio>/`, com `<dominio>` =
+  `supportelogistica.com.br` (app interno) ou `supplog.com` (app externo) —
+  cadastradas byte a byte;
   `SSO_APP_URL` e `SSO_CLIENT_SECRET` reais repassados ao TI com as demais
   variáveis (5.3), por canal seguro. Incluir URI nova em aplicação aprovada
   reenvia para aprovação — faça antes de solicitar a subida.

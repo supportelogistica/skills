@@ -72,8 +72,9 @@ Verifique e **relate em linguagem acessível**:
   Redirect URIs (sem secret)? Não há tela/tabela de senha própria? **Pergunte ao
   usuário** (não dá para ver no código): a aplicação está **Aprovada** em
   supplog.com → Minhas aplicações? As **Redirect URIs de produção** no
-  subdomínio (`https://<subdominio>.supplog.com/entrar/callback` e
-  `https://<subdominio>.supplog.com/`) já estão cadastradas? Se não, registre
+  subdomínio (`https://<subdominio>.<dominio>/entrar/callback` e
+  `https://<subdominio>.<dominio>/`, no domínio do Passo 2) já estão
+  cadastradas? Se não, registre
   no guia que o cadastro (que reenvia a aplicação para aprovação do
   administrador do SSO) precisa acontecer **antes** da subida.
 - **Seed e banco:** `database/scripts_criacao.sql` e seed presentes (o TI recria
@@ -110,14 +111,27 @@ consumidas, classificação dos dados e, quando há login, os dados do Login
 
 **Subdomínio (obrigatório — seção 5.6):** leia o item "Endereço em produção"
 do README/PLANEJAMENTO. Se estiver vazio, pergunte ao solicitante qual o
-subdomínio desejado, explicando em uma frase: é a parte antes de
-`supplog.com` no endereço pelo qual as pessoas vão abrir a aplicação, e o
-chamado sem ele não segue para o deploy. Sugira `<client_id>.supplog.com`
-quando há SSO (o cadastro e o endereço publicado precisam coincidir) ou o
-nome da aplicação em kebab-case. Valide o formato: minúsculas, sem acento,
-sem espaço, hífen entre palavras. Automação sem tela nem API: "Não se aplica".
-Se o subdomínio ainda não existe no README, oriente o solicitante a pedir ao
-Claude para registrá-lo lá (esta skill não altera o projeto).
+subdomínio desejado, explicando em uma frase: é a parte antes do domínio no
+endereço pelo qual as pessoas vão abrir a aplicação, e o chamado sem ele não
+segue para o deploy. Sugira o `client_id` quando há SSO (o cadastro e o
+endereço publicado precisam coincidir) ou o nome da aplicação em kebab-case.
+Valide o formato: minúsculas, sem acento, sem espaço, hífen entre palavras.
+
+O **domínio vem do escopo** da aplicação (Escopo no PLANEJAMENTO; se não
+houver, pergunte: só colaboradores na rede corporativa, ou acessível de fora
+/ por usuários externos?):
+
+| Escopo      | Endereço em produção                         |
+| ----------- | -------------------------------------------- |
+| **Interno** | `<nome-da-aplicacao>.supportelogistica.com.br` |
+| **Externo** | `<nome-da-aplicacao>.supplog.com`            |
+
+Endereço no README com o domínio trocado (app interno em `supplog.com` ou
+vice-versa) é pendência: confirme o escopo com o solicitante antes de
+escrever o guia, porque as Redirect URIs do SSO precisam bater com ele.
+Automação sem tela nem API: "Não se aplica". Se o subdomínio ainda não
+existe no README, oriente o solicitante a pedir ao Claude para registrá-lo lá
+(esta skill não altera o projeto).
 
 **Canal de envio ao TI:** chamado no **Fluig**, campos de classificação com os
 valores da tabela abaixo, `.zip` anexado. É um chamado distinto do de criação
@@ -177,7 +191,8 @@ anterior, sobrescreva):
   ou "não foi rodado">
 - Repositório: <endereço no GitHub (organização Supporte Logistica - Vibe
   Coders), tudo enviado — ou "chamado aberto em <data>, aguardando criação">
-- Subdomínio desejado: `<nome-da-aplicacao>.supplog.com` <ou "Não se aplica
+- Subdomínio desejado: <`<nome-da-aplicacao>.supportelogistica.com.br` (app
+  interno) | `<nome-da-aplicacao>.supplog.com` (app externo) | "Não se aplica
   — automação sem tela">
 - Termo de Ciência e Responsabilidade (FO-SI-0025): <assinado / pendente>
 - Dados pessoais: <classificação; DPO/ROPA: sim/não; RIPD: indicado/não —
@@ -192,8 +207,9 @@ anterior, sobrescreva):
   <internos / externos / ambos>
 - **Status no SSO (Minhas aplicações):** <Aprovada / Aguardando aprovação>
 - **Redirect URIs de produção:** <cadastradas:
-  `https://<subdominio>.supplog.com/entrar/callback` e
-  `https://<subdominio>.supplog.com/` — ou "pendente: cadastrar antes da
+  `https://<subdominio>.<dominio>/entrar/callback` e
+  `https://<subdominio>.<dominio>/` (mesmo endereço do subdomínio acima) —
+  ou "pendente: cadastrar antes da
   subida; o cadastro reenvia a aplicação para aprovação do administrador do
   SSO">
 - O `SSO_CLIENT_SECRET` **não está no pacote** — segue com as demais variáveis
@@ -221,7 +237,9 @@ anterior, sobrescreva):
 >
 > - **O que faz:** <descrição em 1-2 frases>
 > - **Responsável:** <nome / área / e-mail corporativo>
-> - **Subdomínio desejado:** `<nome-da-aplicacao>.supplog.com`
+> - **Subdomínio desejado:** `<nome-da-aplicacao>.supportelogistica.com.br`
+>   (aplicação interna) _ou_ `<nome-da-aplicacao>.supplog.com` (aplicação
+>   externa) — escopo: <interno / externo>
 > - **Stack e porte:** <stack> (<classificação>)
 > - **Repositório:** <endereço no GitHub — ou "chamado de criação aberto em
 >   <data>">
@@ -252,8 +270,8 @@ Os valores reais **não vão no zip**. Deixe-os anotados em local seguro (nunca 
 e-mail aberto ou chat público) para repassar ao TI quando ele for aplicar a
 configuração de produção (seção 5.3 do padrão). Com Login Único, isso inclui
 `SSO_CLIENT_SECRET` e o `SSO_APP_URL` de produção
-(`https://<subdominio>.supplog.com`, que precisa bater com a Redirect URI
-cadastrada). Se suspeitar que o secret vazou, gere um novo em "Minhas
+(`https://<subdominio>.<dominio>`, o endereço do subdomínio desejado, que
+precisa bater com a Redirect URI cadastrada). Se suspeitar que o secret vazou, gere um novo em "Minhas
 aplicações" antes de repassar — o antigo para de funcionar na hora.
 
 ## Depois do chamado — o que esperar
@@ -297,7 +315,8 @@ corrigir localmente e enviar por fora.
 
 No chat, em linguagem acessível: confirme o que foi gerado (zip + guia), diga o
 passo único que falta ("abra o chamado no Fluig com os quatro campos do guia,
-anexe o zip e cole o texto — confira que o subdomínio está lá") e relembre:
+anexe o zip e cole o texto — confira que o subdomínio está lá, no domínio
+certo para o escopo") e relembre:
 valores reais de env (inclusive o secret do SSO) ficam com o solicitante até o
 TI pedir; se há login, as Redirect URIs de produção no subdomínio precisam
 estar cadastradas e aprovadas no SSO antes da subida; a subida é pedida no
@@ -314,8 +333,9 @@ _(Trechos relevantes ao handoff. Numeração idêntica à do documento canônico
 
 Descrição; Contexto/Motivação; Responsável (área, contato, data de criação);
 Repositório (endereço no GitHub ou "chamado aberto em <data>", 2.9); Endereço
-em produção (subdomínio desejado `<nome-da-aplicacao>.supplog.com`, 5.6; ou
-"Não se aplica"); Stack + versão exata + classificação de porte; Como rodar
+em produção (subdomínio desejado, 5.6: `<nome-da-aplicacao>.supportelogistica.com.br`
+se interno, `<nome-da-aplicacao>.supplog.com` se externo; ou "Não se
+aplica"); Stack + versão exata + classificação de porte; Como rodar
 localmente (com comando do seed); Autenticação (Login Único) — modo, quem pode
 entrar, `client_id`, Redirect URIs por ambiente, variáveis `SSO_*`, **nunca o
 secret** (ou "Não se aplica" com motivo); Fluxos principais e endpoints
@@ -382,8 +402,9 @@ produção.
   homologação; sem tela, tabela ou coluna de senha própria (login próprio só
   como exceção autorizada, 4.4.1). Para produção: aplicação **Aprovada** em
   supplog.com → Minhas aplicações, com as Redirect URIs de produção no
-  subdomínio (`https://<subdominio>.supplog.com/entrar/callback` e
-  `https://<subdominio>.supplog.com/`) cadastradas byte a byte — cadastrar URI
+  subdomínio (`https://<subdominio>.<dominio>/entrar/callback` e
+  `https://<subdominio>.<dominio>/`, com o domínio do escopo — 5.6)
+  cadastradas byte a byte — cadastrar URI
   nova reenvia a aplicação para aprovação, então faça isso antes de solicitar
   a subida. `SSO_APP_URL` e `SSO_CLIENT_SECRET` reais vão com as demais
   variáveis (5.3). App **externo:** também seção **4.7** (TLS 1.2+, rate limit,
@@ -393,9 +414,12 @@ produção.
 - **5.6 Chamado de avaliação e subdomínio:** entrega por chamado no Fluig —
   Área SUSTENTAÇÃO, Subárea INOVAÇÃO, Sistema DESENVOLVIMENTO IA, Serviços
   AVALIAÇÃO DESENVOLVIMENTO — com o `.zip` anexado. O texto informa o
-  **subdomínio desejado** (`nome-da-aplicacao.supplog.com`: minúsculas, sem
-  acento, hífen; igual ao `client_id`); chamado sem subdomínio não segue para
-  o deploy. Homologação: permanência de até 10 dias úteis.
+  **subdomínio desejado** (minúsculas, sem acento, hífen; igual ao
+  `client_id`) com o **domínio definido pelo escopo** da aplicação: interno
+  (rede corporativa, só colaboradores) → `nome-da-aplicacao.supportelogistica.com.br`;
+  externo (fora da rede ou usuários externos, 4.7) →
+  `nome-da-aplicacao.supplog.com`. Chamado sem subdomínio não segue para o
+  deploy. Homologação: permanência de até 10 dias úteis.
 - **5.7 SLA:** o solicitante pede a subida dentro dos 10 dias úteis de
   homologação, como acompanhamento do mesmo chamado; o TI tem 10 dias úteis
   para avaliar em duas frentes (Sustentação, depois Segurança da Informação;
